@@ -45,6 +45,11 @@ class Product extends Model
         );
     }
 
+    public function link(): string
+    {
+        return route('products.show', [$this->store->slug, $this->sku, $this->slug]);
+    }
+
     public function prices(): HasMany
     {
         return $this->hasMany(Price::class);

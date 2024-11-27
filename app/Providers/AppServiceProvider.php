@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $locale = config('app.locale');
-        DB::statement("SET lc_time_names = '{$locale}'");
+        //DB::statement("SET lc_time_names = '{$locale}'");
 
         Model::unguard();
 

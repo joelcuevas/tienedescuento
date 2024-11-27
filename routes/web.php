@@ -15,7 +15,7 @@ Route::middleware(['auth:sanctum', 'verified', config('jetstream.auth_session')]
 Route::middleware(SetCountryCode::class)->prefix('{countryCode}')
     ->group(function () {
         Route::get('/', ShowHome::class);
-        Route::get('/{storeSlug}/{productSku}', ShowProduct::class)->name('products.show');
+        Route::get('/{storeSlug}/p/{productSku}/{productSlug}', ShowProduct::class)->name('products.show');
     });
 
 require __DIR__.'/socialstream.php';
