@@ -8,10 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
     use HasFactory;
+
+    protected static function booted(): void
+    {
+        static::saving(function (Product $product) {
+            $product->title= Str::limit($product->title, 250);
+            $product->slug = Str::slug($product->title);
+        });
+    }
 
     protected function casts(): array
     {
