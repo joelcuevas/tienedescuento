@@ -17,10 +17,12 @@ class FetchProduct implements ShouldQueue
 
     public function handle(): void
     {
+        $url = 'http://201.110.92.177:3000/proxy?url='.urlencode($this->url);
+
         $response = Http::withHeaders([
             'User-Agent' => 'PostmanRuntime/7.42.0',
             'Accept' => '*/*',
-        ])->get($this->url);
+        ])->get($url);
 
         if ($response->status() == 200) {
             $dom = new Crawler($response->body());

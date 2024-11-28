@@ -20,6 +20,8 @@ class FetchSitemap implements ShouldQueue
 
     private function fetchSitemaps($url): void
     {
+        $url = 'http://201.110.92.177:3000/proxy?url='.urlencode($url);
+
         $response = Http::withHeaders([
             'User-Agent' => 'PostmanRuntime/7.42.0',
             'Accept' => '*/*',

@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Store;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Laravel\Prompts\Output\ConsoleOutput;
 
 class SaveProduct implements ShouldQueue
 {
@@ -36,7 +37,8 @@ class SaveProduct implements ShouldQueue
                     'url' => $url,
                     'image_url' => $imageUrl,
                 ]);
-
+                $output = new ConsoleOutput();
+                $output->writeln('['.$product->id.'] '.$url);
                 $product->addPrice($price, source: 'liverpool');
             }
         }
