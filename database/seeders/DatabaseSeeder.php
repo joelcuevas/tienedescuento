@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
+use App\Models\Product;
 use App\Models\Store;
-use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,13 +15,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $store = Store::factory()->create();
+        $categories = Category::factory(3)->for($store)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-
-        Store::factory()->create(['slug' => 'liverpool', 'name' => 'Liverpool']);
+        $products = Product::factory(10)
+            ->for($store)
+            ->hasPrices(10)
+            ->create();
     }
 }

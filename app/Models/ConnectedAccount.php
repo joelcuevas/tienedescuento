@@ -14,11 +14,6 @@ class ConnectedAccount extends SocialstreamConnectedAccount
     use HasFactory;
     use HasTimestamps;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'provider',
         'provider_id',
@@ -32,21 +27,11 @@ class ConnectedAccount extends SocialstreamConnectedAccount
         'expires_at',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
     protected $casts = [
         'created_at' => 'datetime',
         'expires_at' => 'datetime',
     ];
 
-    /**
-     * The event map for the model.
-     *
-     * @var array
-     */
     protected $dispatchesEvents = [
         'created' => ConnectedAccountCreated::class,
         'updated' => ConnectedAccountUpdated::class,

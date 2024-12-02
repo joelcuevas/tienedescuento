@@ -16,10 +16,12 @@ class StoreFactory extends Factory
      */
     public function definition(): array
     {
+        $slug = fake()->safeColorName();
+
         return [
-            'country' => 'MX',
-            'slug' => 'liverpool',
-            'name' => 'Liverpool',
+            'country' => 'mx',
+            'slug' => $slug,
+            'name' => mb_ucfirst($slug),
         ];
     }
 }

@@ -6,51 +6,51 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 class Product extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'priced_at' => 'date',
+    ];
+
     protected static function booted(): void
     {
         static::saving(function (Product $product) {
-            $product->title= Str::limit($product->title, 250);
+            $product->title = Str::limit($product->title, 250);
             $product->slug = Str::slug($product->title);
         });
-    }
-
-    protected function casts(): array
-    {
-        return [
-            'priced_at' => 'datetime',
-        ];
-    }
-
-    public function addPrice(float $price, string $source, ?Carbon $pricedAt = null): void
-    {
-        $price = $this->prices()->create([
-            'price' => $price,
-            'priced_at' => $pricedAt ?? now(),
-            'source' => $source,
-        ]);
-
-        $prices = $this->fresh()->prices;
-        $latest = $prices->sortByDesc('priced_at')->first();
-        $this->latest_price = $latest->price;
-        $this->priced_at = $latest->priced_at;
-        $this->minimum_price = $prices->min('price');
-        $this->maximum_price = $prices->max('price');
-        $this->regular_price = min($prices->mode('price'));
-        $this->save();
     }
 
     protected function latestPriceFormatted(): Attribute
     {
         return Attribute::make(
             get: fn () => '$'.number_format($this->latest_price, 2),
+        );
+    }
+
+    protected function minumimPriceFormatted(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => '$'.number_format($this->minumim_price, 2),
+        );
+    }
+
+    protected function maximumPriceFormatted(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => '$'.number_format($this->maximum_price, 2),
+        );
+    }
+
+    protected function regularPriceFormatted(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => '$'.number_format($this->regular_price, 2),
         );
     }
 
@@ -62,6 +62,11 @@ class Product extends Model
     public function prices(): HasMany
     {
         return $this->hasMany(Price::class);
+    }
+
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class);
     }
 
     public function store(): BelongsTo

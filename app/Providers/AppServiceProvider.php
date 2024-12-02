@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
 
         Model::unguard();
 
-        Livewire::addPersistentMiddleware([ 
+        Livewire::addPersistentMiddleware([
             SetCountryCode::class,
         ]);
     }

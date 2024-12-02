@@ -9,15 +9,16 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ProductFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
+        $sku = fake()->randomNumber(8, true);
+
         return [
-            //
+            'brand' => mb_ucfirst(fake()->word()),
+            'sku' => $sku,
+            'title' => fake()->sentence(),
+            'url' => 'https://example.com/product/'.$sku,
+            'image_url' => 'https://placehold.co/600?text='.$sku,
         ];
     }
 }

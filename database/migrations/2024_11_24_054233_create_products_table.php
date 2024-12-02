@@ -22,7 +22,7 @@ return new class extends Migration
             $table->decimal('minimum_price', 8, 2)->nullable();
             $table->decimal('maximum_price', 8, 2)->nullable();
             $table->decimal('regular_price', 8, 2)->nullable();
-            $table->timestamp('priced_at')->nullable();
+            $table->date('priced_at')->nullable();
             $table->text('url');
             $table->text('image_url')->nullable();
             $table->timestamps();
