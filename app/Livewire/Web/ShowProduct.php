@@ -11,9 +11,9 @@ use Livewire\Component;
 #[Layout('layouts.web')]
 class ShowProduct extends Component
 {
-    public ?Store $store;
+    public ?Store $store = null;
 
-    public ?Product $product;
+    public ?Product $product = null;
 
     public function mount(string $countryCode, string $storeSlug, string $productSku)
     {
@@ -26,12 +26,16 @@ class ShowProduct extends Component
 
     public function render()
     {
-        $data = Price::selectRaw("date_format(priced_at, '%d-%b-%y') as date, min(price) as aggregate")
-            ->where('product_id', $this->product->id)
-            ->groupBy('date')
-            ->groupBy('priced_at')
-            ->orderBy('priced_at')
-            ->get();
+        $data = [];
+
+        if ($this->product) {
+            $data = Price::selectRaw("date_format(priced_at, '%d-%b-%y') as date, min(price) as aggregate")
+                ->where('product_id', $this->product->id)
+                ->groupBy('date')
+                ->groupBy('priced_at')
+                ->orderBy('priced_at')
+                ->get();
+        }
 
         return view('livewire.web.show-product')->with([
             'data' => $data,

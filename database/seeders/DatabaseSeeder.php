@@ -16,11 +16,11 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $store = Store::factory()->create();
-        $categories = Category::factory(3)->for($store)->create();
 
-        $products = Product::factory(10)
+        Product::factory(10)
             ->for($store)
             ->hasPrices(10)
+            ->has(Category::factory(1)->state(fn() => ['store_id' => $store->id]))
             ->create();
     }
 }

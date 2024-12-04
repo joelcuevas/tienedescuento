@@ -54,9 +54,11 @@ class Product extends Model
         );
     }
 
-    public function link(): string
+    protected function link(): Attribute
     {
-        return route('products.show', [$this->store->slug, $this->sku, $this->slug]);
+        return Attribute::make(
+            get: fn () => route('products.show', [$this->store->slug, $this->sku, $this->slug]),
+        );
     }
 
     public function prices(): HasMany
