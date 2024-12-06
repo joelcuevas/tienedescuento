@@ -58,8 +58,8 @@ abstract class LiverpoolBaseCrawler extends BaseCrawler
     {
         if (isset($meta->productImages[0])) {
             foreach ($meta->productImages as $img) {
-                if (isset($img->thumbnailImage)) {
-                    return $img->thumbnailImage;
+                if (isset($img->smallImage)) {
+                    return $img->smallImage;
                 }
             }
         }

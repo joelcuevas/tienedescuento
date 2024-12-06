@@ -19,7 +19,7 @@ class ProductFactory extends Factory
             'sku' => $sku,
             'title' => $title,
             'url' => 'https://example.com/product/'.$sku,
-            'image_url' => 'https://placehold.co/600?text='.$title,
+            'image_url' => 'https://via.assets.so/shoe.png?id=1'.rand(1, 9999),
         ];
     }
 }

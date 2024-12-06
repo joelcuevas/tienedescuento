@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         Product::factory(10)
             ->for($store)
             ->hasPrices(10)
-            ->has(Category::factory(1)->state(fn() => ['store_id' => $store->id]))
+            ->has(Category::factory(1)->state(fn () => ['store_id' => $store->id]))
             ->create();
     }
 }

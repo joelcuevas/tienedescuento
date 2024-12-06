@@ -35,16 +35,7 @@ class Price extends Model
         });
 
         static::created(function (Price $price) {
-            $product = $price->product;
-            $prices = $product->prices;
-            $latest = $prices->sortByDesc('priced_at')->first();
-
-            $product->latest_price = $latest->price;
-            $product->priced_at = $latest->priced_at;
-            $product->minimum_price = $prices->min('price');
-            $product->maximum_price = $prices->max('price');
-            $product->regular_price = min($prices->mode('price'));
-            $product->save();
+            $price->product->updatePrices();
         });
     }
 

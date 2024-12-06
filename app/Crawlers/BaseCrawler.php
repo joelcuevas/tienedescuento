@@ -3,6 +3,7 @@
 namespace App\Crawlers;
 
 use App\Models\Enums\UrlCooldown;
+use App\Models\Product;
 use App\Models\Url;
 use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Support\Facades\Http;
@@ -23,9 +24,14 @@ abstract class BaseCrawler
         protected string $url,
     ) {}
 
-    public function matches()
+    public function matches(): bool
     {
         return $this->pattern ? preg_match($this->pattern, $this->url) : false;
+    }
+
+    public function exists(): ?Product
+    {
+        return null;
     }
 
     protected function setup(): void {}

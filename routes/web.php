@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\SetCountryCode;
+use App\Livewire\Web\SearchProduct;
 use App\Livewire\Web\ShowHome;
 use App\Livewire\Web\ShowProduct;
 use Illuminate\Support\Facades\Route;
@@ -14,7 +15,8 @@ Route::middleware(['auth:sanctum', 'verified', config('jetstream.auth_session')]
 
 Route::middleware(SetCountryCode::class)->prefix('{countryCode}')
     ->group(function () {
-        Route::get('/', ShowHome::class);
+        Route::get('/', ShowHome::class)->name('home');
+        Route::get('/search', SearchProduct::class)->name('products.search');
         Route::get('/{storeSlug}/p/{productSku}/{productSlug}', ShowProduct::class)->name('products.show');
     });
 

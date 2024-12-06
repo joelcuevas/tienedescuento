@@ -14,7 +14,9 @@ class ShowHome extends Component
 
     public function render()
     {
-        $products = Product::with(['store', 'categories'])->paginate(20);
+        $products = Product::with(['store', 'categories'])
+            ->orderByDesc('discount')
+            ->paginate(20);
 
         return view('livewire.web.show-home')->with([
             'products' => $products,

@@ -18,10 +18,11 @@ return new class extends Migration
             $table->string('sku')->index();
             $table->text('title');
             $table->string('slug');
+            $table->decimal('regular_price', 8, 2)->nullable();
             $table->decimal('latest_price', 8, 2)->nullable();
             $table->decimal('minimum_price', 8, 2)->nullable();
             $table->decimal('maximum_price', 8, 2)->nullable();
-            $table->decimal('regular_price', 8, 2)->nullable();
+            $table->integer('discount')->nullable();
             $table->date('priced_at')->nullable();
             $table->text('url');
             $table->text('image_url')->nullable();
@@ -29,6 +30,7 @@ return new class extends Migration
 
             $table->unique(['store_id', 'sku']);
             $table->index(['store_id', 'brand']);
+            $table->fullText(['brand', 'sku', 'title']);
         });
     }
 

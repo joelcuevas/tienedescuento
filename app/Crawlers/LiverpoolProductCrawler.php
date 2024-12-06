@@ -3,11 +3,23 @@
 namespace App\Crawlers;
 
 use App\Models\Enums\UrlCooldown;
+use App\Models\Product;
+use App\Models\Store;
 use Symfony\Component\DomCrawler\Crawler;
 
 class LiverpoolProductCrawler extends LiverpoolBaseCrawler
 {
-    protected string $pattern = '#^https://www\.liverpool\.com\.mx/tienda/pdp/.*$#';
+    protected string $pattern = '#^https://www\.liverpool\.com\.mx/tienda/pdp/(?:.+/)?(\d+)(?:\?.*)?$#';
+
+    public function exists(): ?Product
+    {   
+        if (preg_match($this->pattern, $this->url, $matches)) {
+            $sku = $matches[1];
+            $store = Store::whereCountry('mx')->whereSlug('liverpool')->first();
+
+            return $store ? $store->products()->whereSku($sku)->first() : null;
+        }
+    }
 
     protected function parse(Crawler $dom): UrlCooldown
     {
