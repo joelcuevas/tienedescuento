@@ -28,7 +28,7 @@ class LiverpoolProductCrawler extends LiverpoolBaseCrawler
         $product = $this->resolveProduct();
 
         if ($product) {
-            return $product->priced_at->isAfter(now()->subDay());
+            return $product->priced_at && $product->priced_at->isAfter(now()->subDay());
         }
 
         return false;
