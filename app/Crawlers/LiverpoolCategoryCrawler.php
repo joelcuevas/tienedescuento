@@ -47,7 +47,7 @@ class LiverpoolCategoryCrawler extends LiverpoolBaseCrawler
                     $url = preg_replace('/\/page-\d+$/', '', $this->url);
                     $url = $url.'/page-'.($currentPage + 1);
 
-                    CrawlUrl::dispatch($url);
+                    CrawlUrl::dispatch($url)->onQueue('liverpool');
                 }
             }
         }
