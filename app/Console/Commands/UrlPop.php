@@ -8,7 +8,7 @@ use Illuminate\Console\Command;
 
 class UrlPop extends Command
 {
-    protected $signature = 'url:pop {--limit=100}';
+    protected $signature = 'url:pop {--limit=50}';
 
     protected $description = 'Retrieve scheduled URLs from the database for crawling.';
 
@@ -18,7 +18,8 @@ class UrlPop extends Command
         $urls = Url::scheduled($limit)->get();
 
         foreach ($urls as $url) {
-            CrawlUrl::dispatch($url->href);
+            $url->reserve();
+            CrawlUrl::dispatch($url->href)->onQueue($url->queue());
         }
     }
 }

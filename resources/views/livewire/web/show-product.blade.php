@@ -14,34 +14,34 @@
                         @if ($product->discount > 0)
                             <div class="flex items-center space-x-4">
                                 <div class="font-medium text-3xl text-green-800 rounded-2xl">{{ $product->latest_price_formatted }}</div>
-                                <div class="font-medium text-sm line-through text-gray-500">Precio Normal: {{ $product->regular_price_formatted }}</div>
+                                <div class="font-medium text-sm line-through text-gray-500">Precio regular: {{ $product->regular_price_formatted }}</div>
                             </div>
                             <div class="mt-1 text-base text-green-800 font-medium">
-                                <i class="fa-regular pr-1 fa-face-laugh"></i> 
-                                ¡{{ abs($product->discount) }}% de descuento contra su precio normal!
+                                <i class="fa-solid pr-1 fa-fire"></i> 
+                                ¡{{ abs($product->discount) }}% de descuento contra su precio regular!
                             </div>
                         @elseif ($product->discount < 0)
                             <div class="flex items-center space-x-3">
                                 <span class="font-medium text-3xl text-red-800">{{ $product->latest_price_formatted }}</span>
-                                <span class="font-medium text-sm line-through text-gray-500">Precio Normal: {{ $product->regular_price_formatted }}</span>
+                                <span class="font-medium text-sm line-through text-gray-500">Precio regular: {{ $product->regular_price_formatted }}</span>
                             </div>
                             <div class="mt-1 text-base text-red-800 font-medium">
-                                <i class="fa-regular pr-1 fa-face-frown"></i> 
-                                {{ abs($product->discount) }}% superior a su precio normal.
+                                <i class="fa-regular pr-1 fa-thumbs-down"></i> 
+                                {{ abs($product->discount) }}% superior a su precio regular.
                             </div>
                         @else
                             <div class="text-3xl">{{ $product->regular_price_formatted }}</div>
                             <div class="mt-1 text-base text-gray-500 font-medium">
-                                <i class="fa-regular pr-1 fa-face-meh"></i> 
-                                Precio normal.
+                                <i class="fa-regular pr-1 fa-thumbs-up"></i> 
+                                Dentro de su precio regular.
                             </div>
                         @endif
                     </div>
                 </div>
 
                 <div class="min-w-32">
-                    <div class="bg-gray-100/90 rounded-xl p-0.5 object-center h-32 w-32">
-                        <img src="{{ $product->image_url }}" alt="{{ $product->title }}" class="mix-blend-multiply aspect-square object-contain">
+                    <div class="bg-gray-100/90 rounded-xl p-1 object-center h-32 w-32">
+                        <img src="{{ $product->image_url }}" alt="{{ $product->title }}" class="mix-blend-multiply aspect-square object-cover rounded-lg">
                     </div>
                 </div>
             </div>
@@ -59,7 +59,8 @@
     
     @push('scripts')
         <script>
-            const regularPrice = <?php echo json_encode($product->regular_price); ?>;
+            const upperBound = <?php echo json_encode($product->regular_price_upper); ?>;
+            const lowerBound = <?php echo json_encode($product->regular_price_lower); ?>;
 
             new Chart(
                 document.getElementById('prices-chart'),
@@ -67,13 +68,16 @@
                     type: 'line',
                     data: {
                         labels: @json($data->map(fn ($data) => $data->date)),
-                        datasets: [{
-                            label: 'Precio',
-                            backgroundColor: '#333',
-                            borderColor: '#333',
-                            data: @json($data->map(fn ($data) => $data->aggregate)),
-                            stepped: 'middle',
-                        }],
+                        datasets: [
+                            {
+                                label: 'Precio',
+                                backgroundColor: '#333',
+                                borderColor: '#333',
+                                borderWidth: 2,
+                                data: @json($data->map(fn ($data) => $data->aggregate)),
+                                stepped: 'middle',
+                            },
+                        ],
                     },
                     options: {
                         animation: false,
@@ -112,13 +116,15 @@
                             },
                             annotation: {
                                 annotations: {
-                                    line1: {
-                                        type: 'line',
-                                        yMin: regularPrice,
-                                        yMax: regularPrice,
-                                        borderColor: 'rgb(153, 27, 27)',
-                                        borderWidth: 1,
-                                        borderDash: [10, 10],
+
+                                    regularBand: {
+                                        type: 'box',
+                                        xMin: 0,
+                                        xMax: @json($data->count() - 1),
+                                        yMin: lowerBound,
+                                        yMax: upperBound,
+                                        backgroundColor: 'rgba(0, 128, 0, 0.1)',
+                                        borderWidth: 0,
                                         drawTime: 'beforeDatasetsDraw',
                                     },
                                 },

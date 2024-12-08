@@ -24,49 +24,49 @@ abstract class BaseCrawler
         protected string $url,
     ) {}
 
-    public function matches(): bool
+    protected function setup(): void {}
+
+    public function matchesPattern(): bool
     {
         return $this->pattern ? preg_match($this->pattern, $this->url) : false;
     }
 
-    public function exists(): ?Product
+    public function resolveProduct(): ?Product
     {
         return null;
     }
 
-    protected function setup(): void {}
-
-    protected function allowed(): bool
+    protected function recentlyCrawled(): bool
     {
-        return true;
+        return false;
     }
 
     abstract protected function parse(Crawler $dom): UrlCooldown;
 
     public function crawl(): void
     {
-        if (! $this->matches($this->url)) {
+        if (! $this->matchesPattern($this->url)) {
             return;
         }
 
         $this->setup();
 
-        if (! $this->allowed()) {
-            return;
-        }
-
         $url = Url::firstOrCreate([
-            'href' => $this->url,
+            'hash' => sha1($this->url),
         ], [
+            'href' => $this->url,
+            'domain' => parse_url($this->url, PHP_URL_HOST),
             'scheduled_at' => now()->subMinutes(1),
         ]);
 
-        if (! $url->follow()) {
+        if ($this->recentlyCrawled()) {
+            $url->hit(304, UrlCooldown::NOT_MODIFIED);
+
             return;
         }
 
         $status = 503;
-        $cooldown = UrlCooldown::SANITY_CHECK;
+        $cooldown = UrlCooldown::TOMORROW;
 
         try {
             $href = $this->proxied ? $url->proxied() : $url->href;
@@ -82,8 +82,10 @@ abstract class BaseCrawler
                 }
             }
         } catch (HttpClientException $e) {
-            // something went wrong while getting the page content...
-            // schedule a sanity check with a 503 (unavailable) default status
+            // something went wrong while connecting to the url...
+            // schedule a re-check with a 503 (unavailable) status
+            $status = 503;
+            $cooldown = UrlCooldown::TOMORROW;
         }
 
         $url->hit($status, $cooldown);

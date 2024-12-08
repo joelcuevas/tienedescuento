@@ -29,11 +29,13 @@ class ChascityProductCrawler extends BaseCrawler
         }
     }
 
-    protected function allowed(): bool
+    protected function recentlyCrawled(): bool
     {
-        $p = $this->product;
+        if ($this->product) {
+            return $this->product->prices()->where('source', 'chascity')->count() > 0;
+        }
 
-        return $p && $p->prices->where('source', 'chascity')->count() == 0;
+        return false;
     }
 
     protected function parse(Crawler $dom): UrlCooldown

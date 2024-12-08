@@ -13,11 +13,15 @@ return new class extends Migration
     {
         Schema::create('urls', function (Blueprint $table) {
             $table->id();
-            $table->string('href')->unique();
-            $table->integer('status')->nullable()->index();
+            $table->text('href');
             $table->bigInteger('hits')->default(0);
+            $table->integer('status')->nullable()->index();
+            $table->integer('streak')->default(0);
             $table->timestamp('crawled_at')->nullable();
             $table->timestamp('scheduled_at')->nullable()->index();
+            $table->timestamp('reserved_at')->nullable();
+            $table->string('domain')->index();
+            $table->string('hash')->unique();
             $table->timestamps();
         });
     }

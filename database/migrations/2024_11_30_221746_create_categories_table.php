@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('store_id');
-            $table->string('code');
+            $table->string('code')->index();
             $table->string('title');
-            $table->string('slug');
+            $table->string('slug')->index();
             $table->string('url')->nullable();
             $table->foreignId('parent_id')->nullable()->constrained('categories');
             $table->timestamps();

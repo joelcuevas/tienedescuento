@@ -14,12 +14,19 @@ class LiverpoolSitemapCrawler extends LiverpoolBaseCrawler
     {
         // this is a sitemap, just store the urls for future crawling
         $dom->filterXPath('//loc')->each(function (Crawler $node) {
-            $loc = $node->text();
+            $url = $node->text();
+            $scheduledAt = now()->subMinutes(1);
+
+            if (str_contains($url, '/pdp/')) {
+                $scheduledAt = now()->addHours(12);
+            }
 
             Url::firstOrCreate([
-                'href' => $loc,
+                'hash' => sha1($url),
             ], [
-                'scheduled_at' => now()->subMinutes(1),
+                'href' => $url,
+                'domain' => parse_url($url, PHP_URL_HOST),
+                'scheduled_at' => $scheduledAt,
             ]);
         });
 

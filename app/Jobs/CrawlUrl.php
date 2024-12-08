@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Jobs\Middleware\ThrottleCrawlerRequests;
+use App\Jobs\Middleware\ThrottleCrawlers;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Str;
@@ -14,6 +14,11 @@ class CrawlUrl implements ShouldQueue
     public function __construct(
         protected string $url,
     ) {}
+
+    public function uniqueId(): string
+    {
+        return sha1($this->url);
+    }
 
     public function handle(): void
     {
@@ -29,7 +34,7 @@ class CrawlUrl implements ShouldQueue
             $fqcn = "App\\Crawlers\\$className";
             $crawler = new $fqcn($this->url);
 
-            if ($crawler->matches()) {
+            if ($crawler->matchesPattern()) {
                 $crawler->crawl();
             }
         }
@@ -37,8 +42,8 @@ class CrawlUrl implements ShouldQueue
 
     public function middleware(): array
     {
-        $domain = parse_url($this->url, PHP_URL_HOST);
+        $throttled = new ThrottleCrawlers(parse_url($this->url, PHP_URL_HOST));
 
-        return [new ThrottleCrawlerRequests($domain)];
+        return [$throttled];
     }
 }

@@ -11,14 +11,27 @@ class LiverpoolProductCrawler extends LiverpoolBaseCrawler
 {
     protected string $pattern = '#^https://www\.liverpool\.com\.mx/tienda/pdp/(?:.+/)?(\d+)(?:\?.*)?$#';
 
-    public function exists(): ?Product
-    {   
+    public function resolveProduct(): ?Product
+    {
         if (preg_match($this->pattern, $this->url, $matches)) {
             $sku = $matches[1];
             $store = Store::whereCountry('mx')->whereSlug('liverpool')->first();
 
             return $store ? $store->products()->whereSku($sku)->first() : null;
         }
+
+        return null;
+    }
+
+    protected function recentlyCrawled(): bool
+    {
+        $product = $this->resolveProduct();
+
+        if ($product) {
+            return $product->priced_at->isAfter(now()->subDay());
+        }
+
+        return false;
     }
 
     protected function parse(Crawler $dom): UrlCooldown
