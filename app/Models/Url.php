@@ -45,10 +45,11 @@ class Url extends Model
         return config("descuento.crawler.domains.{$slug}.queue", 'default');
     }
 
-    public function reserve(): void
+    public function reserve(): bool
     {
         $this->reserved_at = now();
-        $this->save();
+        
+        return $this->save();
     }
 
     public function hit(int $status, ?UrlCooldown $cooldown = null)

@@ -47,7 +47,7 @@
                     <form method="GET" action="{{ route('products.search') }}">
                         <x-input name="q" class="w-[20rem] rounded-3xl text-sm px-4" placeholder="Buscar" value="{{ request()->q }}"></x-input>
                     </form>
-                    <a href="#" class="text-sm/6 text-gray-600 hover:text-gray-900">Monitorear <span aria-hidden="true">&rarr;</span></a>
+                    <a href="/login" class="text-sm/6 text-gray-600 hover:text-gray-900">Monitorear <span aria-hidden="true">&rarr;</span></a>
                 </div>
             </nav>
 

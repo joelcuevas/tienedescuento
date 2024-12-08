@@ -18,8 +18,9 @@ class UrlPop extends Command
         $urls = Url::scheduled($limit)->get();
 
         foreach ($urls as $url) {
-            $url->reserve();
-            CrawlUrl::dispatch($url->href)->onQueue($url->queue());
+            if ($url->reserve()) {
+                CrawlUrl::dispatch($url->href)->onQueue($url->queue());
+            }
         }
     }
 }
