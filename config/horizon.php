@@ -182,10 +182,16 @@ return [
     'defaults' => [
         'supervisor-1' => [
             'connection' => 'redis',
-            'queue' => ['default', 'liverpool'],
+            'queue' => [
+                'default', 
+                'liverpool', 
+                'chascity',
+            ],
             'balance' => 'auto',
+            'balanceMaxShift' => 1,
+            'balanceCooldown' => 3,
             'autoScalingStrategy' => 'time',
-            'maxProcesses' => 1,
+            'maxProcesses' => 10,
             'maxTime' => 0,
             'maxJobs' => 0,
             'memory' => 128,
@@ -198,15 +204,12 @@ return [
     'environments' => [
         'production' => [
             'supervisor-1' => [
-                'maxProcesses' => 10,
-                'balanceMaxShift' => 1,
-                'balanceCooldown' => 3,
             ],
         ],
 
         'local' => [
             'supervisor-1' => [
-                'maxProcesses' => 10,
+                'maxProcesses' => 3,
             ],
         ],
     ],

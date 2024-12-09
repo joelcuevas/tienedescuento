@@ -13,6 +13,13 @@ return [
                     'every' => 60,
                 ],
             ],
+            'preciominimo-chascity-com' => [
+                'queue' => 'chascity',
+                'throttle' => [
+                    'allow' => 30,
+                    'every' => 60,
+                ],
+            ],
         ],
     ],
 

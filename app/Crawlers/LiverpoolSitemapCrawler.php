@@ -21,6 +21,8 @@ class LiverpoolSitemapCrawler extends LiverpoolBaseCrawler
                 $scheduledAt = now()->addHours(12);
             }
 
+            logger()->channel('stderr')->debug($url);
+
             Url::firstOrCreate([
                 'hash' => sha1($url),
             ], [
