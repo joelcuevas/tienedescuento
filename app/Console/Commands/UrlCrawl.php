@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\CrawlUrl as CrawlUrl;
+use App\Models\Url;
 use Illuminate\Console\Command;
 
 class UrlCrawl extends Command
@@ -13,9 +13,10 @@ class UrlCrawl extends Command
 
     public function handle()
     {
-        $sync = $this->option('sync');
-        $connection = $sync ? 'sync' : config('queue.default');
+        $url = Url::resolve($this->argument('url'));
 
-        CrawlUrl::dispatch($this->argument('url'))->onConnection($connection);
+        if ($url) {
+            $url->dispatch($this->option('sync'));
+        }
     }
 }

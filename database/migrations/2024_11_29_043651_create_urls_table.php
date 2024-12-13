@@ -22,6 +22,7 @@ return new class extends Migration
             $table->timestamp('reserved_at')->nullable();
             $table->string('domain')->index();
             $table->string('hash')->unique();
+            $table->string('crawler_class')->nullable();
             $table->timestamps();
         });
     }

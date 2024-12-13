@@ -40,8 +40,8 @@
                 </div>
 
                 <div class="min-w-32">
-                    <div class="bg-gray-100/90 rounded-xl p-1 object-center h-32 w-32">
-                        <img src="{{ $product->image_url }}" alt="{{ $product->title }}" class="mix-blend-multiply aspect-square object-cover rounded-lg">
+                    <div class="bg-gray-100/90 rounded-xl p-1 object-center w-32 aspect-w-3 aspect-h-4 text-center">
+                        <img src="{{ $product->image_url }}" alt="{{ $product->title }}" class="mix-blend-multiply aspect-w-3 aspect-h-4 object-cover rounded-lg">
                     </div>
                 </div>
             </div>

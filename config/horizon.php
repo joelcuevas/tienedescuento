@@ -183,8 +183,8 @@ return [
         'supervisor-1' => [
             'connection' => 'redis',
             'queue' => [
-                'default', 
-                'liverpool', 
+                'default',
+                'liverpool',
                 'chascity',
             ],
             'balance' => 'auto',

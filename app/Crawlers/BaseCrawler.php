@@ -2,18 +2,18 @@
 
 namespace App\Crawlers;
 
-use App\Models\Enums\UrlCooldown;
 use App\Models\Product;
 use App\Models\Url;
 use Illuminate\Http\Client\HttpClientException;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\DomCrawler\Crawler;
 
 abstract class BaseCrawler
 {
-    protected string $pattern = '';
+    protected static string $pattern = '';
 
-    protected bool $proxied = false;
+    protected int $cooldown = 1;
 
     protected array $headers = [
         'User-Agent' => 'PostmanRuntime/7.42.0',
@@ -21,14 +21,14 @@ abstract class BaseCrawler
     ];
 
     public function __construct(
-        protected string $url,
+        protected Url $url,
     ) {}
 
     protected function setup(): void {}
 
-    public function matchesPattern(): bool
+    public static function matchesPattern($url): bool
     {
-        return $this->pattern ? preg_match($this->pattern, $this->url) : false;
+        return preg_match(static::$pattern, $url);
     }
 
     public function resolveProduct(): ?Product
@@ -41,53 +41,45 @@ abstract class BaseCrawler
         return false;
     }
 
-    abstract protected function parse(Crawler $dom): UrlCooldown;
+    abstract protected function parse(Crawler $dom): int;
 
     public function crawl(): void
     {
-        if (! $this->matchesPattern($this->url)) {
+        if (! $this->matchesPattern($this->url->href)) {
             return;
         }
 
         $this->setup();
 
-        $url = Url::firstOrCreate([
-            'hash' => sha1($this->url),
-        ], [
-            'href' => $this->url,
-            'domain' => parse_url($this->url, PHP_URL_HOST),
-            'scheduled_at' => now()->subMinutes(1),
-        ]);
-
         if ($this->recentlyCrawled()) {
-            $url->hit(304, UrlCooldown::NOT_MODIFIED);
+            $this->url->hit(Response::HTTP_ALREADY_REPORTED, $this->cooldown);
 
             return;
         }
 
-        $status = 503;
-        $cooldown = UrlCooldown::TOMORROW;
-
         try {
-            $href = $this->proxied ? $url->proxied() : $url->href;
-            $response = Http::withHeaders($this->headers)->get($href);
+            $href = $this->url->href;
+            $proxied = $this->url->getCrawlerConfig('proxied', false);
 
+            if ($proxied) {
+                $href = config('crawler.proxy_url', '').$this->url->href;
+            }
+
+            $response = Http::withHeaders($this->headers)->get($href);
             $status = $response->status();
 
-            if ($status == 200) {
+            if ($status == Response::HTTP_OK) {
                 $dom = new Crawler($response->body());
 
                 if ($dom !== null) {
-                    $cooldown = $this->parse($dom);
+                    $status = $this->parse($dom);
                 }
             }
         } catch (HttpClientException $e) {
-            // something went wrong while connecting to the url...
-            // schedule a re-check with a 503 (unavailable) status
-            $status = 503;
-            $cooldown = UrlCooldown::TOMORROW;
+            // something went wrong while connecting
+            $status = Response::HTTP_SERVICE_UNAVAILABLE;
+        } finally {
+            $this->url->hit($status, $this->cooldown);
         }
-
-        $url->hit($status, $cooldown);
     }
 }

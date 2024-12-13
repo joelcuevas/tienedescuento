@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Crawlers;
+namespace App\Crawlers\Liverpool;
 
+use App\Crawlers\BaseCrawler;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Store;
@@ -9,8 +10,6 @@ use Illuminate\Support\Str;
 
 abstract class LiverpoolBaseCrawler extends BaseCrawler
 {
-    protected bool $proxied = true;
-
     protected Store $store;
 
     protected function setup(): void
@@ -23,7 +22,7 @@ abstract class LiverpoolBaseCrawler extends BaseCrawler
         ]);
     }
 
-    protected function saveProduct($record): void
+    protected function saveProduct(mixed $record, string $source): void
     {
         $meta = $record?->allMeta;
 
@@ -39,7 +38,7 @@ abstract class LiverpoolBaseCrawler extends BaseCrawler
                     'store_id' => $this->store->id,
                     'sku' => $meta->id,
                 ], [
-                    'brand' => $meta->brand ?? 'NA',
+                    'brand' => $this->getBrand($meta),
                     'title' => $meta->title,
                     'url' => $url,
                     'image_url' => $imageUrl,
@@ -47,7 +46,7 @@ abstract class LiverpoolBaseCrawler extends BaseCrawler
 
                 $product->prices()->create([
                     'price' => $price,
-                    'source' => 'liverpool',
+                    'source' => 'liverpool-'.$source,
                 ]);
 
                 $categories = $this->getCategories($meta);
@@ -104,6 +103,7 @@ abstract class LiverpoolBaseCrawler extends BaseCrawler
                 $breadcrumbs = [$meta->categoryBreadCrumbs];
             }
 
+            // save the categories
             foreach ($breadcrumbs as $breadcrumb) {
                 $parentId = null;
 
@@ -124,11 +124,33 @@ abstract class LiverpoolBaseCrawler extends BaseCrawler
                     $parentId = $category->id;
                 }
 
-                // keep only the last category of each breadcrumb
+                // return only the last category of each breadcrumb for the product
                 $categoryLeafs[] = $category;
             }
         }
 
         return $categoryLeafs;
+    }
+
+    function getBrand(object $meta): string
+    {
+        $brand = $meta->brand;
+        $title = $meta->title;
+        $lowerBrand = strtolower($brand);
+        $lowerTitle = strtolower($title);
+
+        if (Str::contains($lowerTitle, $lowerBrand)) {
+            preg_match("/\b{$lowerBrand}\b/i", $title, $matches);
+
+            if (count($matches)) {
+                return $matches[0];
+            }
+        }
+
+        if (strlen($brand) > 3) {
+            return Str::title($brand);
+        }
+
+        return $brand;
     }
 }

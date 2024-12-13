@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Traits;
+namespace App\Models\Traits\Product;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 

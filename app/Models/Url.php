@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
-use App\Models\Enums\UrlCooldown;
+use App\Models\Traits\Url\HasCrawlers;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Response;
 
 class Url extends Model
 {
+    use HasCrawlers;
     use HasFactory;
-
-    public const SAFE_STATUSES = [200, 304, 404];
 
     public $attributes = [
         'hits' => 0,
@@ -24,13 +24,6 @@ class Url extends Model
         'reserved_at' => 'datetime',
     ];
 
-    protected static function booted(): void
-    {
-        static::creating(function (Url $url) {
-            $url->hash = sha1($url->href);
-        });
-    }
-
     public function proxied(): string
     {
         $proxy = config('descuento.crawler.proxy_url', '');
@@ -38,31 +31,14 @@ class Url extends Model
         return $proxy.$this->href;
     }
 
-    public function queue(): string
+    public function hit(int $status, int $cooldown)
     {
-        $slug = str_replace('.', '-', $this->domain);
-
-        return config("descuento.crawler.domains.{$slug}.queue", 'default');
-    }
-
-    public function reserve(): bool
-    {
-        $this->reserved_at = now();
-        
-        return $this->save();
-    }
-
-    public function hit(int $status, ?UrlCooldown $cooldown = null)
-    {
-        $cooldown = $cooldown ?? match ($status) {
-            404 => UrlCooldown::SANITY_CHECK,
-            503 => UrlCooldown::TOMORROW,
-            default => UrlCooldown::MID_COST_PAGE,
-        };
-
-        $repeatingStatus = ! in_array($status, static::SAFE_STATUSES) && $status == $this->status;
-        $streak = $repeatingStatus ? $this->streak + 1 : 1;
-        $scheduledAt = $cooldown->value * ($streak % 5);
+        // add 2^($streak % 7) days of cooldown if a streak of status != 200 occurs
+        // example: streak(7) = cumulative sum of 2 + 4 + 8 + 16 + 32 + 64 ≈ 4 months
+        // after this, $streak % 7 causes the cycle to restart at 2 days again
+        $streak = ($status == $this->status) ? $this->streak + 1 : 1;
+        $penalty = ($status == Response::HTTP_OK) ? 0 : (2 ** ($streak % 7));
+        $scheduledAt = $cooldown + $penalty;
 
         $this->streak = $streak;
         $this->status = $status;
@@ -75,11 +51,10 @@ class Url extends Model
 
     public static function scopeScheduled(Builder $builder, int $limit): Builder
     {
-        return $builder->limit($limit)
+        return $builder
             ->where('scheduled_at', '<', now())
-            ->where(function (Builder $q) {
-                $q->whereNull('reserved_at')->orWhere('reserved_at', '<', now()->subHours(3));
-            })
+            ->where(fn ($q) => $q->whereNull('reserved_at')->orWhere('reserved_at', '<', now()->subHours(3)))
+            ->limit($limit)
             ->orderBy('scheduled_at');
     }
 }

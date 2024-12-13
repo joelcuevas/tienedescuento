@@ -1,23 +1,27 @@
 <?php
 
-namespace App\Crawlers;
+namespace App\Crawlers\Liverpool;
 
-use App\Models\Enums\UrlCooldown;
 use App\Models\Product;
 use App\Models\Store;
+use Illuminate\Http\Response;
 use Symfony\Component\DomCrawler\Crawler;
 
 class LiverpoolProductCrawler extends LiverpoolBaseCrawler
 {
-    protected string $pattern = '#^https://www\.liverpool\.com\.mx/tienda/pdp/(?:.+/)?(\d+)(?:\?.*)?$#';
+    protected static string $pattern = '#^https://www\.liverpool\.com\.mx/tienda/pdp/(?:.+/)?(\d+)(?:\?.*)?$#';
+
+    protected int $cooldown = 4;
 
     public function resolveProduct(): ?Product
     {
-        if (preg_match($this->pattern, $this->url, $matches)) {
+        if (preg_match(static::$pattern, $this->url->href, $matches)) {
             $sku = $matches[1];
             $store = Store::whereCountry('mx')->whereSlug('liverpool')->first();
 
-            return $store ? $store->products()->whereSku($sku)->first() : null;
+            if ($store) {
+                return $store->products()->whereSku($sku)->first();
+            }
         }
 
         return null;
@@ -28,36 +32,37 @@ class LiverpoolProductCrawler extends LiverpoolBaseCrawler
         $product = $this->resolveProduct();
 
         if ($product) {
-            return $product->priced_at && $product->priced_at->isAfter(now()->subDay());
+            return $product->priced_at && $product->priced_at->isAfter(now()->subDays(3));
         }
 
         return false;
     }
 
-    protected function parse(Crawler $dom): UrlCooldown
+    protected function parse(Crawler $dom): int
     {
         $data = $dom->filter('#__NEXT_DATA__');
 
+        // check if there is processable data on the page
         if ($data->count() == 0) {
-            return UrlCooldown::MALFORMED_PAGE;
+            return Response::HTTP_NO_CONTENT;
         }
 
         $results = json_decode($data->text());
 
         if (! isset($results->query->data->mainContent)) {
-            return UrlCooldown::MALFORMED_PAGE;
+            return Response::HTTP_NO_CONTENT;
         }
 
-        // this is a product details page, save the record
+        // yes, there is! save the product
         $mainContent = $results->query->data->mainContent;
 
         if (isset($mainContent->records)) {
             foreach ($mainContent->records as $record) {
-                $this->saveProduct($record);
+                $this->saveProduct($record, 'product');
             }
         }
 
-        // everything is ok; this was a mid crawling-cost page
-        return UrlCooldown::MID_COST_PAGE;
+        // aaand... done!
+        return Response::HTTP_OK;
     }
 }
