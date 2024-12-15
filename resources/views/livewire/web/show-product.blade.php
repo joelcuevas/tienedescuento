@@ -90,7 +90,10 @@
                     </div>
                 </a>
             @endif
-            <a href="{{ $product->url }}" target="_blank" class="mt-6 bg-gray-800 text-white hover:bg-gray-900 rounded-lg w-full p-3 block text-center">Comprar en {{ $product->store->name }}</a>
+            <x-link-button href="{{ $product->url }}" target="_blank" class="mt-6 w-full !p-3 block text-center">
+                Comprar en {{ $product->store->name }}
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs pl-2"></i>
+            </x-link-button>
         </div>
     </div>  
     
