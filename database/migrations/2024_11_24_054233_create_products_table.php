@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('store_id');
-            $table->string('brand')->index();
             $table->string('sku')->index();
             $table->text('title');
             $table->string('slug');
+            $table->string('brand')->index();
+            $table->string('brand_slug')->index();
+            $table->bigInteger('views')->default(0);
             $table->decimal('latest_price', 8, 2)->nullable();
             $table->decimal('minimum_price', 8, 2)->nullable();
             $table->decimal('maximum_price', 8, 2)->nullable();

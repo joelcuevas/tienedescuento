@@ -11,7 +11,6 @@ use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-#[Layout('layouts.web')]
 class SearchProduct extends Component
 {
     use WithPagination;
@@ -49,10 +48,11 @@ class SearchProduct extends Component
         }
 
         if ($bySku->count() > 1) {
-            // if there is more than one result, show the cdp
+            // if there is more than one result, show the grid
             return $bySku;
         }
 
+        // search by terms
         $bySearch = Product::search($this->q)->paginate(20);
 
         return $bySearch;

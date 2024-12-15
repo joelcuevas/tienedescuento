@@ -29,8 +29,8 @@
                         ¿Tiene Descuento?
                     </a>
                     <div class="hidden lg:flex lg:gap-x-12">
-                        <a href="/" class="text-sm/6 text-gray-600 hover:text-gray-900">Descuentos</a>
-                        <a href="#" class="text-sm/6 text-gray-600 hover:text-gray-900">Tiendas</a>
+                        <a href="{{ route('home') }}" class="text-sm/6 text-gray-600 hover:text-gray-900">@lang('Discounts')</a>
+                        <a href="{{ route('stores.index') }}" class="text-sm/6 text-gray-600 hover:text-gray-900">@lang('Stores')</a>
                     </div>
                 </div>
                 <div class="flex items-center space-x-2 lg:hidden">
@@ -45,9 +45,9 @@
                 </div>
                 <div class="hidden lg:flex lg:items-center lg:space-x-10">
                     <form method="GET" action="{{ route('products.search') }}">
-                        <x-input name="q" class="w-[20rem] rounded-3xl text-sm px-4" placeholder="Buscar" value="{{ request()->q }}"></x-input>
+                        <x-input name="q" class="w-[20rem] !rounded-full text-sm px-4" placeholder="{{ __('Search') }}..." value="{{ request()->q }}"></x-input>
                     </form>
-                    <a href="/login" class="text-sm/6 text-gray-600 hover:text-gray-900">Monitorear <span aria-hidden="true">&rarr;</span></a>
+                    <a href="/login" x-on:click.prevent="$dispatch('show-login-modal')" class="text-sm/6 text-gray-600 hover:text-gray-900">@lang('Track Prices') <span aria-hidden="true">&rarr;</span></a>
                 </div>
             </nav>
 
@@ -82,8 +82,9 @@
         </header>
         
         <main>
+            <x-login-modal />
             <div class="bg-white">
-                <div class="mx-auto max-w-7xl overflow-hidden px-6 bg-white lg:px-8">
+                <div class="mx-auto max-w-7xl overflow-hidden px-6 pb-12 bg-white lg:px-8">
                     {{ $slot }}
                 </div>
             </div>

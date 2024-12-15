@@ -19,6 +19,7 @@ abstract class LiverpoolBaseCrawler extends BaseCrawler
             'slug' => 'liverpool',
         ], [
             'name' => 'Liverpool',
+            'url' => 'https://www.liverpool.com.mx',
         ]);
     }
 
@@ -39,7 +40,7 @@ abstract class LiverpoolBaseCrawler extends BaseCrawler
                     'sku' => $meta->id,
                 ], [
                     'brand' => $this->getBrand($meta),
-                    'title' => $meta->title,
+                    'title' => ucwords($meta->title),
                     'url' => $url,
                     'image_url' => $imageUrl,
                 ]);
@@ -134,7 +135,7 @@ abstract class LiverpoolBaseCrawler extends BaseCrawler
 
     function getBrand(object $meta): string
     {
-        $brand = $meta->brand;
+        $brand = $meta->brand ?? __('Unknown');
         $title = $meta->title;
         $lowerBrand = strtolower($brand);
         $lowerTitle = strtolower($title);

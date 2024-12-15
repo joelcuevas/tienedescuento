@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('code')->index();
             $table->string('title');
             $table->string('slug')->index();
+            $table->bigInteger('views')->default(0);
             $table->string('url')->nullable();
             $table->foreignId('parent_id')->nullable()->constrained('categories');
             $table->timestamps();

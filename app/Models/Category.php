@@ -13,6 +13,10 @@ class Category extends Model
 {
     use HasFactory;
 
+    protected $attributes = [
+        'views' => 0,
+    ];
+
     protected static function booted(): void
     {
         static::saving(function (Category $category) {

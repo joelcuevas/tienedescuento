@@ -7,11 +7,8 @@ use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-#[Layout('layouts.web')]
 class ShowHome extends Component
 {
-    use WithPagination;
-
     public function render()
     {
         $products = Product::with(['store', 'categories'])

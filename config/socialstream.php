@@ -8,7 +8,7 @@ return [
 
     'middleware' => ['web'],
 
-    'prompt' => 'Or Login Via',
+    'prompt' => null,
 
     'providers' => [
         Providers::google(),
@@ -17,7 +17,7 @@ return [
     'features' => [
         // Features::generateMissingEmails(),
         Features::createAccountOnFirstLogin(),
-        // Features::globalLogin(),
+        Features::globalLogin(),
         // Features::authExistingUnlinkedUsers(),
         Features::rememberSession(),
         Features::providerAvatars(),
@@ -27,8 +27,8 @@ return [
     'home' => '/dashboard',
 
     'redirects' => [
-        'login' => '/dashboard',
-        'register' => '/dashboard',
+        'login' => '/intended',
+        'register' => '/intended',
         'login-failed' => '/login',
         'registration-failed' => '/register',
         'provider-linked' => '/user/profile',

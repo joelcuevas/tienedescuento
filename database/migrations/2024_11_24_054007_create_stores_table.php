@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('country')->default('MX');
             $table->string('slug');
             $table->string('name');
+            $table->bigInteger('views')->default(0);
+            $table->text('url')->nullable();
+            $table->text('image_url')->nullable();
             $table->timestamps();
 
             $table->unique(['country', 'slug']);

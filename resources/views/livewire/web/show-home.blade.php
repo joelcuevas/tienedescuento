@@ -1,3 +1,3 @@
 <div>
-    <x-product-catalog :$products />
+    <x-product-grid :$products />
 </div>

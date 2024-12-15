@@ -20,6 +20,10 @@ class Product extends Model
     use HasPrices;
     use Searchable;
 
+    protected $attributes = [
+        'views' => 0,
+    ];
+
     protected $casts = [
         'priced_at' => 'date',
     ];
@@ -29,13 +33,44 @@ class Product extends Model
         static::saving(function (Product $product) {
             $product->title = Str::limit($product->title, 250);
             $product->slug = Str::slug($product->title);
+
+            $product->brand = Str::limit($product->brand, 250);
+            $product->brand_slug = Str::slug($product->brand);
         });
+    }
+
+    protected function category(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->categories->first()->title,
+        );
     }
 
     protected function link(): Attribute
     {
         return Attribute::make(
             get: fn () => route('products.show', [$this->store->slug, $this->sku, $this->slug]),
+        );
+    }
+
+    protected function storeLink(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => route('catalogs.store', [$this->store->slug]),
+        );
+    }
+
+    protected function brandLink(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => route('catalogs.brand', [$this->store->slug, $this->brand_slug]),
+        );
+    }
+
+    protected function categoryLink(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => route('catalogs.category', [$this->store->slug, $this->categories->first()->slug]),
         );
     }
 

@@ -1,58 +1,85 @@
 <div>
     <div class="lg:grid lg:grid-cols-2 lg:gap-x-8"> 
         <div>   
-            <div class="md:flex items-start justify-between space-x-5">
+            <div class="flex items-start justify-between space-x-5">
                 <div>
-                    <div class="flex items-center space-x-3 text-sm">
-                        <a href="#" class="text-gray-600 hover:text-gray-900">Tienda: {{ $product->store->name }}</a>
-                        <span class="text-gray-300">/</span>
-                        <a href="#" class="text-gray-600 hover:text-gray-900">Marca: {{ $product->brand }}</a>
+                    <div class="text-sm">
+                        <a href="{{ $product->store_link }}" class="text-gray-600 whitespace-nowrap hover:text-gray-900">{{ $product->store->name }}</a>
+                        <span class="text-gray-300 px-2">/</span>
+                        <a href="{{ $product->category_link }}" class="text-gray-600 whitespace-nowrap hover:text-gray-900">{{ $product->category }}</a>
+                        <span class="text-gray-300 px-2">/</span>
+                        <a href="{{ $product->brand_link }}" class="text-gray-600 whitespace-nowrap hover:text-gray-900">{{ $product->brand }}</a>
                     </div>
                     <h1 class="mt-2 text-2xl font-semibold tracking-tight text-balance text-gray-900 sm:text-4xl">{{ $product->title }}</h1>
-                    <div class="mt-3 text-gray-600 text-sm">SKU: {{ $product->sku }}</div>
+                    <div class="mt-2 text-gray-600 text-sm">SKU: {{ $product->sku }}</div>
                     <div class="text-gray-900 mt-6">
-                        @if ($product->discount > 0)
-                            <div class="flex items-center space-x-4">
-                                <div class="font-medium text-3xl text-green-800 rounded-2xl">{{ $product->latest_price_formatted }}</div>
-                                <div class="font-medium text-sm line-through text-gray-500">Precio regular: {{ $product->regular_price_formatted }}</div>
-                            </div>
-                            <div class="mt-1 text-base text-green-800 font-medium">
-                                <i class="fa-solid pr-1 fa-fire"></i> 
-                                ¡{{ abs($product->discount) }}% de descuento contra su precio regular!
-                            </div>
-                        @elseif ($product->discount < 0)
-                            <div class="flex items-center space-x-3">
-                                <span class="font-medium text-3xl text-red-800">{{ $product->latest_price_formatted }}</span>
-                                <span class="font-medium text-sm line-through text-gray-500">Precio regular: {{ $product->regular_price_formatted }}</span>
-                            </div>
-                            <div class="mt-1 text-base text-red-800 font-medium">
-                                <i class="fa-regular pr-1 fa-thumbs-down"></i> 
-                                {{ abs($product->discount) }}% superior a su precio regular.
-                            </div>
+                        @if (auth()->user())
+                            @if ($product->discount > 0)
+                                <div class="flex items-center space-x-4">
+                                    <div class="font-medium text-3xl text-green-800 rounded-2xl">{{ $product->latest_price_formatted }}</div>
+                                    <div class="font-medium text-sm line-through text-gray-500">Precio regular: {{ $product->regular_price_formatted }}</div>
+                                </div>
+                                <div class="mt-1 text-base text-green-800 font-medium">
+                                    <i class="fa-solid pr-1 fa-fire"></i> 
+                                    ¡{{ abs($product->discount) }}% de descuento contra su precio regular!
+                                </div>
+                            @elseif ($product->discount < 0)
+                                <div class="flex items-center space-x-3">
+                                    <span class="font-medium text-3xl text-red-800">{{ $product->latest_price_formatted }}</span>
+                                    <span class="font-medium text-sm line-through text-gray-500">Precio regular: {{ $product->regular_price_formatted }}</span>
+                                </div>
+                                <div class="mt-1 text-base text-red-800 font-medium">
+                                    <i class="fa-regular pr-1 fa-thumbs-down"></i> 
+                                    {{ abs($product->discount) }}% superior a su precio regular.
+                                </div>
+                            @else
+                                <div class="font-medium text-3xl">{{ $product->regular_price_formatted }}</div>
+                                <div class="mt-1 text-base text-gray-500 font-medium">
+                                    <i class="fa-regular pr-1 fa-thumbs-up"></i> 
+                                    Dentro de su precio regular.
+                                </div>
+                            @endif
                         @else
-                            <div class="text-3xl">{{ $product->regular_price_formatted }}</div>
-                            <div class="mt-1 text-base text-gray-500 font-medium">
-                                <i class="fa-regular pr-1 fa-thumbs-up"></i> 
-                                Dentro de su precio regular.
+                            <div class="flex items-center space-x-4">
+                                <div class="font-medium text-3xl">{{ $product->latest_price_formatted }}</div>
                             </div>
                         @endif
                     </div>
                 </div>
 
-                <div class="min-w-32">
-                    <div class="bg-gray-100/90 rounded-xl p-1 object-center w-32 aspect-w-3 aspect-h-4 text-center">
+                <div class="min-w-24 sm:min-w-32">
+                    <div class="w-24 sm:w-32 bg-gray-100/90 rounded-xl p-1 object-center aspect-w-3 aspect-h-4 text-center">
                         <img src="{{ $product->image_url }}" alt="{{ $product->title }}" class="mix-blend-multiply aspect-w-3 aspect-h-4 object-cover rounded-lg">
                     </div>
                 </div>
             </div>
+
+            @if (!auth()->user())
+                <a href="#" 
+                    x-on:click="$dispatch('show-login-modal')"
+                    class="flex items-center justify-between mt-6 bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-600 hover:to-fuchsia-600 text-white rounded-xl p-5 text-sm"
+                >
+                    <div>
+                        <div class="font-medium text-base">¡Descubre si este es el precio más bajo!</div>
+                        <div class="text-white opacity-80">Inicia sesión gratis para descubrir el historial de precios de este producto.</div>
+                    </div>
+                    <div class="bg-white rounded-full text-xl w-9 h-9 text-purple-900 flex items-center justify-center">
+                        <i class="fa fa-arrow-right"></i>
+                    </div>
+                </a>
+            @endif
         </div>
       
         <div class="lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center">
             <!-- ads -->
         </div>
-        
+       
         <div class="mt-7 lg:col-start-1 lg:row-start-2 lg:self-start">
-            <canvas id="prices-chart" height="80"></canvas>
+            @if (auth()->user())
+                <canvas id="prices-chart" height="80"></canvas>
+            @else
+                <img src="/storage/chart-skeleton.png" class="w-full">
+            @endif
             <a href="{{ $product->url }}" target="_blank" class="mt-6 bg-gray-800 text-white hover:bg-gray-900 rounded-lg w-full p-3 block text-center">Comprar en {{ $product->store->name }}</a>
         </div>
     </div>  
