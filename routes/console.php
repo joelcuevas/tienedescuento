@@ -2,4 +2,4 @@
 
 use Illuminate\Support\Facades\Schedule;
 
-Schedule::command('url:scheduled')->everyMinute()->withoutOverlapping();
+Schedule::command('url:scheduled')->everyFiveMinutes()->withoutOverlapping();
