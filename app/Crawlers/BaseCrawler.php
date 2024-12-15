@@ -45,6 +45,8 @@ abstract class BaseCrawler
 
     public function crawl(): void
     {
+        $startingTime = microtime(true);
+
         if (! $this->matchesPattern($this->url->href)) {
             return;
         }
@@ -52,7 +54,7 @@ abstract class BaseCrawler
         $this->setup();
 
         if ($this->recentlyCrawled()) {
-            $this->url->hit(Response::HTTP_ALREADY_REPORTED, $this->cooldown);
+            $this->url->hit(Response::HTTP_ALREADY_REPORTED, $this->cooldown, $startingTime);
 
             return;
         }
@@ -79,7 +81,7 @@ abstract class BaseCrawler
             // something went wrong while connecting
             $status = Response::HTTP_SERVICE_UNAVAILABLE;
         } finally {
-            $this->url->hit($status, $this->cooldown);
+            $this->url->hit($status, $this->cooldown, $startingTime);
         }
     }
 }

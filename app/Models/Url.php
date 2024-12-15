@@ -31,7 +31,7 @@ class Url extends Model
         return $proxy.$this->href;
     }
 
-    public function hit(int $status, int $cooldown)
+    public function hit(int $status, int $cooldown, float $crawlingTime)
     {
         // add 2^($streak % 7) days of cooldown if a streak of status != 200 occurs
         // example: streak(7) = cumulative sum of 2 + 4 + 8 + 16 + 32 + 64 ≈ 4 months
@@ -43,6 +43,7 @@ class Url extends Model
         $this->streak = $streak;
         $this->status = $status;
         $this->crawled_at = now();
+        $this->crawling_time = round(microtime(true) - $crawlingTime, 2);
         $this->scheduled_at = now()->addDays($scheduledAt);
         $this->reserved_at = null;
         $this->hits = $this->hits + 1;
