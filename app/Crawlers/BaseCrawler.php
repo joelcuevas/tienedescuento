@@ -28,7 +28,7 @@ abstract class BaseCrawler
 
     public static function matchesPattern($url): bool
     {
-        return preg_match(static::$pattern, $url);
+        return preg_match(static::$pattern, preg_quote($url, '#'));
     }
 
     public function resolveProduct(): ?Product

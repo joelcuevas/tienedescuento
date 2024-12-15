@@ -141,6 +141,7 @@ abstract class LiverpoolBaseCrawler extends BaseCrawler
         $lowerTitle = strtolower($title);
 
         if (Str::contains($lowerTitle, $lowerBrand)) {
+            $lowerBrand = preg_quote($lowerBrand, '/');
             preg_match("/\b{$lowerBrand}\b/i", $title, $matches);
 
             if (count($matches)) {
