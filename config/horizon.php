@@ -180,10 +180,27 @@ return [
     */
 
     'defaults' => [
-        'supervisor-1' => [
+        'default-1' => [
             'connection' => 'redis',
             'queue' => [
                 'default',
+            ],
+            'balance' => 'auto',
+            'balanceMaxShift' => 1,
+            'balanceCooldown' => 3,
+            'autoScalingStrategy' => 'time',
+            'maxProcesses' => 10,
+            'maxTime' => 0,
+            'maxJobs' => 0,
+            'memory' => 128,
+            'tries' => 3,
+            'timeout' => 10,
+            'nice' => 0,
+        ],
+        
+        'crawlers-1' => [
+            'connection' => 'redis',
+            'queue' => [
                 'liverpool',
                 'chascity',
             ],
@@ -203,14 +220,13 @@ return [
 
     'environments' => [
         'production' => [
-            'supervisor-1' => [
-            ],
+            'default-1' => [],
+            'crawlers-1' => [],
         ],
 
         'local' => [
-            'supervisor-1' => [
-                'maxProcesses' => 3,
-            ],
+            'default-1' => [],
+            'crawlers-1' => [],
         ],
     ],
 ];

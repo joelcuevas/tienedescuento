@@ -2,6 +2,7 @@
 
 namespace App\Crawlers\Liverpool;
 
+use App\Jobs\ResolveUrl;
 use App\Models\Url;
 use Illuminate\Http\Response;
 use Symfony\Component\DomCrawler\Crawler;
@@ -16,7 +17,7 @@ class LiverpoolSitemapCrawler extends LiverpoolBaseCrawler
     {
         // this is a sitemap, store the urls for future crawling
         $dom->filterXPath('//loc')->each(function (Crawler $node) {
-            Url::resolve($node->text());
+            ResolveUrl::dispatch($node->text());
         });
 
         return Response::HTTP_OK;
