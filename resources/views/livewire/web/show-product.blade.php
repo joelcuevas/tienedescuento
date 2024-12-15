@@ -88,7 +88,7 @@
                 <canvas id="prices-chart" height="80"></canvas>
             @else
                 <a href="/login" class="relative cursor-pointer group" x-on:click.prevent="$dispatch('show-login-modal')">
-                    <img src="/storage/chart-skeleton.png" class="w-full">
+                    <img src="/images/chart-skeleton.png" class="w-full">
                     <div class="absolute flex flex-col items-center justify-center top-0 w-full h-full">
                         <i class="fa-solid fa-lock text-4xl text-gray-400 group-hover:text-fuchsia-800"></i>
                         <div class="text-sm text-gray-400 group-hover:text-fuchsia-800 mt-2">Desbloquear el historial de precios más bajos</div>
