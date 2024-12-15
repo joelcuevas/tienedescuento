@@ -16,17 +16,15 @@ Route::middleware([
         'auth:sanctum', 
         'verified', 
         config('jetstream.auth_session'),
-        SetCountryCode::class, 
     ])
     ->group(function () {
         Route::get('/dashboard', fn () => view('dashboard'))->name('dashboard');
     });
 
-Route::prefix('{countryCode}')
-    ->middleware([
-        SetCountryCode::class, 
+Route::middleware([
         StoreIntendedUrl::class,
     ])
+    ->prefix('{countryCode}')
     ->group(function () {
         Route::get('/', ShowHome::class)->name('home');
 

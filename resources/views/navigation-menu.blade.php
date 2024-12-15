@@ -15,9 +15,6 @@
                     <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">
                         {{ __('Discounts') }}
                     </x-nav-link>
-                    <x-nav-link href="{{ route('stores.index') }}" :active="request()->routeIs('stores.index')">
-                        {{ __('Stores') }}
-                    </x-nav-link>
                 </div>
             </div>
 
@@ -98,10 +95,6 @@
 
                             <x-slot name="content">
                                 <!-- Account Management -->
-                                <div class="block px-4 py-2 text-xs text-gray-400">
-                                    {{ __('Manage Account') }}
-                                </div>
-
                                 <x-dropdown-link href="{{ route('profile.show') }}">
                                     {{ __('Profile') }}
                                 </x-dropdown-link>
@@ -111,8 +104,6 @@
                                         {{ __('API Tokens') }}
                                     </x-dropdown-link>
                                 @endif
-
-                                <div class="border-t border-gray-200"></div>
 
                                 <!-- Authentication -->
                                 <form method="POST" action="{{ route('logout') }}" x-data>
@@ -130,7 +121,7 @@
             @else
                 <div class="hidden sm:flex sm:items-center sm:ms-6">
                     <a href="/login"
-                        class="text-sm text-gray-500 hover:text-gray-900 flex items-center"  
+                        class="text-sm text-gray-600 hover:text-gray-900 flex items-center"  
                         x-on:click.prevent="$dispatch('show-login-modal')"
                     >
                         <span>Ingresar</span>
@@ -141,7 +132,7 @@
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                <button x-on:click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                     <svg class="size-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -152,17 +143,20 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+    <div 
+        :class="{'block': open, 'hidden': ! open}" 
+        class="hidden sm:hidden bg-fuchsia-800 rounded-xl rounded-t-none text-white"
+    >
+        <div class="px-2 py-4 space-y-1">
+            <x-responsive-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">
+                {{ __('Discounts') }}
             </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
         @if (Auth::user())
-            <div class="pt-4 pb-1 border-t border-gray-200">
-                <div class="flex items-center px-4">
+            <div class="px-2 py-4 border-t border-white/5">
+                <div class="flex items-center px-3">
                     @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                         <div class="shrink-0 me-3">
                             <img class="size-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
@@ -170,8 +164,8 @@
                     @endif
 
                     <div>
-                        <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                        <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                        <div class="font-medium text-base text-white">{{ Auth::user()->name }}</div>
+                        <div class="font-medium text-sm text-white/40">{{ Auth::user()->email }}</div>
                     </div>
                 </div>
 

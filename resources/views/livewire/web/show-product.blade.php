@@ -30,19 +30,23 @@
                                 </div>
                                 <div class="mt-1 text-base text-red-800 font-medium">
                                     <i class="fa-regular pr-1 fa-thumbs-down"></i> 
-                                    {{ abs($product->discount) }}% superior a su precio regular.
+                                    {{ abs($product->discount) }}% superior a su precio regular
                                 </div>
                             @else
                                 <div class="font-medium text-3xl">{{ $product->regular_price_formatted }}</div>
                                 <div class="mt-1 text-base text-gray-500 font-medium">
                                     <i class="fa-regular pr-1 fa-thumbs-up"></i> 
-                                    Dentro de su precio regular.
+                                    Dentro de su precio regular
                                 </div>
                             @endif
                         @else
                             <div class="flex items-center space-x-4">
                                 <div class="font-medium text-3xl">{{ $product->latest_price_formatted }}</div>
                             </div>
+                            <a href="/login" x-on:click.prevent="$dispatch('show-login-modal')" class="mt-1 text-base text-gray-500 font-medium hover:text-fuchsia-800">
+                                <i class="fa-solid pr-1 fa-lock"></i> 
+                                Desbloquear el precio más bajo
+                            </a>
                         @endif
                     </div>
                 </div>
@@ -57,7 +61,7 @@
             @if (!auth()->user())
                 <a href="/login" 
                     x-on:click.prevent="$dispatch('show-login-modal')"
-                    class="flex items-center justify-between space-x-4 mt-6 bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-600 hover:to-fuchsia-600 text-white rounded-xl p-5 text-sm"
+                    class="flex items-center justify-between space-x-4 mt-7 bg-gradient-to-r from-fuchsia-800 to-violet-700 hover:from-fuchsia-900 hover:to-violet-800 text-white rounded-xl p-5 text-sm"
                 >
                     <div class="flex items-center space-x-4">
                         <div class="text-4xl text-white flex items-center justify-center">
@@ -65,10 +69,10 @@
                         </div>
                         <div>
                             <div class="font-medium text-base">¡Descubre si este es el precio más bajo!</div>
-                            <div class="text-white opacity-80">Inicia sesión para descubrir el historial de precios de este producto.</div>
+                            <div class="text-white opacity-80">Inicia sesión para ver hasta 12 meses de precios de este producto.</div>
                         </div>
                     </div>
-                    <div class="bg-white rounded-full text-xl min-w-9 min-h-9 text-fuchsia-600 flex items-center justify-center">
+                    <div class="bg-white rounded-full text-xl min-w-9 min-h-9 text-violet-800 flex items-center justify-center">
                         <i class="fa fa-arrow-right"></i>
                     </div>
                 </a>
@@ -85,8 +89,9 @@
             @else
                 <a href="/login" class="relative cursor-pointer group" x-on:click.prevent="$dispatch('show-login-modal')">
                     <img src="/storage/chart-skeleton.png" class="w-full">
-                    <div class="absolute flex items-center justify-center top-0 w-full h-full">
-                        <i class="fa-solid fa-lock text-4xl text-gray-300 group-hover:text-gray-400"></i>
+                    <div class="absolute flex flex-col items-center justify-center top-0 w-full h-full">
+                        <i class="fa-solid fa-lock text-4xl text-gray-400 group-hover:text-fuchsia-800"></i>
+                        <div class="text-sm text-gray-400 group-hover:text-fuchsia-800 mt-2">Desbloquear el historial de precios más bajos</div>
                     </div>
                 </a>
             @endif

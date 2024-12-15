@@ -25,18 +25,18 @@
         <div class="min-h-screen">
             @livewire('navigation-menu')
 
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif
-
             <!-- Page Content -->
             <main>
                 <div class="mx-auto max-w-7xl overflow-hidden px-6 lg:px-8 py-8 lg:py-12 bg-white">
+                    <!-- Page Heading -->
+                    @if (isset($header))
+                        <header class="bg-white">
+                            <div class="mb-6 md:mb-10">
+                                {{ $header }}
+                            </div>
+                        </header>
+                    @endif
+
                     {{ $slot }}
                 </div>
             </main>
