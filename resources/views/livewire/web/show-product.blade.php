@@ -55,15 +55,20 @@
             </div>
 
             @if (!auth()->user())
-                <a href="#" 
-                    x-on:click="$dispatch('show-login-modal')"
-                    class="flex items-center justify-between mt-6 bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-600 hover:to-fuchsia-600 text-white rounded-xl p-5 text-sm"
+                <a href="/login" 
+                    x-on:click.prevent="$dispatch('show-login-modal')"
+                    class="flex items-center justify-between space-x-4 mt-6 bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-600 hover:to-fuchsia-600 text-white rounded-xl p-5 text-sm"
                 >
-                    <div>
-                        <div class="font-medium text-base">¡Descubre si este es el precio más bajo!</div>
-                        <div class="text-white opacity-80">Inicia sesión gratis para descubrir el historial de precios de este producto.</div>
+                    <div class="flex items-center space-x-4">
+                        <div class="text-4xl text-white flex items-center justify-center">
+                            <i class="fa-solid fa-fire"></i>
+                        </div>
+                        <div>
+                            <div class="font-medium text-base">¡Descubre si este es el precio más bajo!</div>
+                            <div class="text-white opacity-80">Inicia sesión para descubrir el historial de precios de este producto.</div>
+                        </div>
                     </div>
-                    <div class="bg-white rounded-full text-xl w-9 h-9 text-purple-900 flex items-center justify-center">
+                    <div class="bg-white rounded-full text-xl min-w-9 min-h-9 text-fuchsia-600 flex items-center justify-center">
                         <i class="fa fa-arrow-right"></i>
                     </div>
                 </a>
@@ -78,7 +83,12 @@
             @if (auth()->user())
                 <canvas id="prices-chart" height="80"></canvas>
             @else
-                <img src="/storage/chart-skeleton.png" class="w-full">
+                <a href="/login" class="relative cursor-pointer group" x-on:click.prevent="$dispatch('show-login-modal')">
+                    <img src="/storage/chart-skeleton.png" class="w-full">
+                    <div class="absolute flex items-center justify-center top-0 w-full h-full">
+                        <i class="fa-solid fa-lock text-4xl text-gray-300 group-hover:text-gray-400"></i>
+                    </div>
+                </a>
             @endif
             <a href="{{ $product->url }}" target="_blank" class="mt-6 bg-gray-800 text-white hover:bg-gray-900 rounded-lg w-full p-3 block text-center">Comprar en {{ $product->store->name }}</a>
         </div>

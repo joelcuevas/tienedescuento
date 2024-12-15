@@ -9,7 +9,7 @@ return [
         'www.liverpool.com.mx' => [
             'queue' => 'liverpool',
             'proxied' => true,
-            'throttle_allow' => 60,
+            'throttle_allow' => 120,
             'throttle_every' => 60,
         ],
 

@@ -24,7 +24,7 @@ return [
         Features::refreshOAuthTokens(),
     ],
 
-    'home' => '/dashboard',
+    'home' => '/intended',
 
     'redirects' => [
         'login' => '/intended',
