@@ -40,7 +40,7 @@ abstract class LiverpoolBaseCrawler extends BaseCrawler
                     'sku' => $meta->id,
                 ], [
                     'brand' => $this->getBrand($meta),
-                    'title' => ucwords($meta->title),
+                    'title' => ucwords(strip_tags($meta->title)),
                     'url' => $url,
                     'image_url' => $imageUrl,
                 ]);
@@ -110,7 +110,7 @@ abstract class LiverpoolBaseCrawler extends BaseCrawler
 
                 foreach ($breadcrumb as $item) {
                     $code = $item->categoryId;
-                    $title = $item->categoryName;
+                    $title = strip_tags($item->categoryName);
                     $slug = Str::of($title)->lower()->replace(' ', '-');
 
                     $category = Category::firstOrCreate([
