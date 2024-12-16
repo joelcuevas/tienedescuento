@@ -6,7 +6,7 @@
                 <img src="{{ $product->image_url }}" alt="{{ $product->title }}" class="mix-blend-multiply rounded-lg aspect-w-3 aspect-h-4 object-cover">
             </div>
             <h3 class="mt-4 font-medium text-gray-900 line-clamp-2 text-balance">{{ $product->title }}</h3>
-            <p class="mt-1 text-gray-500 truncate">{{ $product->store->name }} / {{ $product->categories->first()->title }}</p>
+            <p class="mt-1 text-gray-500 truncate">{{ $product->store->name }} / {{ $product->categories->first()?->title }}</p>
             <p class="mt-1 font-medium text-gray-900"><x-price :$product /></p>
         </a>
         @endforeach
