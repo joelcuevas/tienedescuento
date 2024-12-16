@@ -11,5 +11,7 @@
         </a>
         @endforeach
     </div>
-    <div class="mt-12">{{ $products->links() }}</div>
+    @if ($products instanceof \Illuminate\Pagination\AbstractPaginator)
+        <div class="mt-12">{{ $products->links() }}</div>
+    @endif
 </div>

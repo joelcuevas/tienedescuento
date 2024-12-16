@@ -12,9 +12,10 @@ class ShowHome extends Component
     public function render()
     {
         $products = Product::with(['store', 'categories'])
-            ->limit(300)
+            ->where('priced_at', '>=', now()->subHours(12)->startOfDay())
+            ->take(30)
             ->orderByDesc('discount')
-            ->paginate(30);
+            ->get();
 
         return view('livewire.web.show-home')->with([
             'products' => $products,
