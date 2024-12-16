@@ -12,6 +12,7 @@ class ShowHome extends Component
     public function render()
     {
         $products = Product::with(['store', 'categories'])
+            ->limit(300)
             ->orderByDesc('discount')
             ->paginate(30);
 
