@@ -11,7 +11,7 @@ class LiverpoolProductCrawler extends LiverpoolBaseCrawler
 {
     protected static string $pattern = '#^https://www\.liverpool\.com\.mx/tienda/pdp/(?:.+/)?(\d+)(?:\?.*)?$#';
 
-    protected int $cooldown = 4;
+    protected int $cooldown = 3;
 
     public function resolveProduct(): ?Product
     {

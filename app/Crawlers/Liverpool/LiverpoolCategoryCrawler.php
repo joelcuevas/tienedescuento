@@ -11,7 +11,7 @@ class LiverpoolCategoryCrawler extends LiverpoolBaseCrawler
 {
     protected static string $pattern = '#^https:\/\/www\.liverpool\.com\.mx\/tienda\/[^\/]+\/[^\/]+(\/page-\d+)?$#';
 
-    protected int $cooldown = 2;
+    protected int $cooldown = 1;
 
     protected function parse(Crawler $dom): int
     {
