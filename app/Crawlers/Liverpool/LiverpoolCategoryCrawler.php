@@ -13,11 +13,6 @@ class LiverpoolCategoryCrawler extends LiverpoolBaseCrawler
 
     protected int $cooldown = 1;
 
-    protected function recentlyCrawled(): bool
-    {
-        return $this->url->crawled_at > now()->startOfDay();
-    }
-
     protected function parse(Crawler $dom): int
     {
         $data = $dom->filter('#__NEXT_DATA__');

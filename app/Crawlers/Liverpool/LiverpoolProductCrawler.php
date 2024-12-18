@@ -32,7 +32,8 @@ class LiverpoolProductCrawler extends LiverpoolBaseCrawler
         $product = $this->resolveProduct();
 
         if ($product) {
-            return $product->priced_at && $product->priced_at->isAfter(now()->subDays(3));
+            // skip crawling if product was already priced today
+            return $product->priced_at && $product->priced_at >= now()->startOfDay();
         }
 
         return false;

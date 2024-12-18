@@ -38,7 +38,7 @@ abstract class BaseCrawler
 
     protected function recentlyCrawled(): bool
     {
-        return false;
+        return $this->url->crawled_at >= now()->startOfDay();
     }
 
     abstract protected function parse(Crawler $dom): int;
@@ -53,7 +53,9 @@ abstract class BaseCrawler
 
         $this->setup();
 
-        if ($this->recentlyCrawled()) {
+        $crawledToday = $this->url->crawled_at >= now()->startOfDay();
+
+        if ($crawledToday || $this->recentlyCrawled()) {
             $this->url->hit(Response::HTTP_ALREADY_REPORTED, $this->cooldown, $startingTime);
 
             return;
@@ -78,7 +80,7 @@ abstract class BaseCrawler
                 }
             }
         } catch (HttpClientException $e) {
-            // something went wrong while connecting
+            // something went wrong while connecting to the url
             $status = Response::HTTP_SERVICE_UNAVAILABLE;
         } finally {
             $this->url->hit($status, $this->cooldown, $startingTime);
