@@ -12,6 +12,11 @@ abstract class LiverpoolBaseCrawler extends BaseCrawler
 {
     protected Store $store;
 
+    protected array $headers = [
+        'User-Agent' => 'PostmanRuntime/7.42.0',
+        'Accept' => '*/*',
+    ];
+
     protected function setup(): void
     {
         $this->store = Store::firstOrCreate([

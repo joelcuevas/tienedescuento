@@ -16,7 +16,7 @@ abstract class BaseCrawler
     protected int $cooldown = 1;
 
     protected array $headers = [
-        'User-Agent' => 'PostmanRuntime/7.42.0',
+        'User-Agent' => 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
         'Accept' => '*/*',
     ];
 
