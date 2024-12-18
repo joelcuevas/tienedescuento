@@ -2,6 +2,6 @@
 
 use Illuminate\Support\Facades\Schedule;
 
-Schedule::command('url:scheduled')->everyMinute()->withoutOverlapping();
-Schedule::command('chascity:pending')->everyMinute()->withoutOverlapping();
+Schedule::command('chascity:pending')->everyMinute();
+Schedule::command('url:scheduled')->everyMinute();
 Schedule::command('telescope:prune')->daily();
