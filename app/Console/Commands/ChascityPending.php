@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ChascityPending extends Command
 {
-    protected $signature = 'chascity:pending {--limit=10}';
+    protected $signature = 'chascity:pending {--limit=25}';
 
     protected $description = 'Schedule for crawling products without Chascity prices';
 

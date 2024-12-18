@@ -180,11 +180,9 @@ return [
     */
 
     'defaults' => [
-        'default-1' => [
+        'default' => [
             'connection' => 'redis',
-            'queue' => [
-                'default',
-            ],
+            'queue' => ['default'],
             'balance' => 'auto',
             'balanceMaxShift' => 1,
             'balanceCooldown' => 3,
@@ -198,12 +196,9 @@ return [
             'nice' => 0,
         ],
         
-        'crawlers-1' => [
+        'crawlers-fast' => [
             'connection' => 'redis',
-            'queue' => [
-                'liverpool',
-                'chascity',
-            ],
+            'queue' => [],
             'balance' => 'auto',
             'balanceMaxShift' => 1,
             'balanceCooldown' => 3,
@@ -213,20 +208,60 @@ return [
             'maxJobs' => 0,
             'memory' => 128,
             'tries' => 3,
-            'timeout' => 180,
+            'timeout' => 30,
+            'nice' => 0,
+        ],
+
+        'crawlers-slow' => [
+            'connection' => 'redis',
+            'queue' => [],
+            'balance' => 'auto',
+            'balanceMaxShift' => 1,
+            'balanceCooldown' => 3,
+            'autoScalingStrategy' => 'time',
+            'maxProcesses' => 10,
+            'maxTime' => 0,
+            'maxJobs' => 0,
+            'memory' => 128,
+            'tries' => 3,
+            'timeout' => 60,
             'nice' => 0,
         ],
     ],
 
     'environments' => [
         'production' => [
-            'default-1' => [],
-            'crawlers-1' => [],
+            'default' => [
+                'queue' => ['default'],
+                'timeout' => 10,
+            ],
+
+            'crawlers-fast' => [
+                'queue' => ['liverpool'],
+                'timeout' => 30,
+            ],
+
+            'crawlers-slow' => [
+                'queue' => ['chascity'],
+                'timeout' => 60,
+            ],
         ],
 
         'local' => [
-            'default-1' => [],
-            'crawlers-1' => [],
+            'default' => [
+                'queue' => ['default'],
+                'timeout' => 10,
+            ],
+
+            'crawlers-fast' => [
+                'queue' => ['liverpool'],
+                'timeout' => 30,
+            ],
+
+            'crawlers-slow' => [
+                'queue' => ['chascity'],
+                'timeout' => 60,
+            ],
         ],
     ],
 ];
