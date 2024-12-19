@@ -53,7 +53,7 @@
 
                 <div class="min-w-24 sm:min-w-32">
                     <div class="w-24 sm:w-32 bg-gray-100/90 rounded-xl p-1 object-center aspect-[3/4] text-center">
-                        <img src="{{ $product->image_url }}" alt="{{ $product->title }}" class="mix-blend-multiply aspect-[3/4] object-cover rounded-lg">
+                        <img src="{{ $product->image_url }}" alt="{{ $product->title }}" class="mix-blend-multiply w-full h-full object-cover rounded-lg">
                     </div>
                 </div>
             </div>
