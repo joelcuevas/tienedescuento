@@ -15,6 +15,8 @@ abstract class BaseCrawler
 
     protected int $cooldown = 1;
 
+    protected float $startingTime;
+
     protected array $headers = [
         'User-Agent' => 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
         'Accept' => '*/*',
@@ -45,7 +47,7 @@ abstract class BaseCrawler
 
     public function crawl(): void
     {
-        $startingTime = microtime(true);
+        $this->startingTime = microtime(true);
 
         if (! $this->matchesPattern($this->url->href)) {
             $this->url->release();
@@ -85,6 +87,14 @@ abstract class BaseCrawler
             // something went wrong while connecting to the url
             $status = Response::HTTP_SERVICE_UNAVAILABLE;
         } finally {
+            $this->hit($status);
+        }
+    }
+
+    protected function hit($status)
+    {
+        if ($this->url) {
+            $startingTime = $this->startingTime ?? microtime(true);
             $this->url->hit($status, $this->cooldown, $startingTime);
         }
     }

@@ -39,7 +39,7 @@ class ChascityProductCrawler extends BaseCrawler
             $crawled = $product->prices()->where('source', 'chascity')->count() > 0;
 
             if ($crawled) {
-                $this->url->hit(Response::HTTP_ALREADY_REPORTED, $this->cooldown);
+                $this->hit(Response::HTTP_ALREADY_REPORTED);
 
                 return true;
             }
