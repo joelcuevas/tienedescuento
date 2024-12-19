@@ -38,7 +38,7 @@ abstract class BaseCrawler
 
     protected function recentlyCrawled(): bool
     {
-        return $this->url->crawled_at >= now()->startOfDay();
+        return false;
     }
 
     abstract protected function parse(Crawler $dom): int;
@@ -49,7 +49,7 @@ abstract class BaseCrawler
 
         if (! $this->matchesPattern($this->url->href)) {
             $this->url->release();
-            
+
             return;
         }
 

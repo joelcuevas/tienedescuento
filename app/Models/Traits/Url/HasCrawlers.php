@@ -60,8 +60,10 @@ trait HasCrawlers
         // add 2^($streak % 7) days of cooldown if a streak of status >= 300 occurs
         // example: streak(7) = cumulative sum of 2 + 4 + 8 + 16 + 32 + 64 ≈ 4 months
         // after this, $streak % 7 causes the cycle to restart at 2 days again
+
+        $streak = ($status == $this->status) ? $this->streak + 1 : 1;
+        
         if ($status >= 300) {
-            $streak = ($status == $this->status) ? $this->streak + 1 : 1;
             $penalty = 2 ** ($streak % 7);
             $scheduledAt = $penalty;
         } else {

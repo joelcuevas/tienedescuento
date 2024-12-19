@@ -15,10 +15,10 @@ class CrawlUrl implements ShouldQueue
         protected Url $url,
     ) {}
 
-    public function uniqueId(): string
-    {
-        return $this->url->hash;
-    }
+    //public function uniqueId(): string
+    //{
+    //    return $this->url->hash;
+    //}
 
     public function handle(): void
     {
