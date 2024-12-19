@@ -21,10 +21,7 @@ class ShowCatalog extends Component
 
         $subtitle = null;
 
-        if (request()->brandSlug) {
-            $products = $products->whereBrandSlug(request()->brandSlug);
-            $subtitle = __('Brand').': '.$products->first()->brand;
-        } elseif (request()->categorySlug) {
+        if (request()->categorySlug) {
             $categories = $store->categories()->whereSlug(request()->categorySlug)->get();
             $categoryIds = $categories->pluck('id')->all();
             $subtitle = __('Category').': '.$categories->first()->title;
@@ -32,6 +29,11 @@ class ShowCatalog extends Component
             $products = $products->whereHas('categories', function ($query) use ($categoryIds) {
                 $query->whereIn('categories.id', $categoryIds);
             });
+        }
+
+        if (request()->brandSlug) {
+            $products = $products->whereBrandSlug(request()->brandSlug);
+            $subtitle = __('Brand').': '.$products->first()->brand;
         }
 
         $products = $products->paginate(30);

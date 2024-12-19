@@ -74,6 +74,17 @@ class Product extends Model
         );
     }
 
+    protected function categoryBrandLink(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => route('catalogs.category_brand', [
+                $this->store->slug, 
+                $this->categories->first()->slug,
+                $this->brand_slug,
+            ]),
+        );
+    }
+
     public function prices(): HasMany
     {
         return $this->hasMany(Price::class);

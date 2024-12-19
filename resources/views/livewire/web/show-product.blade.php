@@ -8,7 +8,7 @@
                         <span class="text-gray-300 px-2">/</span>
                         <a href="{{ $product->category_link }}" class="text-gray-600 whitespace-nowrap hover:text-gray-900">{{ $product->category }}</a>
                         <span class="text-gray-300 px-2">/</span>
-                        <a href="{{ $product->brand_link }}" class="text-gray-600 whitespace-nowrap hover:text-gray-900">{{ $product->brand }}</a>
+                        <a href="{{ $product->category_brand_link }}" class="text-gray-600 whitespace-nowrap hover:text-gray-900">{{ $product->brand }}</a>
                     </div>
                     <h1 class="mt-2 text-2xl font-semibold tracking-tight text-balance text-gray-900 sm:text-4xl">{{ $product->title }}</h1>
                     <div class="mt-2 text-gray-600 text-sm">SKU: {{ $product->sku }}</div>
