@@ -23,19 +23,20 @@ class ChascityPending extends Command
             ->whereDoesntHave('prices', function(Builder $query) {
                 $query->whereSource('chascity');
             })
-            ->orderByDesc('discount')
+            ->inRandomOrder()
             ->with('store')
             ->limit($this->option('limit'))
             ->get();
 
         foreach ($products as $product) {
-            $url = sprintf(
+            $href = sprintf(
                 'https://preciominimo.chascity.com/verificaprecio/%s?sku=%s',
                 $product->store->slug,
                 $product->sku,
             );
 
-            Url::resolve($url);
+            $this->line('Resolving: '.$href);
+            Url::resolve($href);
         }
     }
 }

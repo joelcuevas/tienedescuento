@@ -24,32 +24,6 @@ class Url extends Model
         'reserved_at' => 'datetime',
     ];
 
-    public function proxied(): string
-    {
-        $proxy = config('descuento.crawler.proxy_url', '');
-
-        return $proxy.$this->href;
-    }
-
-    public function hit(int $status, int $cooldown, float $crawlingTime)
-    {
-        // add 2^($streak % 7) days of cooldown if a streak of status != 200 occurs
-        // example: streak(7) = cumulative sum of 2 + 4 + 8 + 16 + 32 + 64 ≈ 4 months
-        // after this, $streak % 7 causes the cycle to restart at 2 days again
-        $streak = ($status == $this->status) ? $this->streak + 1 : 1;
-        $penalty = ($status == Response::HTTP_OK) ? 0 : (2 ** ($streak % 7));
-        $scheduledAt = $cooldown + $penalty;
-
-        $this->streak = $streak;
-        $this->status = $status;
-        $this->crawled_at = now();
-        $this->crawling_time = round(microtime(true) - $crawlingTime, 2);
-        $this->scheduled_at = now()->addDays($scheduledAt);
-        $this->reserved_at = null;
-        $this->hits = $this->hits + 1;
-        $this->save();
-    }
-
     public static function scopeScheduled(Builder $builder, int $limit): Builder
     {
         return $builder

@@ -48,6 +48,8 @@ abstract class BaseCrawler
         $startingTime = microtime(true);
 
         if (! $this->matchesPattern($this->url->href)) {
+            $this->url->release();
+            
             return;
         }
 
@@ -56,7 +58,7 @@ abstract class BaseCrawler
         $crawledToday = $this->url->crawled_at >= now()->startOfDay();
 
         if ($crawledToday || $this->recentlyCrawled()) {
-            $this->url->hit(Response::HTTP_ALREADY_REPORTED, $this->cooldown, $startingTime);
+            $this->url->release();
 
             return;
         }

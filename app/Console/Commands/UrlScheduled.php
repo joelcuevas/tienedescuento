@@ -25,6 +25,7 @@ class UrlScheduled extends Command
         }
 
         foreach ($urls->get() as $url) {
+            $this->line('Dispatching: '.$url->href);
             $url->dispatch();
         }
     }
