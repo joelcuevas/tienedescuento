@@ -40,20 +40,18 @@ class SearchProduct extends Component
         }
 
         // search by sku
-        $bySku = Product::whereIn('store_id', $storeIds)->whereSku($this->q)->paginate(20);
+        $bySku = Product::whereIn('store_id', $storeIds)->whereSku($this->q);
 
         if ($bySku->count() == 1) {
             // if there's only one result, redirect to the pdp
             $this->redirect($bySku->first()->link);
-        }
-
-        if ($bySku->count() > 1) {
+        } else {
             // if there is more than one result, show the grid
             return $bySku;
         }
 
         // search by terms
-        $bySearch = Product::search($this->q)->paginate(20);
+        $bySearch = Product::search($this->q);
 
         return $bySearch;
     }
@@ -61,7 +59,7 @@ class SearchProduct extends Component
     public function render()
     {
         return view('livewire.web.search-product')->with([
-            'products' => $this->search(),
+            'products' => $this->search()->paginate(30),
         ]);
     }
 }
