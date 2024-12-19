@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white">
+<nav x-data="{ menuOpen: false }" class="bg-white">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 border-b border-gray-100">
         <div class="flex justify-between">
@@ -13,15 +13,17 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-12 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">
-                        {{ __('Discounts') }}
+                        {{ __('Trends') }}
                     </x-nav-link>
                 </div>
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <form method="GET" action="{{ route('products.search')}}">
-                    <x-input name="q" class="!rounded-full !w-60 text-sm" placeholder="{{ __('Search') }}..." />
-                </form>
+                <div class="hidden lg:flex">
+                    <form method="GET" action="{{ route('products.search')}}">
+                        <x-input name="q" class="!rounded-full !w-60 text-sm" placeholder="{{ __('Search') }}..." />
+                    </form>
+                </div>
                 @if (Auth::user())
                     <div>
                         <!-- Teams Dropdown -->
@@ -87,7 +89,7 @@
                                     @else
                                         <span class="inline-flex rounded-md">
                                             <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
-                                                {{ Auth::user()->name }}
+                                                <div class="truncate whitespace-nowrap max-w-24 lg:max-w-32">{{ Auth::user()->name }}</div>
 
                                                 <svg class="ms-2 -me-0.5 size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
@@ -137,10 +139,10 @@
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
-                <button x-on:click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                <button x-on:click="menuOpen = ! menuOpen" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                     <svg class="size-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        <path :class="{'hidden': menuOpen, 'inline-flex': ! menuOpen }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        <path :class="{'hidden': ! menuOpen, 'inline-flex': menuOpen }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
@@ -149,12 +151,12 @@
 
     <!-- Responsive Navigation Menu -->
     <div 
-        :class="{'block': open, 'hidden': ! open}" 
+        :class="{'block': menuOpen, 'hidden': ! menuOpen}" 
         class="hidden sm:hidden bg-fuchsia-800 rounded-xl rounded-t-none text-white"
     >
         <div class="px-2 py-4 space-y-1">
             <x-responsive-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">
-                {{ __('Discounts') }}
+                {{ __('Trends') }}
             </x-responsive-nav-link>
         </div>
 

@@ -13,7 +13,7 @@ class ShowHome extends Component
     {
         $products = Product::with(['store', 'categories'])
             ->where('priced_at', '>=', now()->subHours(12)->startOfDay())
-            ->take(30)
+            ->take(36)
             ->orderByDesc('discount')
             ->get();
 

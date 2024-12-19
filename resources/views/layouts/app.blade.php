@@ -17,6 +17,8 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9285674270424452" crossorigin="anonymous"></script>
+
         <!-- Styles -->
         @livewireStyles
     </head>
@@ -29,7 +31,7 @@
 
             <!-- Page Content -->
             <main>
-                <div class="mx-auto max-w-7xl overflow-hidden px-6 lg:px-8 py-8 lg:py-12 bg-white">
+                <div class="mx-auto max-w-7xl overflow-hidden px-4 md:px-6 lg:px-8 py-8 lg:py-12 bg-white">
                     <!-- Page Heading -->
                     @if (isset($header))
                         <header class="bg-white">
