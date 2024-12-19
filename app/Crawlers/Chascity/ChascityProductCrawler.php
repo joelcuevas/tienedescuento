@@ -36,7 +36,13 @@ class ChascityProductCrawler extends BaseCrawler
 
         if ($product) {
             // skip crawling if the product was already crawled in chascity
-            return $product->prices()->where('source', 'chascity')->count() > 0;
+            $crawled = $product->prices()->where('source', 'chascity')->count() > 0;
+
+            if ($crawled) {
+                $this->url->hit(Response::HTTP_ALREADY_REPORTED, $this->cooldown);
+
+                return true;
+            }
         }
 
         return false;
