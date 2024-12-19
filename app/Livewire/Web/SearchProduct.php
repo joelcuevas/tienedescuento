@@ -25,7 +25,7 @@ class SearchProduct extends Component
         $this->countryCode = $countryCode;
     }
 
-    private function search(): LengthAwarePaginator
+    private function search()
     {
         $storeIds = Store::whereCountry($this->countryCode)->pluck('id')->all();
 
@@ -40,18 +40,20 @@ class SearchProduct extends Component
         }
 
         // search by sku
-        $bySku = Product::whereIn('store_id', $storeIds)->whereSku($this->q)->paginate(30);
+        $bySku = Product::whereIn('store_id', $storeIds)->whereSku($this->q);
 
         if ($bySku->count() == 1) {
             // if there's only one result, redirect to the pdp
             $this->redirect($bySku->first()->link);
-        } else {
+        }
+
+        if ($bySku->count() > 1) {
             // if there is more than one result, show the grid
             return $bySku;
         }
 
-        // search by terms
-        $bySearch = Product::search($this->q)->paginate(30);
+        // if no matches, search by terms
+        $bySearch = Product::search($this->q);
 
         return $bySearch;
     }
@@ -59,7 +61,7 @@ class SearchProduct extends Component
     public function render()
     {
         return view('livewire.web.search-product')->with([
-            'products' => $this->search(),
+            'products' => $this->search()->paginate(30),
         ]);
     }
 }
