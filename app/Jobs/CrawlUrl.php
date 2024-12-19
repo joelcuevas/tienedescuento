@@ -25,8 +25,8 @@ class CrawlUrl implements ShouldQueue
         $this->url->crawl();
     }
 
-    public function middleware(): array
-    {
-        return [new ThrottleCrawlers($this->url)];
-    }
+    //public function middleware(): array
+    //{
+    //    return [new ThrottleCrawlers($this->url)];
+    //}
 }
