@@ -80,7 +80,14 @@
         </div>
       
         <div class="lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center">
-            <!-- ads -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-format="autorelaxed"
+                data-ad-client="ca-pub-9285674270424452"
+                data-ad-slot="3697451903"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
         </div>
        
         <div class="mt-7 lg:col-start-1 lg:row-start-2 lg:self-start">
