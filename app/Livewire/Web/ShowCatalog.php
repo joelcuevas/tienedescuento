@@ -36,15 +36,15 @@ class ShowCatalog extends Component
         } else {
             // if no store matches, search by category and brand
             $categorySlug = $storeSlug;
-            $brandSlug = $storeSlug;
+            $brandSlug = null;
         }
 
-        $query->where(function (Builder $q) use ($categorySlug, $brandSlug) {
+        //$query->where(function (Builder $q) use ($categorySlug, $brandSlug) {
             if ($categorySlug) {
                 $categories = Category::whereSlugTree($categorySlug)->get();
                 $categoryIds = $categories->pluck('id')->all();
 
-                $q->orWhereHas('categories', function ($query) use ($categoryIds) {
+                $query->whereHas('categories', function ($query) use ($categoryIds) {
                     $query->whereIn('categories.id', $categoryIds);
                 });
 
@@ -54,14 +54,14 @@ class ShowCatalog extends Component
             }
 
             if ($brandSlug) {
-                $q->orWhere('brand_slug', $brandSlug);
+                $query->where('brand_slug', $brandSlug);
                 $brand = Product::whereBrandSlug($brandSlug)->first();
 
                 if ($brand) {
                     $this->title[] = $brand->brand;
                 }
             }
-        });
+        //});
 
         return view('livewire.web.show-catalog')->with([
             'store' => $store,
