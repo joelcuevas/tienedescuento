@@ -20,13 +20,15 @@ class ShowCatalog extends Component
             ->orderByDesc('discount');
 
         $subtitle = null;
+        $categorySlug = request()->categorySlug;
+        $brandSlug = request()->brandSlug;
 
-        if (request()->categorySlug) {
-            $categories = $store->categories()->whereSlug(request()->categorySlug)->get();
+        if ($categorySlug) {
+            $categories = $store->categories()->whereSlugTree($categorySlug)->get();
             $categoryIds = $categories->pluck('id')->all();
 
-            if ($categories->count()) {
-                $subtitle = __('Category').': '.$categories->first()->title;
+            if ($categories->where('slug', $categorySlug)->count()) {
+                $subtitle = __('Category').': '.$categories->where('slug', $categorySlug)->first()->title;
             }
 
             $products = $products->whereHas('categories', function ($query) use ($categoryIds) {
@@ -34,8 +36,8 @@ class ShowCatalog extends Component
             });
         }
 
-        if (request()->brandSlug) {
-            $products = $products->whereBrandSlug(request()->brandSlug);
+        if ($brandSlug) {
+            $products = $products->whereBrandSlug($brandSlug);
 
             if ($products->count()) {
                 $subtitle = __('Brand').': '.$products->first()->brand;
