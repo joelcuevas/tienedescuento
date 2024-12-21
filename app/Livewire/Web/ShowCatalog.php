@@ -34,34 +34,31 @@ class ShowCatalog extends Component
         if ($store) {
             $query->whereStoreId($store->id);
         } else {
-            // if no store matches, search by category and brand
             $categorySlug = $storeSlug;
             $brandSlug = null;
         }
 
-        //$query->where(function (Builder $q) use ($categorySlug, $brandSlug) {
-            if ($categorySlug) {
-                $categories = Category::whereSlugTree($categorySlug)->get();
-                $categoryIds = $categories->pluck('id')->all();
+        if ($categorySlug) {
+            $categories = Category::whereSlugTree($categorySlug)->get();
+            $categoryIds = $categories->pluck('id')->all();
 
-                $query->whereHas('categories', function ($query) use ($categoryIds) {
-                    $query->whereIn('categories.id', $categoryIds);
-                });
+            $query->whereHas('categories', function ($query) use ($categoryIds) {
+                $query->whereIn('categories.id', $categoryIds);
+            });
 
-                if ($categories->where('slug', $categorySlug)->count()) {
-                    $this->title[] = $categories->where('slug', $categorySlug)->first()->title;
-                }
+            if ($categories->where('slug', $categorySlug)->count()) {
+                $this->title[] = $categories->where('slug', $categorySlug)->first()->title;
             }
+        }
 
-            if ($brandSlug) {
-                $query->where('brand_slug', $brandSlug);
-                $brand = Product::whereBrandSlug($brandSlug)->first();
+        if ($brandSlug) {
+            $query->where('brand_slug', $brandSlug);
+            $brand = Product::whereBrandSlug($brandSlug)->first();
 
-                if ($brand) {
-                    $this->title[] = $brand->brand;
-                }
+            if ($brand) {
+                $this->title[] = $brand->brand;
             }
-        //});
+        }
 
         return view('livewire.web.show-catalog')->with([
             'store' => $store,

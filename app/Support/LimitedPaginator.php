@@ -3,6 +3,7 @@
 namespace App\Support;
 
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 
 class LimitedPaginator extends LengthAwarePaginator
 {
@@ -18,9 +19,15 @@ class LimitedPaginator extends LengthAwarePaginator
     {
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
 
-        $total = $query->count();
+        $countQuery = clone $query;
+
+        $total = DB::table(DB::raw("({$countQuery->toSql()}) as count_query"))
+            ->mergeBindings($countQuery->getQuery())
+            ->count();
+
         $limitedQuery = $query->take($limit ?? $total)->skip(($currentPage - 1) * $perPage);
         $items = $limitedQuery->take($perPage)->get();
+
         $options['path'] = $options['path'] ?? LengthAwarePaginator::resolveCurrentPath();
 
         return new static(
