@@ -17,7 +17,7 @@ class ChascityPending extends Command
     public function handle()
     {
         $stores = Store::whereIn('slug', ['liverpool'])->get();
-        $nextId = cache('chascity.next-id', 0);
+        $nextId = cache('chascity.next-id1', 0);
 
         $products = Product::query()
             ->whereIn('store_id', $stores->pluck('id')->all())
@@ -37,10 +37,12 @@ class ChascityPending extends Command
                 $product->sku,
             );
 
-            $this->line("Resolving [URL ID: {$product->id}] {$href}");
-            Url::resolve($href);
+            $url = Url::resolve($href);
+            $alreadyResolved = $url->crawled_at ? 'skip' : 'follow';
 
-            cache(['chascity.next-id' => $product->id]);
+            $this->line("Resolving [URL ID: {$product->id}][$alreadyResolved] {$href}");
+
+            cache(['chascity.next-id1' => $product->id]);
         }
     }
 }
