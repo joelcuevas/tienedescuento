@@ -3,8 +3,8 @@
 namespace App\Crawlers\Liverpool;
 
 use App\Jobs\ResolveUrl;
-use Illuminate\Support\Str;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 use Symfony\Component\DomCrawler\Crawler;
 
 class LiverpoolSitemapCrawler extends LiverpoolBaseCrawler

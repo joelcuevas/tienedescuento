@@ -20,7 +20,7 @@ class ChascityPending extends Command
 
         $products = Product::query()
             ->whereIn('store_id', $stores->pluck('id')->all())
-            ->whereDoesntHave('prices', function(Builder $query) {
+            ->whereDoesntHave('prices', function (Builder $query) {
                 $query->whereSource('chascity');
             })
             ->inRandomOrder()

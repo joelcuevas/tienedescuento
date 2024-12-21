@@ -4,9 +4,7 @@ namespace App\Livewire\Web;
 
 use App\Models\Product;
 use App\Models\Store;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
-use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;

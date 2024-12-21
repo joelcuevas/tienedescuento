@@ -195,7 +195,7 @@ return [
             'timeout' => 10,
             'nice' => 0,
         ],
-        
+
         'crawlers-fast' => [
             'connection' => 'redis',
             'queue' => [],

@@ -6,7 +6,6 @@ use App\Models\Traits\Url\HasCrawlers;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Response;
 
 class Url extends Model
 {

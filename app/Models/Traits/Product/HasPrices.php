@@ -117,15 +117,15 @@ trait HasPrices
     {
         // Retrieve and sort prices
         $prices = collect($this->prices->pluck('price'))->sort()->values()->all();
-    
+
         // Define number of bins (adjustable)
         $binCount = 10;
-    
+
         // Calculate bin width
         $minPrice = min($prices);
         $maxPrice = max($prices);
         $range = $maxPrice - $minPrice;
-    
+
         // Handle case where all prices are identical
         if ($range == 0) {
             return [
@@ -134,9 +134,9 @@ trait HasPrices
                 'upper_band' => $minPrice,
             ];
         }
-    
+
         $binWidth = $range / $binCount;
-    
+
         // Create bins and calculate frequency
         $bins = array_fill(0, $binCount, 0);
         foreach ($prices as $price) {
@@ -146,23 +146,23 @@ trait HasPrices
             }
             $bins[$binIndex]++;
         }
-    
+
         // Find the bin with the highest frequency
         $maxBinIndex = array_keys($bins, max($bins))[0];
         $lowerBand = $minPrice + $maxBinIndex * $binWidth;
         $upperBand = $lowerBand + $binWidth;
-    
+
         // Filter prices within the most frequent bin
         $pricesInBin = array_filter($prices, function ($price) use ($lowerBand, $upperBand) {
             return $price >= $lowerBand && $price < $upperBand;
         });
-    
+
         // Find the closest price to the bin center
         $binCenter = ($lowerBand + $upperBand) / 2;
         $closestPrice = collect($pricesInBin)->sortBy(function ($price) use ($binCenter) {
             return abs($price - $binCenter);
         })->first();
-    
+
         // Return results
         return [
             'price' => $closestPrice,

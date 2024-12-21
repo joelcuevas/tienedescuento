@@ -4,9 +4,8 @@ namespace App\Models\Traits\Url;
 
 use App\Jobs\CrawlUrl;
 use App\Models\Url;
-use Illuminate\Http\Response;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 trait HasCrawlers
 {
@@ -49,7 +48,7 @@ trait HasCrawlers
 
         CrawlUrl::dispatch($this)->onConnection($connection)->onQueue($queue);
     }
-    
+
     public function release()
     {
         $this->reserved_at = null;
@@ -62,7 +61,7 @@ trait HasCrawlers
         (new $this->crawler_class($this))->crawl();
     }
 
-    public function hit(int $status, int $cooldown, float $crawlingTime = null)
+    public function hit(int $status, int $cooldown, ?float $crawlingTime = null)
     {
         $crawlingTime = $crawlingTime ?? microtime(true);
 
@@ -93,14 +92,14 @@ trait HasCrawlers
     {
         // get all crawler classes, ignoring base crawlers
         $files = collect(File::allFiles(app_path('Crawlers')))
-            ->filter(function ($file) { 
-                return Str::endsWith($file->getFilename(), 'Crawler.php') && 
+            ->filter(function ($file) {
+                return Str::endsWith($file->getFilename(), 'Crawler.php') &&
                     ! Str::endsWith($file->getFilename(), 'BaseCrawler.php');
             });
 
         foreach ($files as $file) {
             $relativePath = str_replace(app_path(), 'App', $file->getPathname());
-            $fqcn = '\\' . str_replace('/', '\\', rtrim($relativePath, '.php'));
+            $fqcn = '\\'.str_replace('/', '\\', rtrim($relativePath, '.php'));
 
             if ($fqcn::matchesPattern($href)) {
                 return $fqcn;

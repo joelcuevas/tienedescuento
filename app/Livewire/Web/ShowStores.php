@@ -3,7 +3,6 @@
 namespace App\Livewire\Web;
 
 use App\Models\Store;
-use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class ShowStores extends Component

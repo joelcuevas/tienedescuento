@@ -78,7 +78,7 @@ class Product extends Model
     {
         return Attribute::make(
             get: fn () => route('catalogs.category_brand', [
-                $this->store->slug, 
+                $this->store->slug,
                 $this->categories->first()->slug,
                 $this->brand_slug,
             ]),

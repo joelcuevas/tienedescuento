@@ -3,9 +3,7 @@
 namespace App\Livewire\Web;
 
 use App\Models\Product;
-use Livewire\Attributes\Layout;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class ShowHome extends Component
 {

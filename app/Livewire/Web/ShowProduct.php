@@ -5,8 +5,6 @@ namespace App\Livewire\Web;
 use App\Models\Price;
 use App\Models\Product;
 use App\Models\Store;
-use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class ShowProduct extends Component
@@ -27,7 +25,7 @@ class ShowProduct extends Component
     public function render()
     {
         $data = [];
-        
+
         $lastMonths = 6;
         $ago = now()->subMonths($lastMonths)->format('Y');
         $now = now()->format('Y');
@@ -36,13 +34,13 @@ class ShowProduct extends Component
         if ($this->product) {
             $data = collect();
 
-                $data = Price::selectRaw("date_format(priced_at, '%d-%b-%y') as date, min(price) as aggregate")
-                    ->where('product_id', $this->product->id)
-                    ->where('priced_at', '>=', now()->subMonths($lastMonths)->startOfMonth())
-                    ->groupBy('date')
-                    ->groupBy('priced_at')
-                    ->orderBy('priced_at')
-                    ->get();
+            $data = Price::selectRaw("date_format(priced_at, '%d-%b-%y') as date, min(price) as aggregate")
+                ->where('product_id', $this->product->id)
+                ->where('priced_at', '>=', now()->subMonths($lastMonths)->startOfMonth())
+                ->groupBy('date')
+                ->groupBy('priced_at')
+                ->orderBy('priced_at')
+                ->get();
 
             $this->product->increment('views');
             $this->product->store()->increment('views');

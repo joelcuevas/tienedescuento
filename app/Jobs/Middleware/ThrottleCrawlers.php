@@ -4,7 +4,6 @@ namespace App\Jobs\Middleware;
 
 use App\Models\Url;
 use Closure;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Redis;
 
 class ThrottleCrawlers

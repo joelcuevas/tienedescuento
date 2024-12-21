@@ -41,7 +41,7 @@ class ShowCatalog extends Component
             if ($categorySlug) {
                 $categories = Category::whereSlugTree($categorySlug)->get();
                 $categoryIds = $categories->pluck('id')->all();
-    
+
                 $q->orWhereHas('categories', function ($query) use ($categoryIds) {
                     $query->whereIn('categories.id', $categoryIds);
                 });
@@ -50,7 +50,7 @@ class ShowCatalog extends Component
                     $this->title[] = $categories->where('slug', $categorySlug)->first()->title;
                 }
             }
-    
+
             if ($brandSlug) {
                 $q->orWhere('brand_slug', $brandSlug);
                 $brand = Product::whereBrandSlug($brandSlug)->first();

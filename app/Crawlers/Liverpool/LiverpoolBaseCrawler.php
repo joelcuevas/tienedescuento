@@ -138,7 +138,7 @@ abstract class LiverpoolBaseCrawler extends BaseCrawler
         return $categoryLeafs;
     }
 
-    function getBrand(object $meta): string
+    public function getBrand(object $meta): string
     {
         $brand = $meta->brand ?? __('Unknown');
         $title = $meta->title;
