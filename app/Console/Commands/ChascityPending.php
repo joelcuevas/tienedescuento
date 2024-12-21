@@ -41,7 +41,7 @@ class ChascityPending extends Command
             $url = Url::resolve($href);
             $alreadyResolved = $url->crawled_at ? 'skip' : 'follow';
 
-            $this->line("Resolving [URL ID: {$product->id}][$alreadyResolved] {$href}");
+            $this->line("[Product {$product->id}] [$alreadyResolved] {$href}");
 
             cache(['chascity.next-id1' => $product->id]);
         }

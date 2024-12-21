@@ -16,7 +16,7 @@ class UrlCrawl extends Command
         $url = Url::resolve($this->argument('url'));
 
         if ($url) {
-            $this->line("Crawling [URL ID: {$url->id}] {$url->href}");
+            $this->line("[URL {$url->id}] {$url->href}");
             $url->dispatch($this->option('sync'));
         }
     }
