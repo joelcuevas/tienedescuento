@@ -5,6 +5,7 @@ namespace App\Livewire\Web;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Store;
+use App\Support\LimitedPaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 
@@ -33,6 +34,7 @@ class ShowCatalog extends Component
         if ($store) {
             $query->whereStoreId($store->id);
         } else {
+            // if no store matches, search by category and brand
             $categorySlug = $storeSlug;
             $brandSlug = $storeSlug;
         }
@@ -64,7 +66,7 @@ class ShowCatalog extends Component
         return view('livewire.web.show-catalog')->with([
             'store' => $store,
             'title' => implode(' / ', array_unique($this->title)),
-            'products' => $query->paginate(30),
+            'products' => LimitedPaginator::fromQuery($query, 36, 360),
         ]);
     }
 }
