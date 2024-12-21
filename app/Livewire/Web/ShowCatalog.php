@@ -21,7 +21,8 @@ class ShowCatalog extends Component
                 $query->where('stores.country', $countryCode);
             })
             ->with(['store', 'categories'])
-            ->orderByDesc('discount');
+            ->orderByDesc('discount')
+            ->limit(360);
 
         $storeSlug = request()->storeSlug;
         $categorySlug = request()->categorySlug;

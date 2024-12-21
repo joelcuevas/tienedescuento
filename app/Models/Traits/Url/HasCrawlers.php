@@ -32,6 +32,13 @@ trait HasCrawlers
         return $url;
     }
 
+    public function scheduleNow(): bool
+    {
+        $this->scheduled_at = now();
+
+        return $this->save();
+    }
+
     public function dispatch(bool $sync = false): void
     {
         $this->reserved_at = now();
