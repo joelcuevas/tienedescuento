@@ -2,54 +2,68 @@
 
 namespace App\Livewire\Web;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Store;
-use Livewire\Attributes\Layout;
+use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 
 class ShowCatalog extends Component
 {
+    private array $title = [];
+
     public function render()
     {
-        $store = Store::whereCountry(request()->countryCode)
-            ->whereSlug(request()->storeSlug)
-            ->firstOrFail();
+        $countryCode = request()->countryCode;
 
-        $products = $store->products()
+        $query = Product::query()
+            ->whereHas('store', function ($query) use ($countryCode) {
+                $query->where('stores.country', $countryCode);
+            })
             ->with(['store', 'categories'])
             ->orderByDesc('discount');
 
-        $subtitle = null;
+        $storeSlug = request()->storeSlug;
         $categorySlug = request()->categorySlug;
         $brandSlug = request()->brandSlug;
 
-        if ($categorySlug) {
-            $categories = $store->categories()->whereSlugTree($categorySlug)->get();
-            $categoryIds = $categories->pluck('id')->all();
+        $store = Store::whereCountry($countryCode)->whereSlug($storeSlug)->first();
 
-            if ($categories->where('slug', $categorySlug)->count()) {
-                $subtitle = __('Category').': '.$categories->where('slug', $categorySlug)->first()->title;
-            }
-
-            $products = $products->whereHas('categories', function ($query) use ($categoryIds) {
-                $query->whereIn('categories.id', $categoryIds);
-            });
+        if ($store) {
+            $query->whereStoreId($store->id);
+        } else {
+            $categorySlug = $storeSlug;
+            $brandSlug = $storeSlug;
         }
 
-        if ($brandSlug) {
-            $products = $products->whereBrandSlug($brandSlug);
+        $query->where(function (Builder $q) use ($categorySlug, $brandSlug) {
+            if ($categorySlug) {
+                $categories = Category::whereSlugTree($categorySlug)->get();
+                $categoryIds = $categories->pluck('id')->all();
+    
+                $q->orWhereHas('categories', function ($query) use ($categoryIds) {
+                    $query->whereIn('categories.id', $categoryIds);
+                });
 
-            if ($products->count()) {
-                $subtitle = __('Brand').': '.$products->first()->brand;
+                if ($categories->where('slug', $categorySlug)->count()) {
+                    $this->title[] = $categories->where('slug', $categorySlug)->first()->title;
+                }
             }
-        }
+    
+            if ($brandSlug) {
+                $q->orWhere('brand_slug', $brandSlug);
+                $brand = Product::whereBrandSlug($brandSlug)->first();
 
-        $products = $products->paginate(30);
+                if ($brand) {
+                    $this->title[] = $brand->brand;
+                }
+            }
+        });
 
         return view('livewire.web.show-catalog')->with([
             'store' => $store,
-            'products' => $products,
-            'subtitle' => $subtitle,
+            'title' => implode(' / ', array_unique($this->title)),
+            'products' => $query->paginate(30),
         ]);
     }
 }

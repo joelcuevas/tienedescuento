@@ -61,7 +61,7 @@ class SearchProduct extends Component
     public function render()
     {
         return view('livewire.web.search-product')->with([
-            'products' => $this->search()->paginate(30),
+            'products' => $this->search()->orderByDesc('discount')->paginate(30),
         ]);
     }
 }
