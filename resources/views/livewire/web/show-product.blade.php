@@ -25,7 +25,7 @@
 
             <div class="text-xs text-gray-600 mb-3">SKU: {{ $product->sku }}</div>
 
-            <div class="flex items-center space-x-2 mb-4">
+            <div class="flex items-center space-x-2 mb-10">
                 @if ($product->discount > 0)
                     <div class="text-sm line-through text-gray-400">{{ $product->regular_price_formatted }}</div>
                     <div class="text-lg font-medium text-red-700">{{ $product->latest_price_formatted }}</div>
@@ -47,7 +47,10 @@
                         ¡Avísame cuando tenga descuento!
                     @endif
                 </x-button>
-                <x-link-button href="{{ $product->url }}" class="px-8 py-2">Comprar en {{ $product->store->name }}</x-link-button>
+                <x-link-button href="{{ $product->url }}" target="_blank" class="px-8 py-2">
+                    Comprarlo en {{ $product->store->name }}
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-600 pl-1"></i>
+                </x-link-button>
             </div>
         </div>
       
@@ -58,27 +61,27 @@
             <h2 class="text-sm font-medium mt-10 mb-3">¿Tiene descuento "{{ $product->title }}" en {{ now()->translatedFormat('F Y') }}?</h2>
             @if ($product->hasBestPrice())
                 <p class="text-sm text-gray-600">
-                    <span class="font-medium text-gray-900">¡Este es el mejor precio de los últimos {{ $lastMonths }} meses!</span> 
+                    <span class="font-medium">¡Este es el mejor precio de los últimos {{ $lastMonths }} meses!</span> 
                     El precio normal de "{{ $product->title }}" suele estar entre 
-                    <span class="font-medium text-gray-900">{{ $product->regular_price_lower_formatted }}</span> 
-                    y <span class="font-medium text-gray-900">{{ $product->regular_price_upper_formatted }}</span>, 
-                    por lo que <span class="font-medium text-gray-900">{{ $product->latest_price_formatted }} 
+                    <span class="font-medium">{{ $product->regular_price_lower_formatted }}</span> 
+                    y <span class="font-medium">{{ $product->regular_price_upper_formatted }}</span>, 
+                    por lo que <span class="font-medium">{{ $product->latest_price_formatted }} 
                     en {{ $product->priced_at->translatedFormat('F Y') }}</span> 
                     es la mejor oferta que vas a encontrar. ¡Aprovéchala antes de que termine!
                 </p>
             @elseif ($product->hasDiscount())
                 <p class="text-sm text-gray-600">
-                    <span class="font-medium text-gray-900">¡Sí, tiene {{ abs($product->discount) }}% de descuento real!</span>
+                    <span class="font-medium">¡Sí, tiene {{ abs($product->discount) }}% de descuento real!</span>
                     El precio normal de "{{ $product->title }}" suele estar entre 
-                    <span class="font-medium text-gray-900">{{ $product->regular_price_lower_formatted }}</span> 
-                    y <span class="font-medium text-gray-900">{{ $product->regular_price_upper_formatted }}</span>, 
-                    por lo que <span class="font-medium text-gray-900">{{ $product->latest_price_formatted }} 
+                    <span class="font-medium">{{ $product->regular_price_lower_formatted }}</span> 
+                    y <span class="font-medium">{{ $product->regular_price_upper_formatted }}</span>, 
+                    por lo que <span class="font-medium">{{ $product->latest_price_formatted }} 
                     en {{ $product->priced_at->translatedFormat('F Y') }}</span> 
                     es una excelente oferta. ¡Aprovéchala antes de que termine!
             @else
                 <p class="text-sm text-gray-600">
                     No, el precio regular de "{{ $product->title }}" es de {{ $product->regular_price_formatted }} que es {{ abs($product->discount) }}% más barato, 
-                    por lo que podría no ser un buen momento para comprarlo. <span class="font-medium text-gray-900">¿Quieres que te avise cuando tenga descuento?</span>.
+                    por lo que podría no ser un buen momento para comprarlo. <span class="font-medium">¿Quieres que te avise cuando tenga descuento?</span>.
                 </p>
             @endif
 
@@ -186,9 +189,9 @@
                                         minimumFractionDigits: 0,
                                         maximumFractionDigits: 0,
                                     }).format(value);
-                                }
-                            }
-                        }
+                                },
+                            },
+                        },
                     },
                 },
             },

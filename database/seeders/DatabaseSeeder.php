@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         $store = Store::factory()->create();
 
-        Product::factory(10)
+        Product::factory(60)
             ->for($store)
             ->hasPrices(10)
             ->has(Category::factory(1)->state(fn () => ['store_id' => $store->id]))
