@@ -14,7 +14,7 @@ class SearchProduct extends Component
     use WithPagination;
 
     #[Url]
-    public $q;
+    public string $q;
 
     public $countryCode;
 
