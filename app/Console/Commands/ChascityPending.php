@@ -17,13 +17,15 @@ class ChascityPending extends Command
     public function handle()
     {
         $stores = Store::whereIn('slug', ['liverpool'])->get();
+        $nextId = cache('chascity.next-id', 0);
 
         $products = Product::query()
             ->whereIn('store_id', $stores->pluck('id')->all())
             ->whereDoesntHave('prices', function (Builder $query) {
                 $query->whereSource('chascity');
             })
-            ->inRandomOrder()
+            ->where('id', '>', $nextId)
+            ->orderBy('id')
             ->with('store')
             ->limit($this->option('limit'))
             ->get();
@@ -35,8 +37,10 @@ class ChascityPending extends Command
                 $product->sku,
             );
 
-            $this->line('Resolving: '.$href);
+            $this->line("Resolving [URL ID: {$product->id}] {$href}");
             Url::resolve($href);
+
+            cache(['chascity.next-id' => $product->id]);
         }
     }
 }
