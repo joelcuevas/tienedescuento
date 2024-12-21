@@ -27,18 +27,22 @@ class ShowProduct extends Component
     public function render()
     {
         $data = [];
+        
+        $lastMonths = 6;
+        $ago = now()->subMonths($lastMonths)->format('Y');
+        $now = now()->format('Y');
+        $yearsSpan = $ago == $now ? $now : $ago.'-'.$now;
 
         if ($this->product) {
             $data = collect();
 
-            if (Auth::user()) {
                 $data = Price::selectRaw("date_format(priced_at, '%d-%b-%y') as date, min(price) as aggregate")
                     ->where('product_id', $this->product->id)
+                    ->where('priced_at', '>=', now()->subMonths($lastMonths)->startOfMonth())
                     ->groupBy('date')
                     ->groupBy('priced_at')
                     ->orderBy('priced_at')
                     ->get();
-            }
 
             $this->product->increment('views');
             $this->product->store()->increment('views');
@@ -47,6 +51,8 @@ class ShowProduct extends Component
 
         return view('livewire.web.show-product')->with([
             'data' => $data,
+            'lastMonths' => $lastMonths,
+            'yearsSpan' => $yearsSpan,
         ]);
     }
 }
