@@ -17,7 +17,7 @@ class ChascityPending extends Command
     public function handle()
     {
         $stores = Store::whereIn('slug', ['liverpool'])->get();
-        $nextId = cache('chascity.next-id1', 0);
+        $nextId = (int) cache('chascity.next-id1', 0);
 
         $products = Product::query()
             ->whereIn('store_id', $stores->pluck('id')->all())
@@ -25,6 +25,7 @@ class ChascityPending extends Command
                 $query->whereSource('chascity');
             })
             ->where('id', '>', $nextId)
+            ->where('id', '<', $nextId + 100)
             ->orderBy('id')
             ->with('store')
             ->limit($this->option('limit'))
