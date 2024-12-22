@@ -4,6 +4,7 @@ namespace App\Livewire\Web;
 
 use App\Models\Product;
 use App\Models\Store;
+use App\Support\LimitedPaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Url;
@@ -60,13 +61,12 @@ class SearchProduct extends Component
 
     public function render()
     {
-        $products = $this->search()
+        $query = $this->search()
             ->with('store')
-            ->orderByDesc('discount')
-            ->paginate(30);
+            ->orderByDesc('discount');
 
         return view('livewire.web.search-product')->with([
-            'products' => $products,
+            'products' => LimitedPaginator::fromQuery($query, 36, 360),
         ]);
     }
 }

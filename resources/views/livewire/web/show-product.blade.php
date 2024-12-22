@@ -90,9 +90,9 @@
 
             <h2 class="text-sm font-medium mt-10 mb-3">¿Cómo se calcula el descuento real en Tiene Descuento?</h2>
             <p class="text-sm text-gray-600">
-                Algunas marcas cometen la mala práctica de subir sus precios antes de una venta especial. El algoritmo de Tiende Descuento
-                es capaz de identificar el rango de precios en el que estadísticamente suele encontrarse el producto y eliminar esos "falsos descuentos"
-                que las tiendas te quieren hacer creer. El descuento real indicado aquí, considera factores estadísticos y temporales para decirte la verdad.
+                Algunas marcas cometen la mala práctica de subir sus precios antes de una venta especial. El algoritmo de Tiene Descuento
+                es capaz de identificar el rango de precios en el que suele encontrarse el producto y eliminar esos "falsos descuentos"
+                que las tiendas te quieren hacer creer. El descuento real indicado aquí, considera factores estadísticos para decirte la verdad.
             </p>
         </div>
     </div>  
