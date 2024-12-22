@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\Product\HasPrices;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +19,6 @@ class Product extends Model
 {
     use HasFactory;
     use HasPrices;
-    use Searchable;
 
     protected $attributes = [
         'views' => 0,
@@ -105,6 +105,11 @@ class Product extends Model
         return 'products_index';
     }
 
+    public static function scopeSearch(Builder $query, string $term): Builder
+    {
+        return $query->whereRaw("MATCH(brand, sku, title) AGAINST(? IN BOOLEAN MODE)", ["{$term}*"]);
+    }
+
     public static function searchByUrl($url): Collection
     {
         $files = glob(app_path('Crawlers/*ProductCrawler.php'));
@@ -122,15 +127,5 @@ class Product extends Model
         }
 
         return collect();
-    }
-
-    #[SearchUsingFullText(['brand,sku,title'])]
-    public function toSearchableArray(): array
-    {
-        return [
-            'brand' => $this->brand,
-            'sku' => $this->sku,
-            'title' => $this->title,
-        ];
     }
 }

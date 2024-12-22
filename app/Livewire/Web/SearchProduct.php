@@ -4,6 +4,7 @@ namespace App\Livewire\Web;
 
 use App\Models\Product;
 use App\Models\Store;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -23,7 +24,7 @@ class SearchProduct extends Component
         $this->countryCode = $countryCode;
     }
 
-    private function search()
+    private function search(): Builder
     {
         $storeIds = Store::whereCountry($this->countryCode)->pluck('id')->all();
 
@@ -39,13 +40,14 @@ class SearchProduct extends Component
 
         // search by sku
         $bySku = Product::whereIn('store_id', $storeIds)->whereSku($this->q);
+        $bySkuCount = $bySku->count();
 
-        if ($bySku->count() == 1) {
+        if ($bySkuCount == 1) {
             // if there's only one result, redirect to the pdp
             $this->redirect($bySku->first()->link);
         }
 
-        if ($bySku->count() > 1) {
+        if ($bySkuCount > 1) {
             // if there is more than one result, show the grid
             return $bySku;
         }
@@ -58,8 +60,13 @@ class SearchProduct extends Component
 
     public function render()
     {
+        $products = $this->search()
+            ->with('store')
+            ->orderByDesc('discount')
+            ->paginate(30);
+
         return view('livewire.web.search-product')->with([
-            'products' => $this->search()->orderByDesc('discount')->paginate(30),
+            'products' => $products,
         ]);
     }
 }
