@@ -44,11 +44,17 @@ class ShowCatalog extends Component
             $categories = Category::whereSlugTree($categorySlug)->get();
             $categoryIds = $categories->pluck('id')->all();
 
-            $query->join(DB::raw('
-                    category_product FORCE INDEX (category_product_product_id_category_id_index)'), 
+            $insertValues = implode(',', array_map(fn($id) => "($id)", $categoryIds));
+            DB::statement('CREATE TEMPORARY TABLE temp_category_ids (id INT PRIMARY KEY)');
+            DB::statement("INSERT INTO temp_category_ids (id) VALUES $insertValues");
+
+            $query
+                ->select('products.*')
+                ->join(
+                    DB::raw('category_product FORCE INDEX (category_product_product_id_category_id_index)'), 
                     'products.id', '=', 'category_product.product_id',
                 )
-                ->whereIn('category_product.category_id', $categoryIds);
+                ->join('temp_category_ids', 'category_product.category_id', '=', 'temp_category_ids.id');
 
             if ($categories->where('slug', $categorySlug)->count()) {
                 $this->title[] = $categories->where('slug', $categorySlug)->first()->title;
