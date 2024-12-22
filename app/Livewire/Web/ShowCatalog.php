@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Store;
 use App\Support\LimitedPaginator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class ShowCatalog extends Component
@@ -18,6 +19,7 @@ class ShowCatalog extends Component
         $countryCode = request()->countryCode;
 
         $query = Product::query()
+            ->distinct()
             ->whereHas('store', function ($query) use ($countryCode) {
                 $query->where('stores.country', $countryCode);
             })
@@ -43,9 +45,11 @@ class ShowCatalog extends Component
             $categories = Category::whereSlugTree($categorySlug)->get();
             $categoryIds = $categories->pluck('id')->all();
 
-            $query->whereHas('categories', function ($query) use ($categoryIds) {
-                $query->whereIn('categories.id', $categoryIds);
-            });
+            $query->join(DB::raw('
+                    category_product FORCE INDEX (category_product_product_id_category_id_index)'), 
+                    'products.id', '=', 'category_product.product_id',
+                )
+                ->whereIn('category_product.category_id', $categoryIds);
 
             if ($categories->where('slug', $categorySlug)->count()) {
                 $this->title[] = $categories->where('slug', $categorySlug)->first()->title;
