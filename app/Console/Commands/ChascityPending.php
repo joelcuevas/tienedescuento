@@ -16,7 +16,7 @@ class ChascityPending extends Command
 
     public function handle()
     {
-        $stores = Store::whereIn('slug', ['liverpool'])->get();
+        $stores = Store::where('country', 'mx')->whereIn('slug', ['liverpool'])->get();
         $nextId = (int) cache('chascity.next-id1', 0);
 
         $products = Product::query()

@@ -21,7 +21,7 @@ class ShowCatalog extends Component
             ->whereHas('store', function ($query) use ($countryCode) {
                 $query->where('stores.country', $countryCode);
             })
-            ->with(['store', 'categories'])
+            ->with(['store'])
             ->orderByDesc('discount')
             ->limit(360);
 

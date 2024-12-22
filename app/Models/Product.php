@@ -12,8 +12,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Laravel\Scout\Attributes\SearchUsingFullText;
-use Laravel\Scout\Searchable;
 
 class Product extends Model
 {
