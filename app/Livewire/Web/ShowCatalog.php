@@ -19,7 +19,6 @@ class ShowCatalog extends Component
         $countryCode = request()->countryCode;
 
         $query = Product::query()
-            ->distinct()
             ->whereHas('store', function ($query) use ($countryCode) {
                 $query->where('stores.country', $countryCode);
             })
