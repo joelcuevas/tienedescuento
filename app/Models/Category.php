@@ -47,22 +47,23 @@ class Category extends Model
         return $this->belongsToMany(Product::class);
     }
 
-    public static function scopeWhereSlugTree(Builder $query, string $slug): Builder
+    public static function scopeWhereSlugTree(Builder $query, string $slug, int $depth = 1): Builder
     {
         $categoryIds = collect(DB::select('
             WITH RECURSIVE category_hierarchy AS (
-                SELECT id, parent_id, slug
+                SELECT id, parent_id, slug, 1 AS depth
                 FROM categories
                 WHERE slug = ?
 
                 UNION ALL
 
-                SELECT c.id, c.parent_id, c.slug
+                SELECT c.id, c.parent_id, c.slug, ch.depth + 1
                 FROM categories c
                 INNER JOIN category_hierarchy ch ON c.parent_id = ch.id
+                WHERE ch.depth < ?
             )
             SELECT id FROM category_hierarchy
-        ', [$slug]))->pluck('id')->toArray();
+        ', [$slug, $depth]))->pluck('id')->toArray();
 
         return $query->whereIn('id', $categoryIds);
     }

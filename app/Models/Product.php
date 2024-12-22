@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class Product extends Model
@@ -111,6 +112,16 @@ class Product extends Model
     public static function scopeRecent(Builder $query): Builder
     {
         return $query->where('priced_at', '>=', now()->subDays(3));
+    }
+
+    public static function scopeWhereCategory(Builder $query, string $categorySlug, int $depth = 1): Builder
+    {
+        $categoryIds = Category::whereSlugTree($categorySlug)->pluck('id')->all();
+
+        return $query->join(
+                DB::raw('(select distinct product_id from category_product force index (category_product_category_id_product_id_index)) as distinct_category_product'),
+                'products.id', '=', 'distinct_category_product.product_id'
+        );
     }
 
     public static function scopeSearch(Builder $query, string $term): Builder

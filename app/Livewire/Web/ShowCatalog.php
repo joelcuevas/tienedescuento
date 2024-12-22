@@ -30,7 +30,7 @@ class ShowCatalog extends Component
         $storeSlug = request()->storeSlug;
         $categorySlug = request()->categorySlug;
         $brandSlug = request()->brandSlug;
-
+            
         $store = Store::whereCountry($countryCode)->whereSlug($storeSlug)->first();
 
         if ($store) {
@@ -41,17 +41,11 @@ class ShowCatalog extends Component
         }
 
         if ($categorySlug) {
-            $categories = Category::whereSlugTree($categorySlug)->get();
-            $categoryIds = $categories->pluck('id')->all();
+            $query->whereCategory($categorySlug);
+            $category = Category::whereSlug($categorySlug)->first();
 
-            $query->join(DB::raw('
-                    category_product FORCE INDEX (category_product_category_id_product_id_index)'), 
-                    'products.id', '=', 'category_product.product_id',
-                )
-                ->whereIn('category_product.category_id', $categoryIds);
-
-            if ($categories->where('slug', $categorySlug)->count()) {
-                $this->title[] = $categories->where('slug', $categorySlug)->first()->title;
+            if ($category) {
+                $this->title[] = $category->title;
             }
         }
 
