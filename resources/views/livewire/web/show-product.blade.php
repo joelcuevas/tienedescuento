@@ -12,7 +12,14 @@
             </div>
         </div>
 
-        <div class="lg:col-span-6">   
+        <div class="lg:col-span-6">  
+            @if ($product->isOutdated())
+                <div class="rounded-xl bg-yellow-100 px-4 py-4 mb-6 text-xs text-gray-800">
+                    Han pasado algunos días desde el último precio vigente de este producto. Es posible que el artículo se encuentre agotado 
+                    o descontinuado. Verifica directo en la tienda para más información.
+                </div>
+            @endif
+
             <div class="text-sm flex w-full truncate mt-6 lg:mt-3">
                 <a href="{{ $product->store_link }}" class="max-w-[50%] truncate text-gray-600 hover:text-gray-900">{{ $product->store->name }}</a>
                 <span class="text-gray-300 px-2">/</span>

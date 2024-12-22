@@ -22,6 +22,7 @@ class ShowCatalog extends Component
                 $query->where('stores.country', $countryCode);
             })
             ->with(['store'])
+            ->recent()
             ->orderByDesc('discount')
             ->limit(360);
 

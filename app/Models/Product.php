@@ -103,6 +103,16 @@ class Product extends Model
         return 'products_index';
     }
 
+    public function isOutdated(): bool
+    {
+        return $this->priced_at < now()->subDays(3);
+    }
+
+    public static function scopeRecent(Builder $query): Builder
+    {
+        return $query->where('priced_at', '>=', now()->subDays(3));
+    }
+
     public static function scopeSearch(Builder $query, string $term): Builder
     {
         return $query->whereRaw("MATCH(brand, sku, title) AGAINST(? IN BOOLEAN MODE)", ["{$term}*"]);
