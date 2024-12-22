@@ -62,6 +62,7 @@ class SearchProduct extends Component
     public function render()
     {
         $query = $this->search()
+            ->recent()
             ->with('store')
             ->orderByDesc('discount');
 
