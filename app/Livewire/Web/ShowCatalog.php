@@ -39,7 +39,7 @@ class ShowCatalog extends Component
         }
 
         if ($categorySlug) {
-            $query->whereCategory($categorySlug);
+            $query->whereCategory($categorySlug, 2);
             $category = Category::whereSlug($categorySlug)->first();
 
             if ($category) {

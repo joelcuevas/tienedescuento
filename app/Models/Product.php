@@ -114,7 +114,7 @@ class Product extends Model
         return $query->where('priced_at', '>=', now()->subDays(3));
     }
 
-    public static function scopeWhereCategory(Builder $query, string $categorySlug, int $depth = 1): Builder
+    public static function scopeWhereCategory(Builder $query, string $categorySlug, int $depth = 0): Builder
     {
         $categoryIds = Category::whereSlugTree($categorySlug)->pluck('id')->all();
 
