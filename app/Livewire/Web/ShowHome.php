@@ -4,18 +4,27 @@ namespace App\Livewire\Web;
 
 use App\Models\Product;
 use Livewire\Component;
+use Illuminate\Support\Str;
 
 class ShowHome extends Component
 {
     public function render()
     {
-        $products = Product::with(['store', 'categories'])
-            ->take(36)
-            ->orderByDesc('discount')
-            ->get();
+        $hot = ['celulares', 'tablets', 'laptops', 'pantallas', 'refrigeradores'];
+        $featured = [];
+
+        foreach ($hot as $category) {
+            $title = Str::title($category);
+
+            $featured[$title] = Product::query()
+                ->whereCategory($category)
+                ->orderByDesc('discount')
+                ->take(6)
+                ->get();
+        }
 
         return view('livewire.web.show-home')->with([
-            'products' => $products,
+            'featured' => $featured,
         ]);
     }
 }
