@@ -79,12 +79,13 @@ abstract class BaseCrawler
             if ($status == Response::HTTP_OK) {
                 $dom = new Crawler($response->body());
 
-                if ($dom !== null) {
+                if ($dom == null) {
+                    $status = Response::HTTP_GONE;
+                } else {
                     $status = $this->parse($dom);
                 }
             }
         } catch (HttpClientException $e) {
-            // something went wrong while connecting to the url
             $status = Response::HTTP_SERVICE_UNAVAILABLE;
         } finally {
             $this->hit($status);
