@@ -6,8 +6,6 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Store;
 use App\Support\LimitedPaginator;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class ShowCatalog extends Component
@@ -30,7 +28,7 @@ class ShowCatalog extends Component
         $storeSlug = request()->storeSlug;
         $categorySlug = request()->categorySlug;
         $brandSlug = request()->brandSlug;
-            
+
         $store = Store::whereCountry($countryCode)->whereSlug($storeSlug)->first();
 
         if ($store) {

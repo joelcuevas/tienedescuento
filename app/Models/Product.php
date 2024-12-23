@@ -119,22 +119,22 @@ class Product extends Model
         $categoryIds = Category::whereSlugTree($categorySlug)->pluck('id')->all();
 
         return $query
-        ->joinSub(
-            DB::table('category_product')
-                ->select('product_id')
-                ->distinct()
-                ->forceIndex('category_product_category_id_product_id_index')
-                ->whereIn('category_id', $categoryIds),
-            'cp',
-            'products.id',
-            '=',
-            'cp.product_id'
-        );
+            ->joinSub(
+                DB::table('category_product')
+                    ->select('product_id')
+                    ->distinct()
+                    ->forceIndex('category_product_category_id_product_id_index')
+                    ->whereIn('category_id', $categoryIds),
+                'cp',
+                'products.id',
+                '=',
+                'cp.product_id'
+            );
     }
 
     public static function scopeSearch(Builder $query, string $term): Builder
     {
-        return $query->whereRaw("MATCH(brand, sku, title) AGAINST(? IN BOOLEAN MODE)", ["{$term}*"]);
+        return $query->whereRaw('MATCH(brand, sku, title) AGAINST(? IN BOOLEAN MODE)', ["{$term}*"]);
     }
 
     public static function searchByUrl($url): Collection
