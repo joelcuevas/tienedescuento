@@ -118,9 +118,17 @@ class Product extends Model
     {
         $categoryIds = Category::whereSlugTree($categorySlug)->pluck('id')->all();
 
-        return $query->join(
-                DB::raw('(select distinct product_id from category_product force index (category_product_category_id_product_id_index)) as distinct_category_product'),
-                'products.id', '=', 'distinct_category_product.product_id'
+        return $query
+        ->joinSub(
+            DB::table('category_product')
+                ->select('product_id')
+                ->distinct()
+                ->forceIndex('category_product_category_id_product_id_index')
+                ->whereIn('category_id', $categoryIds),
+            'cp',
+            'products.id',
+            '=',
+            'cp.product_id'
         );
     }
 
