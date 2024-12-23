@@ -11,7 +11,7 @@
                                 <div class="absolute top-2 right-2 inline-flex text-sm rounded-full bg-red-700 text-white px-2 leading-6">-{{ abs($product->discount) }}%</div>
                             @endif
 
-                            @if (Auth::user()->isTracking($product))
+                            @if (Auth::user() && Auth::user()->isTracking($product))
                                 <div title="Monitoreando" class="absolute -bottom-4 right-2 inline-flex text-sm rounded-full bg-fuchsia-800 text-white h-8 w-8 items-center justify-center leading-6">
                                     <i class="fa fa-eye"></i>
                                 </div>
