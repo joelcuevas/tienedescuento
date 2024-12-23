@@ -13,7 +13,7 @@ class TrackProduct extends Component
 
     public bool $tracking = false;
 
-    private User $user;
+    private ?User $user = null;
 
     public function boot()
     {
