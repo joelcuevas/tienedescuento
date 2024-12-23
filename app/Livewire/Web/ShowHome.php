@@ -16,11 +16,13 @@ class ShowHome extends Component
         foreach ($hot as $category) {
             $title = Str::title($category);
 
-            $featured[$title] = Product::query()
-                ->whereCategory($category)
-                ->orderByDesc('discount')
-                ->take(6)
-                ->get();
+            if (config('app.env') == 'production') {
+                $query = Product::whereCategory($category);
+            } else {
+                $query = Product::inRandomOrder();
+            }
+
+            $featured[$title] = $query->recent()->orderByDesc('discount')->take(6)->get();
         }
 
         return view('livewire.web.show-home')->with([
