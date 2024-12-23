@@ -1,3 +1,14 @@
-<a {{ $attributes->merge(['href' => '#', 'class' => 'inline-block rounded-full bg-white px-4 py-2 text-sm text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50']) }}>
+@props(['primary' => null])
+
+@php
+$colors = 'bg-white text-gray-900 ring-gray-300 hover:bg-gray-50';
+
+if ($primary) {
+    $colors = 'bg-fuchsia-800 ring-transparent text-white hover:bg-fuchsia-700 focus:bg-fuchsia-700 active:bg-fuchsia-700';
+}
+
+@endphp
+
+<a {{ $attributes->merge(['href' => '#', 'class' => 'inline-block rounded-full px-4 py-2 text-sm ring-1 shadow-xs ring-inset '.$colors]) }}>
     {{ $slot }}
 </a>

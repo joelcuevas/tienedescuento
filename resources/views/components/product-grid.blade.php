@@ -6,8 +6,15 @@
                     <a href="{{ $product->link }}" title="{{ $product->title }}" class="group text-sm w-full">
                         <div class="relative bg-gray-100/80 rounded-xl p-2 object-center w-full aspect-[3/4] group-hover:bg-gray-200/70">
                             <img src="{{ $product->image_url }}" alt="{{ $product->title }}" class="mix-blend-multiply w-full h-full rounded-lg object-cover">
+                            
                             @if ($product->discount)
                                 <div class="absolute top-2 right-2 inline-flex text-sm rounded-full bg-red-700 text-white px-2 leading-6">-{{ abs($product->discount) }}%</div>
+                            @endif
+
+                            @if (Auth::user()->isTracking($product))
+                                <div title="Monitoreando" class="absolute -bottom-4 right-2 inline-flex text-sm rounded-full bg-fuchsia-800 text-white h-8 w-8 items-center justify-center leading-6">
+                                    <i class="fa fa-eye"></i>
+                                </div>
                             @endif
                         </div>
 

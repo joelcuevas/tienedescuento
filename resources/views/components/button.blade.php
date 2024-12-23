@@ -1,3 +1,13 @@
-<button {{ $attributes->merge(['type' => 'submit', 'class' => 'inline-flex items-center px-4 py-2 bg-fuchsia-800 border border-transparent rounded-full font-semibold text-sm text-white hover:bg-fuchsia-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 transition ease-in-out duration-150']) }}>
+@props(['primary' => null])
+
+@php
+$colors = 'bg-white text-gray-900 ring-gray-300 hover:bg-gray-50';
+
+if ($primary) {
+    $colors = 'bg-fuchsia-800 ring-transparent text-white hover:bg-fuchsia-700 focus:bg-fuchsia-700 active:bg-fuchsia-700';
+}
+@endphp
+
+<button {{ $attributes->merge(['type' => 'submit', 'class' => 'inline-block rounded-full px-8 py-2 text-sm ring-1 shadow-xs ring-inset '.$colors]) }}>
     {{ $slot }}
 </button>

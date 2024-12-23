@@ -3,8 +3,8 @@
 namespace App\Livewire\Web;
 
 use App\Models\Product;
-use Livewire\Component;
 use Illuminate\Support\Str;
+use Livewire\Component;
 
 class ShowHome extends Component
 {
@@ -22,7 +22,12 @@ class ShowHome extends Component
                 $query = Product::inRandomOrder();
             }
 
-            $featured[$title] = $query->recent()->orderByDesc('discount')->take(6)->get();
+            $featured[$title] = $query
+                ->with('store')
+                ->recent()
+                ->orderByDesc('discount')
+                ->take(6)
+                ->get();
         }
 
         return view('livewire.web.show-home')->with([

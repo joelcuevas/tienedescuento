@@ -11,7 +11,7 @@ use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class SearchProduct extends Component
+class SearchProducts extends Component
 {
     use WithPagination;
 
@@ -66,7 +66,7 @@ class SearchProduct extends Component
             ->with('store')
             ->orderByDesc('discount');
 
-        return view('livewire.web.search-product')->with([
+        return view('livewire.web.search-products')->with([
             'products' => LimitedPaginator::fromQuery($query, 36, 360),
         ]);
     }

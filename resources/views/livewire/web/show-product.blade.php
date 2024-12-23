@@ -47,13 +47,8 @@
             </div>
 
             <div class="flex flex-col lg:flex-row items-start lg:items-center lg:space-x-2 space-y-2 lg:space-y-0">
-                <x-button>
-                    @if ($product->hasDiscount())
-                        ¡Avísame si baja más de precio!
-                    @else
-                        ¡Avísame cuando tenga descuento!
-                    @endif
-                </x-button>
+                @livewire('web.track-product', [$product])
+
                 <x-link-button href="{{ $product->url }}" target="_blank" class="px-8 py-2">
                     Comprarlo en {{ $product->store->name }}
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-600 pl-1"></i>
