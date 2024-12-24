@@ -30,6 +30,10 @@ class ChascityPending extends Command
             $nextId = (int) cache('chascity.next-id-'.$storeSlug, 0);
         }
 
+        if ($nextId == 0) {
+            $nextId = Product::whereStoreId($store->id)->first()->id;
+        }
+
         $products = Product::query()
             ->whereStoreId($store->id)
             ->whereDoesntHave('prices', function (Builder $query) {
