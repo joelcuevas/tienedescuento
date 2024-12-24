@@ -2,65 +2,154 @@
 
 namespace App\Crawlers\Costco;
 
-use App\Crawlers\BaseCrawler;
+use App\Crawlers\JsonBaseCrawler;
+use App\Jobs\ResolveUrl;
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\Store;
 use App\Models\Url;
 use Illuminate\Http\Response;
 use Symfony\Component\DomCrawler\Crawler;
+use Illuminate\Support\Str;
 
-class CostcoMxCategoryCrawler extends BaseCrawler
+class CostcoMxCategoryCrawler extends JsonBaseCrawler
 {
-    protected static string $pattern = '#^https://www\.costco\.com\.mx(?:/[\w\-]+)*/c/([\w\.\-]+)(?:\?page=(\d+))?$#';
+    protected static string $pattern = '#^https:\/\/www\.costco\.com\.mx\/rest\/v2\/mexico\/products\/search(\?.+)?$#';
 
     protected int $cooldown = 1;
 
-    protected function parse(Crawler $dom): int
+    protected Store $store;
+
+    protected Category $category;
+
+    protected int $page = 0;
+
+    protected function setup(): void
     {
-        $data = $dom->filter('#__NEXT_DATA__');
+        $this->store = Store::firstOrCreate([
+            'country' => 'mx',
+            'slug' => 'costco',
+        ], [
+            'name' => 'Costco',
+            'url' => 'https://www.costco.com.mx',
+        ]);
+    }
 
+    protected function parse(mixed $json): int
+    {
         // check if there is processable data on the page
-        if ($data->count() == 0) {
+        if (count($json?->products) == 0) {
             return Response::HTTP_NO_CONTENT;
         }
 
-        $results = json_decode($data->text());
+        $this->findCategories($json);
 
-        if (! isset($results->query->data->mainContent)) {
-            return Response::HTTP_NO_CONTENT;
-        }
-
-        // yes, there is!
-        $mainContent = $results->query->data->mainContent;
-
-        // but this is a category showcase page; do not process
-        if (! isset($mainContent->records)) {
-            return Response::HTTP_NO_CONTENT;
-        }
-
-        // this is a product listing page, now save the records
-        foreach ($mainContent->records as $record) {
-            //$this->saveProduct($record, 'category');
+        foreach ($json->products as $product) {
+            if ($product?->stock?->stockLevelStatus == 'inStock') {
+                if (isset($product->price->value)) {
+                    $data['sku'] = $product->code;
+                    $data['title'] = $product->name;
+                    $data['url'] = 'https://www.costco.com.mx'.$product->url;
+                    $data['image_url'] = $this->getImageUrl($product);
+                    $data['price'] = $product->price->value;
+    
+                    $this->saveProduct($data, 'category');
+                }
+            }
         }
 
         // if there are more pages, resolve the next one
-        if (isset($mainContent->pageInfo)) {
-            $noOfPages = $mainContent->pageInfo->noOfPages;
+        if ($json->pagination->currentPage < $json->pagination->totalPages) {
+            $page = $json->pagination->currentPage + 1;
+            $href = preg_replace('/currentPage=\d+/', 'currentPage='.$page, $this->url->href);
+            $nextUrl = Url::resolve($href);
 
-            if ($noOfPages > 0) {
-                $currentPage = $mainContent->pageInfo->currentPage ?? 1;
-
-                if ($currentPage < $noOfPages) {
-                    $href = preg_replace('/\/page-\d+$/', '', $this->url->href);
-                    $url = Url::resolve($href.'/page-'.($currentPage + 1));
-
-                    // force-discover the next page
-                    if ($url->status != Response::HTTP_OK) {
-                        $url->scheduleNow();
-                    }
-                }
+            // force-discover the next page
+            if ($nextUrl->status != Response::HTTP_OK) {
+                $nextUrl->scheduleNow();
             }
         }
 
         // we are done!
         return Response::HTTP_OK;
+    }
+
+    protected function saveProduct(array $data, string $source): void
+    {
+        preg_match('#/p/([^/]+)$#', $data['url'], $matches);
+        $sku = $matches[1];
+
+        $price = (float) str_replace(['$', ','], '', $data['price']);
+
+        $product = Product::updateOrCreate([
+            'store_id' => $this->store->id,
+            'sku' => $sku,
+        ], [
+            'brand' => null,
+            'title' => strip_tags($data['title']),
+            'url' => $data['url'],
+            'image_url' => $data['image_url'],
+        ]);
+
+        $product->prices()->create([
+            'price' => $price,
+            'source' => 'costco-'.$source,
+        ]);
+
+        $product->categories()->sync([$this->category]);
+    }
+
+    protected function getImageUrl(object $product): ?string
+    {
+        if (isset($product->images)) {
+            foreach ($product->images as $img) {
+                if ($img?->format == 'results') {
+                    return 'https://www.costco.com.mx'.$img->url;
+                }
+            }
+        }
+
+        return 'https://placehold.co/400?text=Not%20Found';
+    }
+
+    protected function findCategories(object $json): void
+    {
+        if (! isset($json->category->url)) {
+            return;
+        }
+
+        $parentId = null;
+
+        $categories[] = [
+            'code' => $json->category->code,
+            'title' => $json->category->name,
+            'url' => 'https://www.costco.com.mx'.$json->category->url,
+        ];
+
+        if (isset($json->category->supercategories)) {
+            foreach ($json->category->supercategories as $super) {
+                $categories[] = [
+                    'code' => $super->code,
+                    'title' => $super->name,
+                    'url' => 'https://www.costco.com.mx'.$super->url,
+                ];
+            }
+        }
+
+        $categories = array_reverse($categories);
+
+        foreach ($categories as $cat) {
+            $category = Category::firstOrCreate([
+                'store_id' => $this->store->id,
+                'code' => $cat['code'],
+            ], [
+                'title' => $cat['title'],
+                'url' => $cat['url'],
+                'parent_id' => $parentId,
+            ]);
+
+            $parentId = $category->id;
+            $this->category = $category;
+        }
     }
 }

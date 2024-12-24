@@ -203,7 +203,7 @@ return [
             'balanceMaxShift' => 1,
             'balanceCooldown' => 3,
             'autoScalingStrategy' => 'time',
-            'maxProcesses' => 10,
+            'maxProcesses' => 15,
             'maxTime' => 0,
             'maxJobs' => 0,
             'memory' => 128,
@@ -237,7 +237,7 @@ return [
             ],
 
             'crawlers-fast' => [
-                'queue' => ['liverpool'],
+                'queue' => ['liverpool', 'costco_mx'],
                 'timeout' => 30,
             ],
 
@@ -254,7 +254,7 @@ return [
             ],
 
             'crawlers-fast' => [
-                'queue' => ['liverpool'],
+                'queue' => ['liverpool', 'costco_mx'],
                 'timeout' => 30,
             ],
 

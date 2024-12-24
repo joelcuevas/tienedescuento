@@ -2,13 +2,13 @@
 
 namespace App\Crawlers\Liverpool;
 
-use App\Crawlers\BaseCrawler;
+use App\Crawlers\WebBaseCrawler;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Store;
 use Illuminate\Support\Str;
 
-abstract class LiverpoolBaseCrawler extends BaseCrawler
+abstract class LiverpoolBaseCrawler extends WebBaseCrawler
 {
     protected Store $store;
 
@@ -140,7 +140,11 @@ abstract class LiverpoolBaseCrawler extends BaseCrawler
 
     public function getBrand(object $meta): string
     {
-        $brand = $meta->brand ?? __('Unknown');
+        if (! isset($meta->brand) || ! $meta->brand) {
+            return null;
+        }
+
+        $brand = $meta->brand;
         $title = $meta->title;
         $lowerBrand = strtolower($brand);
         $lowerTitle = strtolower($title);

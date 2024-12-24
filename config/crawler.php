@@ -13,6 +13,13 @@ return [
             'throttle_every' => 60,
         ],
 
+        'www.costco.com.mx' => [
+            'queue' => 'costco_mx',
+            'proxied' => false,
+            'throttle_allow' => 60,
+            'throttle_every' => 60,
+        ],
+
         'preciominimo.chascity.com' => [
             'queue' => 'chascity',
             'proxied' => false,

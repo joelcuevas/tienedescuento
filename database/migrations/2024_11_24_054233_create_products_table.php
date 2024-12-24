@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('sku')->index();
             $table->text('title');
             $table->string('slug');
-            $table->string('brand')->index();
-            $table->string('brand_slug')->index();
+            $table->string('brand')->nullable()->index();
+            $table->string('brand_slug')->nullable()->index();
             $table->bigInteger('views')->default(0);
             $table->decimal('latest_price', 8, 2)->nullable();
             $table->decimal('minimum_price', 8, 2)->nullable();

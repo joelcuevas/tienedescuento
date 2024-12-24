@@ -2,14 +2,14 @@
 
 namespace App\Crawlers\Chascity;
 
-use App\Crawlers\BaseCrawler;
+use App\Crawlers\WebBaseCrawler;
 use App\Models\Product;
 use App\Models\Store;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Symfony\Component\DomCrawler\Crawler;
 
-class ChascityProductCrawler extends BaseCrawler
+class ChascityProductCrawler extends WebBaseCrawler
 {
     protected static string $pattern = '#^https://preciominimo\.chascity\.com/verificaprecio/[^?]+?\?sku=[^&]+$#';
 
@@ -48,14 +48,14 @@ class ChascityProductCrawler extends BaseCrawler
         return false;
     }
 
-    protected function parse(Crawler $dom): int
+    protected function parse(mixed $dom): int
     {
         $data = $dom->filter('.table-striped > tbody');
 
-        // the product wasn't found on the page
+        // the product wasn't found on the page, probably an error
         if ($data->count() == 0) {
             $this->cooldown = 1;
-            
+
             return Response::HTTP_NO_CONTENT;
         }
 

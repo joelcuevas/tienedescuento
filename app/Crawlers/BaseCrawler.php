@@ -43,7 +43,9 @@ abstract class BaseCrawler
         return false;
     }
 
-    abstract protected function parse(Crawler $dom): int;
+    abstract protected function parse(mixed $body): int;
+
+    abstract protected function formatBody(string $body): mixed;
 
     public function crawl(): void
     {
@@ -57,7 +59,7 @@ abstract class BaseCrawler
 
         $this->setup();
 
-        $crawledToday = $this->url->crawled_at >= now()->startOfDay();
+        $crawledToday = config('app.env') != 'local' && $this->url->crawled_at >= now()->startOfDay();
 
         if ($crawledToday || $this->recentlyCrawled()) {
             if ($this->url->crawled_at == null) {
@@ -81,12 +83,12 @@ abstract class BaseCrawler
             $status = $response->status();
 
             if ($status == Response::HTTP_OK) {
-                $dom = new Crawler($response->body());
+                $body = $this->formatBody($response->body());
 
-                if ($dom == null) {
+                if ($body == null) {
                     $status = Response::HTTP_GONE;
                 } else {
-                    $status = $this->parse($dom);
+                    $status = $this->parse($body);
                 }
             }
         } catch (HttpClientException $e) {

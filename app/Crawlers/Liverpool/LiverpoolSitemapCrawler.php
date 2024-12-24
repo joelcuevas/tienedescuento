@@ -15,7 +15,7 @@ class LiverpoolSitemapCrawler extends LiverpoolBaseCrawler
 
     protected array $ignore = ['/pdps-', '/ck-'];
 
-    protected function parse(Crawler $dom): int
+    protected function parse(mixed $dom): int
     {
         // this is a sitemap, store the urls for future crawling
         $dom->filterXPath('//loc')->each(function (Crawler $node) {

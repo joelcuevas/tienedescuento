@@ -12,7 +12,7 @@ class LiverpoolCategoryCrawler extends LiverpoolBaseCrawler
 
     protected int $cooldown = 1;
 
-    protected function parse(Crawler $dom): int
+    protected function parse(mixed $dom): int
     {
         $data = $dom->filter('#__NEXT_DATA__');
 

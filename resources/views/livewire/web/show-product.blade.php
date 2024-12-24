@@ -24,8 +24,10 @@
                 <a href="{{ $product->store_link }}" class="max-w-[50%] truncate text-gray-600 hover:text-gray-900">{{ $product->store->name }}</a>
                 <span class="text-gray-300 px-2">/</span>
                 <a href="{{ $product->category_link }}" class="max-w-[50%] truncate text-gray-600 hover:text-gray-900">{{ $product->category }}</a>
-                <span class="text-gray-300 px-2">/</span>
-                <a href="{{ $product->category_brand_link }}" class="max-w-[50%] truncate text-gray-600 hover:text-gray-900">{{ $product->brand }}</a>
+                @if ($product->brand)
+                    <span class="text-gray-300 px-2">/</span>
+                    <a href="{{ $product->category_brand_link }}" class="max-w-[50%] truncate text-gray-600 hover:text-gray-900">{{ $product->brand }}</a>
+                @endif
             </div>
 
             <h1 class="font-medium text-lg text-balance my-2">{{ $product->title }}</h1>
