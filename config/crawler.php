@@ -9,12 +9,12 @@ return [
         'www.liverpool.com.mx' => [
             'queue' => 'liverpool',
             'proxied' => true,
-            'throttle_allow' => 120,
+            'throttle_allow' => 60,
             'throttle_every' => 60,
         ],
 
         'www.costco.com.mx' => [
-            'queue' => 'costco_mx',
+            'queue' => 'costco-mx',
             'proxied' => false,
             'throttle_allow' => 60,
             'throttle_every' => 60,

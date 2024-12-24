@@ -17,14 +17,14 @@ class ThrottleCrawlers
         // throttle if one third of recent requests have failed
         $recent = Url::query()
             ->whereDomain($this->url->domain)
-            ->where('crawled_at', '>', now()->subMinutes(15))
+            ->where('crawled_at', '>', now()->subMinutes(5))
             ->orderByDesc('crawled_at')
-            ->limit(50)
+            ->limit(100)
             ->get();
 
         $blocked = $recent->filter(fn ($url) => $url->status >= 300);
 
-        if ($recent->count() > 50 && $blocked->count() > $recent->count() / 3) {
+        if ($recent->count() > 100 && $blocked->count() > $recent->count() / 3) {
             // release for an hour later
             $job->release(3600);
 
