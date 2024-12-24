@@ -10,31 +10,41 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ChascityPending extends Command
 {
-    protected $signature = 'chascity:pending {--limit=15}';
+    protected $signature = 'chascity:pending {--limit=10}';
 
     protected $description = 'Schedule for crawling products without Chascity prices';
 
     public function handle()
     {
-        $stores = Store::where('country', 'mx')->whereIn('slug', ['liverpool'])->get();
-        $nextId = (int) cache('chascity.next-id1', 0);
+        $this->schedule('liverpool');
+        $this->schedule('costco');
+    }
+
+    private function schedule(string $storeSlug): void
+    {
+        $store = Store::whereCountry('mx')->whereSlug($storeSlug)->first();
+
+        if ($storeSlug == 'liverpool') {
+            $nextId = (int) cache('chascity.next-id1', 0);
+        } else {
+            $nextId = (int) cache('chascity.next-id-'.$storeSlug, 0);
+        }
 
         $products = Product::query()
-            ->whereIn('store_id', $stores->pluck('id')->all())
+            ->whereStoreId($store->id)
             ->whereDoesntHave('prices', function (Builder $query) {
                 $query->whereSource('chascity');
             })
             ->where('id', '>', $nextId)
             ->where('id', '<', $nextId + 100)
             ->orderBy('id')
-            ->with('store')
             ->limit($this->option('limit'))
             ->get();
 
         foreach ($products as $product) {
             $href = sprintf(
                 'https://preciominimo.chascity.com/verificaprecio/%s?sku=%s',
-                $product->store->slug,
+                $storeSlug,
                 $product->sku,
             );
 
@@ -43,7 +53,11 @@ class ChascityPending extends Command
 
             $this->line("[Product {$product->id}] [$alreadyResolved] {$href}");
 
-            cache(['chascity.next-id1' => $product->id]);
+            if ($storeSlug == 'liverpool') {
+                cache(['chascity.next-id1' => $product->id]);
+            }
+
+            cache(['chascity.next-id-'.$storeSlug => $product->id]);
         }
     }
 }
