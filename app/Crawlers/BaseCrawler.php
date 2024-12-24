@@ -60,7 +60,11 @@ abstract class BaseCrawler
         $crawledToday = $this->url->crawled_at >= now()->startOfDay();
 
         if ($crawledToday || $this->recentlyCrawled()) {
-            $this->url->release();
+            if ($this->url->crawled_at == null) {
+                $this->hit(Response::HTTP_ALREADY_REPORTED);
+            } else {
+                $this->url->release();
+            }
 
             return;
         }
