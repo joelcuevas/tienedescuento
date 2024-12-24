@@ -54,6 +54,8 @@ class ChascityProductCrawler extends BaseCrawler
 
         // the product wasn't found on the page
         if ($data->count() == 0) {
+            $this->cooldown = 1;
+            
             return Response::HTTP_NO_CONTENT;
         }
 
