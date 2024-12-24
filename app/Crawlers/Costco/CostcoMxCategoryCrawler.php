@@ -38,7 +38,7 @@ class CostcoMxCategoryCrawler extends JsonBaseCrawler
     protected function parse(mixed $json): int
     {
         // check if there is processable data on the page
-        if (count($json?->products) == 0) {
+        if (! isset($json->products) || count($json->products) == 0) {
             return Response::HTTP_NO_CONTENT;
         }
 
