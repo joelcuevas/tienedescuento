@@ -138,7 +138,7 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
         return $categoryLeafs;
     }
 
-    public function getBrand(object $meta): string
+    public function getBrand(object $meta): ?string
     {
         if (! isset($meta->brand) || ! $meta->brand) {
             return null;
