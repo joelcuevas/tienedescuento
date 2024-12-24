@@ -60,7 +60,7 @@ trait HasPrices
 
     public function updatePrices(): bool
     {
-        $prices = $this->prices;
+        $prices = $this->prices()->get();
         $latest = $prices->sortByDesc('priced_at')->first();
         $regularPrice = $this->findRegularPrice();
 
