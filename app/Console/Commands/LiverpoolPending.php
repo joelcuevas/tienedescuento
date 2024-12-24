@@ -12,7 +12,7 @@ class LiverpoolPending extends Command
 {
     protected $signature = 'liverpool:pending {--limit=25}';
 
-    protected $description = 'Schedule for crawling products not found in Liverpool categories';
+    protected $description = 'Schedule for crawling products missed in Liverpool categories';
 
     public function handle()
     {

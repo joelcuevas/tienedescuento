@@ -9,7 +9,7 @@ class UrlCrawl extends Command
 {
     protected $signature = 'url:crawl {url} {--sync}';
 
-    protected $description = 'Crawl a URL using its designated crawling class.';
+    protected $description = 'Crawl a URL using its designated crawling class';
 
     public function handle()
     {
