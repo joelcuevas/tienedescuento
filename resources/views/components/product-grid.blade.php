@@ -4,10 +4,11 @@
             <div class="grid grid-cols-2 gap-x-4 lg:gap-x-8 gap-y-8 lg:gap-y-10 sm:grid-cols-4 lg:grid-cols-6">
                 @foreach ($group as $product)
                     <a href="{{ $product->link }}" title="{{ $product->title }}" class="group text-sm w-full">
-                        <div class="relative bg-gray-100/80 rounded-xl p-2 object-center w-full aspect-[3/4] group-hover:bg-gray-200/70">
+                        <div class="relative bg-gray-100/80 rounded-xl p-2 w-full aspect-[3/4] group-hover:bg-gray-200/70 flex items-center">
                             <!-- do not delete!!! image-fits: object-cover, object-contain -->
-                            <img src="{{ $product->image_url }}" alt="{{ $product->title }}" class="mix-blend-multiply w-full h-full rounded-lg {{ $product->store->getThumbAspect() == 'square' ? 'object-contain rounded-xl' : 'object-cover' }}">
-                            
+                            <div class="rounded-lg overflow-hidden w-full {{ $product->store->getThumbAspect() == 'square' ? '' : 'h-full' }}">
+                                <img src="{{ $product->image_url }}" alt="{{ $product->title }}" class="mix-blend-multiply w-full h-full rounded-lg {{ $product->store->getThumbAspect() == 'square' ? 'object-scale-down' : 'object-cover' }}">
+                            </div>
                             @if ($product->discount)
                                 <div class="absolute top-2 right-2 inline-flex text-sm rounded-full bg-red-700 text-white px-2 leading-6">-{{ abs($product->discount) }}%</div>
                             @endif
