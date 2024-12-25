@@ -37,7 +37,10 @@ class LiverpoolCategoryCrawler extends LiverpoolBaseCrawler
 
         // this is a product listing page, now save the records
         foreach ($mainContent->records as $record) {
-            $this->saveProduct($record, 'category');
+            $product = $this->saveProduct($record, 'category');
+
+            // @todo: postpone product url crawl
+            // DelayUrl::dispatch($product->url);
         }
 
         // if there are more pages, resolve the next one

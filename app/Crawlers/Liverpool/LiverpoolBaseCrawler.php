@@ -28,7 +28,7 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
         ]);
     }
 
-    protected function saveProduct(mixed $record, string $source): void
+    protected function saveProduct(mixed $record, string $source): ?Product
     {
         $meta = $record?->allMeta;
 
@@ -57,8 +57,12 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
 
                 $categories = $this->getCategories($meta);
                 $product->categories()->sync($categories);
+
+                return $product;
             }
         }
+
+        return null;
     }
 
     private function getImageUrl(object $meta): ?string

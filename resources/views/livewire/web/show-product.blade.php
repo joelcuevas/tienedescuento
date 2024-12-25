@@ -59,6 +59,18 @@
         </div>
       
         <div class="lg:col-span-4">
+            @if (config('ads.enabled'))
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9285674270424452" crossorigin="anonymous"></script>
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-format="autorelaxed"
+                    data-ad-client="ca-pub-9285674270424452"
+                    data-ad-slot="3697451903">
+                </ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            @endif
         </div>
 
         <div class="lg:col-span-6 lg:col-start-3 row-start-2">
