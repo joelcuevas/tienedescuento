@@ -29,6 +29,11 @@ class Store extends Model
         );
     }
 
+    public function getImageFit()
+    {
+        return config('stores.'.$this->country.'.'.$this->slug.'.image-fit', 'object-cover');
+    }
+
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
