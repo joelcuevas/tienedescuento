@@ -5,11 +5,11 @@ return [
     'mx' => [
 
         'liverpool' => [
-            'image-fit' => 'object-cover',
+            'thumb-aspect' => 'portrait',
         ],
 
         'costco' => [
-            'image-fit' => 'object-contain',
+            'thumb-aspect' => 'square',
         ],
 
     ],

@@ -1,12 +1,12 @@
 <div>
     <div class="space-y-10">
         @foreach ($products->chunk(12) as $group)
-            <div class="grid grid-cols-3 gap-x-6 gap-y-10 sm:grid-cols-4 lg:grid-cols-6 lg:gap-x-8">
+            <div class="grid grid-cols-2 gap-x-4 lg:gap-x-8 gap-y-8 lg:gap-y-10 sm:grid-cols-4 lg:grid-cols-6">
                 @foreach ($group as $product)
                     <a href="{{ $product->link }}" title="{{ $product->title }}" class="group text-sm w-full">
                         <div class="relative bg-gray-100/80 rounded-xl p-2 object-center w-full aspect-[3/4] group-hover:bg-gray-200/70">
                             <!-- do not delete!!! image-fits: object-cover, object-contain -->
-                            <img src="{{ $product->image_url }}" alt="{{ $product->title }}" class="mix-blend-multiply w-full h-full rounded-lg {{ $product->store->getImageFit() }}">
+                            <img src="{{ $product->image_url }}" alt="{{ $product->title }}" class="mix-blend-multiply w-full h-full rounded-lg {{ $product->store->getThumbAspect() == 'square' ? 'object-contain rounded-xl' : 'object-cover' }}">
                             
                             @if ($product->discount)
                                 <div class="absolute top-2 right-2 inline-flex text-sm rounded-full bg-red-700 text-white px-2 leading-6">-{{ abs($product->discount) }}%</div>
@@ -21,7 +21,7 @@
 
                         <div class="mt-4 text-gray-500 truncate">{{ $product->store->name }}</div>
 
-                        <h3 class="mt-1 font-medium text-gray-900 truncate">{{ $product->title }}</h3>
+                        <h3 class="mt-1 font-medium text-gray-900 line-clamp-2 lg:line-clamp-none lg:truncate">{{ $product->title }}</h3>
 
                         <div class="mt-1 flex space-x-2 items-center">
                             @if ($product->discount > 0)

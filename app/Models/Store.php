@@ -29,9 +29,9 @@ class Store extends Model
         );
     }
 
-    public function getImageFit()
+    public function getThumbAspect()
     {
-        return config('stores.'.$this->country.'.'.$this->slug.'.image-fit', 'object-cover');
+        return config('stores.'.$this->country.'.'.$this->slug.'.thumb-aspect', 'portrait');
     }
 
     public function products(): HasMany
