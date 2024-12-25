@@ -56,7 +56,7 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
                 ]);
 
                 $categories = $this->getCategories($meta);
-                $product->categories()->sync($categories);
+                $product->categories()->syncWithoutDetaching($categories);
 
                 return $product;
             }

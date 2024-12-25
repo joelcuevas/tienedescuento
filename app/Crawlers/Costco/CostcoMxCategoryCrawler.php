@@ -96,7 +96,7 @@ class CostcoMxCategoryCrawler extends JsonBaseCrawler
             'source' => 'costco-'.$source,
         ]);
 
-        $product->categories()->sync([$this->category]);
+        $product->categories()->syncWithoutDetaching($this->category);
     }
 
     protected function getImageUrl(object $product): ?string

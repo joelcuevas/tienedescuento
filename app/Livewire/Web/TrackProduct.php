@@ -33,7 +33,7 @@ class TrackProduct extends Component
     {
         abort_unless(403, Auth::user());
 
-        $this->user->products()->attach($this->product);
+        $this->user->products()->syncWithoutDetaching($this->product);
         $this->tracking = true;
     }
 
