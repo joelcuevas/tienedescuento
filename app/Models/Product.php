@@ -42,7 +42,7 @@ class Product extends Model
     protected function category(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->categories->first()->title,
+            get: fn () => $this->categories->last()->title,
         );
     }
 
@@ -70,7 +70,7 @@ class Product extends Model
     protected function categoryLink(): Attribute
     {
         return Attribute::make(
-            get: fn () => route('catalogs.category', [$this->store->slug, $this->categories->first()->slug]),
+            get: fn () => route('catalogs.category', [$this->store->slug, $this->categories->last()->slug]),
         );
     }
 
