@@ -5,14 +5,14 @@
 </x-slot>
 
 <div>
-    <div class="lg:grid lg:grid-cols-12 lg:grid-rows-[auto_auto] lg:gap-x-8"> 
-        <div class="lg:col-span-2 lg:row-span-2">
+    <div class="lg:grid lg:grid-cols-12 lg:auto-rows-min lg:gap-x-8"> 
+        <div class="lg:col-span-2 lg:row-span-4">
             <div class="w-full bg-gray-100/90 rounded-xl p-3 object-center aspect-[3/2] lg:aspect-[3/4] text-center flex justify-center">
                 <img src="{{ $product->image_url }}" alt="{{ $product->title }}" class="mix-blend-multiply h-full object-cover rounded-lg">
             </div>
         </div>
 
-        <div class="lg:col-span-6">  
+        <div class="lg:col-span-6 lg:row-span-1">  
             @if ($product->isOutdated())
                 <div class="rounded-xl bg-yellow-100 px-4 py-4 mb-6 text-xs text-gray-800">
                     Han pasado algunos días desde el último precio vigente de este producto. Es posible que el artículo se encuentre agotado 
@@ -58,7 +58,7 @@
             </div>
         </div>
       
-        <div class="lg:col-span-4">
+        <div class="lg:col-span-4 lg:row-span-4">
             @if (config('ads.enabled'))
                 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9285674270424452" crossorigin="anonymous"></script>
                 <ins class="adsbygoogle"
