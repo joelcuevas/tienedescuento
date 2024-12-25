@@ -11,7 +11,8 @@ class Price extends Model
     use HasFactory;
 
     protected $casts = [
-        'priced_at' => 'date',
+        'priced_at' => 'datetime',
+        'priced_date' => 'date',
     ];
 
     protected static function booted(): void
@@ -19,6 +20,7 @@ class Price extends Model
         static::creating(function (Price $price) {
             // if no date is set, set to now
             $price->priced_at = $price->priced_at ?? now();
+            $price->priced_date = $price->priced_at;
 
             // if there's already a price for the date, keep the min
             $existing = $price->product->prices()

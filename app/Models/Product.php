@@ -24,7 +24,8 @@ class Product extends Model
     ];
 
     protected $casts = [
-        'priced_at' => 'date',
+        'priced_at' => 'datetime',
+        'priced_date' => 'date',
     ];
 
     protected static function booted(): void

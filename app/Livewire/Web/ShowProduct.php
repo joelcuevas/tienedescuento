@@ -34,12 +34,12 @@ class ShowProduct extends Component
         if ($this->product) {
             $data = collect();
 
-            $data = Price::selectRaw("date_format(priced_at, '%d-%b-%y') as date, min(price) as aggregate")
+            $data = Price::selectRaw("date_format(priced_date, '%d-%b-%y') as date, priced_date, min(price) as aggregate")
                 ->where('product_id', $this->product->id)
-                ->where('priced_at', '>=', now()->subMonths($lastMonths)->startOfMonth())
+                ->where('priced_date', '>=', now()->subMonths($lastMonths)->startOfMonth())
                 ->groupBy('date')
-                ->groupBy('priced_at')
-                ->orderBy('priced_at')
+                ->groupBy('priced_date')
+                ->orderBy('priced_date')
                 ->get();
 
             $this->product->increment('views');

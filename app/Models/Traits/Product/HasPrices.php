@@ -66,6 +66,7 @@ trait HasPrices
 
         $this->latest_price = $latest->price;
         $this->priced_at = $latest->priced_at;
+        $this->priced_date = $this->priced_at;
         $this->minimum_price = $prices->min('price');
         $this->maximum_price = $prices->max('price');
         $this->regular_price = $regularPrice['price'];
