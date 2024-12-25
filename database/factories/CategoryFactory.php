@@ -21,7 +21,7 @@ class CategoryFactory extends Factory
         return [
             'code' => $code,
             'title' => ucwords(fake()->words(2, true)),
-            'url' => 'https://example.com/cat/'.$code,
+            'external_url' => 'https://example.com/cat/'.$code,
         ];
     }
 }

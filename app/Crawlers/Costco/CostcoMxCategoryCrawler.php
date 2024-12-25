@@ -31,7 +31,7 @@ class CostcoMxCategoryCrawler extends JsonBaseCrawler
             'slug' => 'costco',
         ], [
             'name' => 'Costco',
-            'url' => 'https://www.costco.com.mx',
+            'external_url' => 'https://www.costco.com.mx',
         ]);
     }
 
@@ -49,7 +49,7 @@ class CostcoMxCategoryCrawler extends JsonBaseCrawler
                 if (isset($product->price->value)) {
                     $data['sku'] = $product->code;
                     $data['title'] = $product->name;
-                    $data['url'] = 'https://www.costco.com.mx'.$product->url;
+                    $data['external_url'] = 'https://www.costco.com.mx'.$product->url;
                     $data['image_url'] = $this->getImageUrl($product);
                     $data['price'] = $product->price->value;
     
@@ -76,7 +76,7 @@ class CostcoMxCategoryCrawler extends JsonBaseCrawler
 
     protected function saveProduct(array $data, string $source): void
     {
-        preg_match('#/p/([^/]+)$#', $data['url'], $matches);
+        preg_match('#/p/([^/]+)$#', $data['external_url'], $matches);
         $sku = $matches[1];
 
         $price = (float) str_replace(['$', ','], '', $data['price']);
@@ -87,7 +87,7 @@ class CostcoMxCategoryCrawler extends JsonBaseCrawler
         ], [
             'brand' => null,
             'title' => strip_tags($data['title']),
-            'url' => $data['url'],
+            'external_url' => $data['external_url'],
             'image_url' => $data['image_url'],
         ]);
 
@@ -123,7 +123,7 @@ class CostcoMxCategoryCrawler extends JsonBaseCrawler
         $categories[] = [
             'code' => $json->category->code,
             'title' => $json->category->name,
-            'url' => 'https://www.costco.com.mx'.$json->category->url,
+            'external_url' => 'https://www.costco.com.mx'.$json->category->url,
         ];
 
         if (isset($json->category->supercategories)) {
@@ -131,7 +131,7 @@ class CostcoMxCategoryCrawler extends JsonBaseCrawler
                 $categories[] = [
                     'code' => $super->code,
                     'title' => $super->name,
-                    'url' => 'https://www.costco.com.mx'.$super->url,
+                    'external_url' => 'https://www.costco.com.mx'.$super->url,
                 ];
             }
         }
@@ -144,7 +144,7 @@ class CostcoMxCategoryCrawler extends JsonBaseCrawler
                 'code' => $cat['code'],
             ], [
                 'title' => $cat['title'],
-                'url' => $cat['url'],
+                'external_url' => $cat['external_url'],
                 'parent_id' => $parentId,
             ]);
 

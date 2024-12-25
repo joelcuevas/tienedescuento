@@ -24,7 +24,7 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
             'slug' => 'liverpool',
         ], [
             'name' => 'Liverpool',
-            'url' => 'https://www.liverpool.com.mx',
+            'external_url' => 'https://www.liverpool.com.mx',
         ]);
     }
 
@@ -46,7 +46,7 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
                 ], [
                     'brand' => $this->getBrand($meta),
                     'title' => ucwords(strip_tags($meta->title)),
-                    'url' => $url,
+                    'external_url' => $url,
                     'image_url' => $imageUrl,
                 ]);
 
@@ -127,7 +127,7 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
                         'code' => $code,
                     ], [
                         'title' => $title,
-                        'url' => "https://www.liverpool.com.mx/tienda/{$slug}/{$code}",
+                        'external_url' => "https://www.liverpool.com.mx/tienda/{$slug}/{$code}",
                         'parent_id' => $parentId,
                     ]);
 

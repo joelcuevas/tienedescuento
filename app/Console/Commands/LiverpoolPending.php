@@ -29,9 +29,9 @@ class LiverpoolPending extends Command
             ->get();
 
         foreach ($products as $product) {
-            Url::resolve($product->url);
+            Url::resolve($product->external_url);
 
-            $this->line("[Product {$product->id}] {$product->url}");
+            $this->line("[Product {$product->id}] {$product->external_url}");
 
             cache(['liverpool.next-id' => $product->id]);
         }

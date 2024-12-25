@@ -18,7 +18,7 @@ class ProductFactory extends Factory
             'brand' => mb_ucfirst(fake()->word()),
             'sku' => $sku,
             'title' => $title,
-            'url' => 'https://example.com/product/'.$sku,
+            'external_url' => 'https://example.com/product/'.$sku,
             'image_url' => 'https://via.assets.so/shoe.png?id=1'.rand(1, 9999),
         ];
     }
