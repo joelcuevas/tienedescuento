@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Jobs\Middleware\ThrottleCrawlers;
 use App\Models\Url;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;

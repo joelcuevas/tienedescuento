@@ -5,7 +5,6 @@ namespace App\Crawlers\Liverpool;
 use App\Models\Product;
 use App\Models\Store;
 use Illuminate\Http\Response;
-use Symfony\Component\DomCrawler\Crawler;
 
 class LiverpoolProductCrawler extends LiverpoolBaseCrawler
 {

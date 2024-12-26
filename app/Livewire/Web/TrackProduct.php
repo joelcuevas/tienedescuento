@@ -20,7 +20,7 @@ class TrackProduct extends Component
         $this->user = Auth::user();
     }
 
-    public function mount(Product $product) 
+    public function mount(Product $product)
     {
         $this->product = $product;
 

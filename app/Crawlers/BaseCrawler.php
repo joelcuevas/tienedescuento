@@ -7,7 +7,6 @@ use App\Models\Url;
 use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
-use Symfony\Component\DomCrawler\Crawler;
 
 abstract class BaseCrawler
 {

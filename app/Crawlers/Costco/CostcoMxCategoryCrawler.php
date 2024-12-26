@@ -3,14 +3,11 @@
 namespace App\Crawlers\Costco;
 
 use App\Crawlers\JsonBaseCrawler;
-use App\Jobs\ResolveUrl;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Store;
 use App\Models\Url;
 use Illuminate\Http\Response;
-use Symfony\Component\DomCrawler\Crawler;
-use Illuminate\Support\Str;
 
 class CostcoMxCategoryCrawler extends JsonBaseCrawler
 {
@@ -52,7 +49,7 @@ class CostcoMxCategoryCrawler extends JsonBaseCrawler
                     $data['external_url'] = 'https://www.costco.com.mx'.$product->url;
                     $data['image_url'] = $this->getImageUrl($product);
                     $data['price'] = $product->price->value;
-    
+
                     $this->saveProduct($data, 'category');
                 }
             }

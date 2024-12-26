@@ -6,7 +6,6 @@ use App\Models\Product;
 use App\Models\Store;
 use App\Models\Url;
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Builder;
 
 class LiverpoolPending extends Command
 {

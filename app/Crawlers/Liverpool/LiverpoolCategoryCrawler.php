@@ -4,7 +4,6 @@ namespace App\Crawlers\Liverpool;
 
 use App\Models\Url;
 use Illuminate\Http\Response;
-use Symfony\Component\DomCrawler\Crawler;
 
 class LiverpoolCategoryCrawler extends LiverpoolBaseCrawler
 {
