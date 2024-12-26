@@ -15,11 +15,9 @@ class Store extends Model
         'views' => 0,
     ];
 
-    protected function link(): Attribute
+    public function link(): string
     {
-        return Attribute::make(
-            get: fn () => route('catalogs.store', [$this->slug]),
-        );
+        return route('catalogs.store', [$this->slug]);
     }
 
     protected function imageUrl(): Attribute
@@ -29,7 +27,7 @@ class Store extends Model
         );
     }
 
-    public function getThumbAspect()
+    public function thumbAspect()
     {
         return config('stores.'.$this->country.'.'.$this->slug.'.thumb-aspect', 'portrait');
     }

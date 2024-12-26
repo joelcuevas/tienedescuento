@@ -8,7 +8,9 @@
     <div class="lg:grid lg:grid-cols-12 lg:auto-rows-min lg:gap-x-8"> 
         <div class="lg:col-span-2 lg:row-span-4">
             <div class="w-full bg-gray-100/90 rounded-xl p-3 object-center aspect-[3/2] lg:aspect-[3/4] text-center flex justify-center">
-                <img src="{{ $product->image_url }}" alt="{{ $product->title }}" class="mix-blend-multiply h-full object-cover rounded-lg">
+                <div class="rounded-lg overflow-hidden w-full {{ $product->store->thumbAspect() == 'square' ? '' : 'h-full' }}">
+                    <img src="{{ $product->image_url }}" alt="{{ $product->title }}" class="mix-blend-multiply w-full h-full rounded-lg {{ $product->store->thumbAspect() == 'square' ? 'object-scale-down' : 'object-cover' }}">
+                </div>
             </div>
         </div>
 
@@ -21,12 +23,12 @@
             @endif
 
             <div class="text-sm flex w-full truncate mt-6 lg:mt-3">
-                <a href="{{ $product->store_link }}" class="max-w-[50%] truncate text-gray-600 hover:text-gray-900">{{ $product->store->name }}</a>
+                <a href="{{ $product->storeLink() }}" class="max-w-[50%] truncate text-gray-600 hover:text-gray-900">{{ $product->store->name }}</a>
                 <span class="text-gray-300 px-2">/</span>
-                <a href="{{ $product->category_link }}" class="max-w-[50%] truncate text-gray-600 hover:text-gray-900">{{ $product->category }}</a>
+                <a href="{{ $product->categoryLink() }}" class="max-w-[50%] truncate text-gray-600 hover:text-gray-900">{{ $product->category }}</a>
                 @if ($product->brand)
                     <span class="text-gray-300 px-2">/</span>
-                    <a href="{{ $product->category_brand_link }}" class="max-w-[50%] truncate text-gray-600 hover:text-gray-900">{{ $product->brand }}</a>
+                    <a href="{{ $product->categoryBrandLink() }}" class="max-w-[50%] truncate text-gray-600 hover:text-gray-900">{{ $product->brand }}</a>
                 @endif
             </div>
 

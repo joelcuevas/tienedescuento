@@ -19,6 +19,8 @@ class Product extends Model
     use HasFactory;
     use HasPrices;
 
+    const DAYS_OUTDATED = 3;
+
     protected $attributes = [
         'views' => 0,
     ];
@@ -46,43 +48,34 @@ class Product extends Model
         );
     }
 
-    protected function link(): Attribute
+    public function isOutdated(): bool
     {
-        return Attribute::make(
-            get: fn () => route('products.show', [$this->store->slug, $this->sku, $this->slug]),
-        );
+        return $this->priced_at < now()->subDays(self::DAYS_OUTDATED);
     }
 
-    protected function storeLink(): Attribute
+    public function link(): string
     {
-        return Attribute::make(
-            get: fn () => route('catalogs.store', [$this->store->slug]),
-        );
+        return route('products.show', [$this->store->slug, $this->sku, $this->slug]);
     }
 
-    protected function brandLink(): Attribute
+    public function storeLink(): string
     {
-        return Attribute::make(
-            get: fn () => route('catalogs.brand', [$this->store->slug, $this->brand_slug]),
-        );
+        return route('catalogs.store', [$this->store->slug]);
     }
 
-    protected function categoryLink(): Attribute
+    public function brandLink(): string
     {
-        return Attribute::make(
-            get: fn () => route('catalogs.category', [$this->store->slug, $this->categories->last()->slug]),
-        );
+        return route('catalogs.brand', [$this->store->slug, $this->brand_slug]);
     }
 
-    protected function categoryBrandLink(): Attribute
+    public function categoryLink(): string
     {
-        return Attribute::make(
-            get: fn () => route('catalogs.category_brand', [
-                $this->store->slug,
-                $this->categories->first()->slug,
-                $this->brand_slug,
-            ]),
-        );
+        return route('catalogs.category', [$this->store->slug, $this->categories->last()->slug]);
+    }
+
+    public function categoryBrandLink(): string
+    {
+        return route('catalogs.category_brand', [$this->store->slug, $this->categories->first()->slug, $this->brand_slug]);
     }
 
     public function prices(): HasMany
@@ -105,14 +98,9 @@ class Product extends Model
         return 'products_index';
     }
 
-    public function isOutdated(): bool
-    {
-        return $this->priced_at < now()->subDays(3);
-    }
-
     public static function scopeRecent(Builder $query): Builder
     {
-        return $query->where('priced_at', '>=', now()->subDays(3));
+        return $query->where('priced_at', '>=', now()->subDays(self::DAYS_OUTDATED));
     }
 
     public static function scopeWhereCategory(Builder $query, string $categorySlug, int $depth = 0): Builder
