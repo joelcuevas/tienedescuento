@@ -35,7 +35,7 @@ class SearchProducts extends Component
 
             if ($byUrl->count() == 1) {
                 // if there's only one result, redirect to the pdp
-                $this->redirect($byUrl->first()->getLink());
+                $this->redirect($byUrl->first()->link());
             }
         }
 
@@ -45,7 +45,7 @@ class SearchProducts extends Component
 
         if ($bySkuCount == 1) {
             // if there's only one result, redirect to the pdp
-            $this->redirect($bySku->first()->getLink());
+            $this->redirect($bySku->first()->link());
         }
 
         if ($bySkuCount > 1) {
