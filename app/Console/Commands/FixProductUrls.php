@@ -19,7 +19,7 @@ class FixProductUrls extends Command
         $products = Product::whereNull('url_id')
             ->where('id', '>', $nextId)
             ->where('id', '<', $nextId + 500)
-            ->take(500)
+            ->take(2000)
             ->orderBy('id')
             ->get();
 

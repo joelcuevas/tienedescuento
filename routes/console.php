@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Schedule;
 
+Schedule::command('fix:urls')->everyMinute();
+
 Schedule::command('chascity:pending --limit=15')->everyMinute();
 Schedule::command('liverpool:pending --limit=50')->everyMinute();
 
