@@ -18,6 +18,10 @@ class LiverpoolPending extends Command
         $store = Store::where('country', 'mx')->whereSlug('liverpool')->first();
         $nextId = (int) cache('liverpool.next-id', 0);
 
+        if ($nextId == 0) {
+            $nextId = Product::whereStoreId($store->id)->first()->id;
+        }
+
         $products = Product::query()
             ->where('priced_at', '<', now()->subHours(18))
             ->whereStoreId($store->id)
@@ -32,7 +36,7 @@ class LiverpoolPending extends Command
 
             $this->line("[Product {$product->id}] {$product->external_url}");
 
-            cache(['liverpool.next-id' => $product->id]);
+            cache(['liverpool.next-id' => $product->id], now()->addHours(24));
         }
     }
 }

@@ -24,11 +24,7 @@ class ChascityPending extends Command
     {
         $store = Store::whereCountry('mx')->whereSlug($storeSlug)->first();
 
-        if ($storeSlug == 'liverpool') {
-            $nextId = (int) cache('chascity.next-id1', 0);
-        } else {
-            $nextId = (int) cache('chascity.next-id-'.$storeSlug, 0);
-        }
+        $nextId = (int) cache('chascity.next-id-'.$storeSlug, 0);
 
         if ($nextId == 0) {
             $nextId = Product::whereStoreId($store->id)->first()->id;
@@ -61,7 +57,7 @@ class ChascityPending extends Command
                 cache(['chascity.next-id1' => $product->id]);
             }
 
-            cache(['chascity.next-id-'.$storeSlug => $product->id]);
+            cache(['chascity.next-id-'.$storeSlug => $product->id], now()->addHours(24));
         }
     }
 }
