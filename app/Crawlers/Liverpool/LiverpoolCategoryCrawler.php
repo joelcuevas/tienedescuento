@@ -2,6 +2,7 @@
 
 namespace App\Crawlers\Liverpool;
 
+use App\Jobs\DelayUrl;
 use App\Models\Url;
 use Illuminate\Http\Response;
 
@@ -36,10 +37,7 @@ class LiverpoolCategoryCrawler extends LiverpoolBaseCrawler
 
         // this is a product listing page, now save the records
         foreach ($mainContent->records as $record) {
-            $product = $this->saveProduct($record, 'category');
-
-            // @todo: postpone product url crawl
-            // DelayUrl::dispatch($product->url);
+            $this->saveProduct($record, 'category');
         }
 
         // if there are more pages, resolve the next one

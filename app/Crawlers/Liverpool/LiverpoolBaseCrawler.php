@@ -6,6 +6,7 @@ use App\Crawlers\WebBaseCrawler;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Store;
+use App\Models\Url;
 use Illuminate\Support\Str;
 
 abstract class LiverpoolBaseCrawler extends WebBaseCrawler
@@ -37,8 +38,14 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
 
             if ($price) {
                 $slug = Str::of($meta->title)->lower()->replace(' ', '-');
-                $url = "https://www.liverpool.com.mx/tienda/pdp/{$slug}/{$meta->id}";
+                $externalUrl = "https://www.liverpool.com.mx/tienda/pdp/{$slug}/{$meta->id}";
                 $imageUrl = $this->getImageUrl($meta);
+
+                $url = Url::resolve($externalUrl);
+
+                if ($source == 'category') {
+                    $url?->delay();
+                }
 
                 $product = Product::updateOrCreate([
                     'store_id' => $this->store->id,
@@ -46,7 +53,8 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
                 ], [
                     'brand' => $this->getBrand($meta),
                     'title' => ucwords(strip_tags($meta->title)),
-                    'external_url' => $url,
+                    'url_id' => $url?->id,
+                    'external_url' => $externalUrl,
                     'image_url' => $imageUrl,
                 ]);
 

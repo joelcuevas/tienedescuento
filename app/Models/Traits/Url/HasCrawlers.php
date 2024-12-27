@@ -38,6 +38,13 @@ trait HasCrawlers
         return $this->save();
     }
 
+    public function delay(int $hours = 48): bool
+    {
+        $this->scheduled_at = now()->addHours($hours);
+
+        return $this->save();
+    }
+
     public function dispatch(bool $sync = false): void
     {
         $this->reserved_at = now();
