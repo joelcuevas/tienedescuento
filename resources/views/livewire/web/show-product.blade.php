@@ -9,7 +9,7 @@
         <div class="lg:col-span-2 lg:row-span-4">
             <div class="w-full bg-gray-100/90 rounded-xl p-3 object-center aspect-[3/2] lg:aspect-[3/4] text-center flex justify-center">
                 <div class="rounded-lg overflow-hidden w-full {{ $product->store->thumbAspect() == 'square' ? '' : 'h-full' }}">
-                    <img src="{{ $product->image_url }}" alt="{{ $product->title }}" class="mix-blend-multiply w-full h-full rounded-lg {{ $product->store->thumbAspect() == 'square' ? 'object-scale-down' : 'object-cover' }}">
+                    <img src="{{ $product->image_url }}" alt="{{ $product->title }}" class="mix-blend-multiply w-full h-full rounded-lg object-contain">
                 </div>
             </div>
         </div>
