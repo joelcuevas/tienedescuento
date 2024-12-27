@@ -8,7 +8,7 @@ use Illuminate\Http\Response;
 
 class LiverpoolCategoryCrawler extends LiverpoolBaseCrawler
 {
-    protected static string $pattern = '#^https:\/\/www\.liverpool\.com\.mx\/tienda\/[^\/]+\/[^\/]+(\/page-\d+)?$#';
+    protected static string $pattern = '#^https://www\.liverpool\.com\.mx/tienda/[^/]+/[^/]+(/page-\d+)?$#';
 
     protected int $cooldown = 1;
 

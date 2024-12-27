@@ -9,7 +9,7 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class CostcoMxSitemapCrawler extends WebBaseCrawler
 {
-    protected static string $pattern = '#^https:\/\/www\.costco\.com\.mx\/sitemap.*\.xml$#';
+    protected static string $pattern = '#^https:/www\.costco\.com\.mx/sitemap.*\.xml$#';
 
     protected int $cooldown = 1;
 

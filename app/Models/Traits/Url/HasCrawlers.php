@@ -41,6 +41,7 @@ trait HasCrawlers
     public function delay(int $hours = 48): bool
     {
         $this->scheduled_at = now()->addHours($hours);
+        $this->delayed_at = now();
 
         return $this->save();
     }
@@ -91,6 +92,7 @@ trait HasCrawlers
         $this->crawling_time = round(microtime(true) - $crawlingTime, 2);
         $this->scheduled_at = now()->addDays($scheduledAt);
         $this->reserved_at = null;
+        $this->delayed_at = null;
         $this->hits = $this->hits + 1;
         $this->save();
     }
