@@ -7,11 +7,7 @@
 <div>
     <div class="lg:grid lg:grid-cols-12 lg:auto-rows-min lg:gap-x-8"> 
         <div class="lg:col-span-2 lg:row-span-4">
-            <div class="w-full bg-gray-100/90 rounded-xl p-3 object-center aspect-[3/2] lg:aspect-[3/4] text-center flex justify-center">
-                <div class="rounded-lg overflow-hidden w-full {{ $product->store->thumbAspect() == 'square' ? '' : 'h-full' }}">
-                    <img src="{{ $product->image_url }}" alt="{{ $product->title }}" class="mix-blend-multiply w-full h-full rounded-lg object-contain">
-                </div>
-            </div>
+            <x-product-thumb :$product />
         </div>
 
         <div class="lg:col-span-6 lg:row-span-1">  
@@ -38,9 +34,8 @@
 
             <div class="flex items-center space-x-2 mb-10">
                 @if ($product->discount > 0)
-                    <div class="text-sm line-through text-gray-400">{{ $product->regular_price_formatted }}</div>
                     <div class="text-lg font-medium text-red-700">{{ $product->latest_price_formatted }}</div>
-                    <div class="text-sm rounded-full bg-red-700 text-white px-2 leading-6">-{{ abs($product->discount) }}% real</div>
+                    <div class="text-sm line-through text-gray-400">{{ $product->regular_price_formatted }}</div>
                 @elseif ($product->discount < 0)
                     <div>{{ $product->latest_price_formatted }}</div>
                     <div class="text-sm text-gray-500">({{ abs($product->discount) }}% más caro)</div>
