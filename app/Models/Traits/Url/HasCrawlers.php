@@ -5,19 +5,33 @@ namespace App\Models\Traits\Url;
 use App\Jobs\CrawlUrl;
 use App\Models\Url;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
 
 trait HasCrawlers
 {
     public static function resolve(string $href): ?Url
     {
+        // first check if this url is an alias
+        $alias = self::resolveAlias($href);
+        $href = $alias ?? $href;
+
+        // then look for a direct hash match
         $hash = sha1($href);
         $url = Url::whereHash($hash)->first();
 
         if ($url == null) {
-            $crawler = self::findCrawlerFqcn($href);
+            // if not, find a matching crawler
+            $crawler = self::resolveCrawler($href);
 
             if ($crawler) {
+                // look for an existing product
+                $product = $crawler::matchesProduct($href);
+
+                // is there an existing and equivalent url?
+                if ($product && $product->url) {
+                    return $product->url;
+                }
+
+                // if there's not, create a new one
                 $url = Url::create([
                     'href' => $href,
                     'domain' => parse_url($href, PHP_URL_HOST),
@@ -25,6 +39,12 @@ trait HasCrawlers
                     'hash' => $hash,
                     'crawler_class' => $crawler,
                 ]);
+
+                // match the existing product to this url
+                if ($product) {
+                    $product->url_id = $url->id;
+                    $product->save();
+                }
             }
         }
 
@@ -97,21 +117,44 @@ trait HasCrawlers
         $this->save();
     }
 
-    private static function findCrawlerFqcn($href): ?string
+    private static function resolveCrawler($href): ?string
     {
         // get all crawler classes, ignoring base crawlers
-        $files = collect(File::allFiles(app_path('Crawlers')))
-            ->filter(function ($file) {
-                return Str::endsWith($file->getFilename(), 'Crawler.php') &&
-                    ! Str::endsWith($file->getFilename(), 'BaseCrawler.php');
-            });
+        $files = File::allFiles(app_path('Crawlers'));
 
-        foreach ($files as $file) {
-            $relativePath = str_replace(app_path(), 'App', $file->getPathname());
-            $fqcn = '\\'.str_replace('/', '\\', rtrim($relativePath, '.php'));
+        $crawlers = array_filter($files, function ($file) {
+            $name = $file->getFilename();
 
-            if ($fqcn::matchesPattern($href)) {
-                return $fqcn;
+            return str_ends_with($name, 'Crawler.php') && ! str_ends_with($name, 'BaseCrawler.php');
+        });
+
+        // evaluate which one matches the url href
+        foreach ($crawlers as $file) {
+            $path = str_replace(app_path(), 'App', $file->getPathname());
+            $crawler = '\\'.str_replace('/', '\\', rtrim($path, '.php'));
+
+            if ($crawler::matchesPattern($href)) {
+                return $crawler;
+            }
+        }
+
+        return null;
+    }
+
+    private static function resolveAlias($href): ?string
+    {
+        $files = File::allFiles(app_path('Crawlers'));
+
+        $aliases = array_filter($files, function ($file) {
+            return str_ends_with($file->getFilename(), 'Alias.php');
+        });
+
+        foreach ($aliases as $file) {
+            $path = str_replace(app_path(), 'App', $file->getPathname());
+            $alias = '\\'.str_replace('/', '\\', rtrim($path, '.php'));
+
+            if ($match = $alias::matchesPattern($href)) {
+                return $match;
             }
         }
 

@@ -9,9 +9,7 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class LiverpoolSitemapCrawler extends LiverpoolBaseCrawler
 {
-    protected static string $pattern = '#^https://www\.liverpool\.com\.mx/sitemap/[^/]+\.xml$#';
-
-    protected int $cooldown = 1;
+    protected static ?string $pattern = '#^https://www\.liverpool\.com\.mx/sitemap/[^/]+\.xml$#';
 
     protected array $ignore = ['/pdps-', '/ck-'];
 
@@ -21,6 +19,7 @@ class LiverpoolSitemapCrawler extends LiverpoolBaseCrawler
         $dom->filterXPath('//loc')->each(function (Crawler $node) {
             $href = $node->text();
 
+            // ignore pdps for now
             if (Str::contains($href, $this->ignore)) {
                 return;
             }

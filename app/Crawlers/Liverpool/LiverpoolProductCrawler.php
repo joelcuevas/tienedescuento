@@ -3,14 +3,13 @@
 namespace App\Crawlers\Liverpool;
 
 use App\Models\Product;
-use App\Models\Store;
 use Illuminate\Http\Response;
 
 class LiverpoolProductCrawler extends LiverpoolBaseCrawler
 {
-    protected static string $pattern = '#^https://www\.liverpool\.com\.mx/tienda/pdp/(?:.+/)?(\d+)(?:\?.*)?$#';
+    protected static ?string $pattern = '#^https://www\.liverpool\.com\.mx/tienda/pdp/(?:.+/)?(\d+)(?:\?.*)?$#';
 
-    protected int $cooldown = 2;
+    protected static ?int $skuPatternIndex = 1;
 
     protected function parse(mixed $dom): int
     {
@@ -27,7 +26,7 @@ class LiverpoolProductCrawler extends LiverpoolBaseCrawler
             return Response::HTTP_NO_CONTENT;
         }
 
-        // yes, there is! save the product
+        // there is procesable data! save the product
         $mainContent = $results->query->data->mainContent;
 
         if (isset($mainContent->records)) {

@@ -3,14 +3,13 @@
 namespace App\Crawlers\Costco;
 
 use App\Models\Product;
-use App\Models\Store;
 use Illuminate\Http\Response;
 
 class CostcoMxProductCrawler extends CostcoMxBaseCrawler
 {
-    protected static string $pattern = '#^https://www\.costco\.com\.mx/rest/v2/mexico/products/(?!search\b)([\w-]+)(?:[/?].*)?$#';
+    protected static ?string $pattern = '#^https://www\.costco\.com\.mx/rest/v2/mexico/products/(?!search\b)([\w-]+)(?:[/?].*)?$#';
 
-    protected int $cooldown = 2;
+    protected static ?int $skuPatternIndex = 1;
 
     protected function parse(mixed $json): int
     {
@@ -19,6 +18,7 @@ class CostcoMxProductCrawler extends CostcoMxBaseCrawler
             return Response::HTTP_NO_CONTENT;
         }
 
+        // just save the product now
         if ($json?->stock?->stockLevelStatus == 'inStock') {
             if (isset($json->price->value)) {
                 $data['sku'] = $json->code;

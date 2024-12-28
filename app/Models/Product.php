@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -93,6 +92,11 @@ class Product extends Model
         return $this->belongsTo(Store::class);
     }
 
+    public function url(): BelongsTo
+    {
+        return $this->belongsTo(Url::class);
+    }
+
     public function searchableAs(): string
     {
         return 'products_index';
@@ -124,24 +128,5 @@ class Product extends Model
     public static function scopeSearch(Builder $query, string $term): Builder
     {
         return $query->whereRaw('MATCH(brand, sku, title) AGAINST(? IN BOOLEAN MODE)', ["{$term}*"]);
-    }
-
-    public static function searchByUrl($url): Collection
-    {
-        $files = glob(app_path('Crawlers/*ProductCrawler.php'));
-
-        foreach ($files as $file) {
-            $className = basename($file, '.php');
-
-            $fqcn = "App\\Crawlers\\$className";
-            $crawler = new $fqcn($url);
-            $product = $crawler->resolveProduct();
-
-            if ($product) {
-                return collect([$product]);
-            }
-        }
-
-        return collect();
     }
 }

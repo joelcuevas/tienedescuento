@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -40,5 +41,14 @@ class Store extends Model
     public function categories(): HasMany
     {
         return $this->hasMany(Category::class);
+    }
+
+    public static function scopeWhereCode(Builder $query, string $code): Builder
+    {
+        $tokens = explode('-', $code);
+        $country = array_pop($tokens);
+        $slug = implode('-', $tokens);
+
+        return $query->whereCountry($country)->whereSlug($slug);
     }
 }

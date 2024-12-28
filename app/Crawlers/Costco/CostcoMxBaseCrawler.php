@@ -10,6 +10,8 @@ use App\Models\Url;
 
 abstract class CostcoMxBaseCrawler extends JsonBaseCrawler
 {
+    protected static ?string $storeCode = 'costco-mx';
+
     protected Store $store;
 
     protected function setup(): void
@@ -24,7 +26,7 @@ abstract class CostcoMxBaseCrawler extends JsonBaseCrawler
     }
 
     protected function saveProduct(array $data, string $source): void
-    {   
+    {
         $crawl = 'https://www.costco.com.mx/rest/v2/mexico/products/%s/?fields=FULL&lang=es_MX&curr=MXN';
         $href = sprintf($crawl, $data['sku']);
         $url = Url::resolve($href);

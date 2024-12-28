@@ -4,10 +4,11 @@ namespace App\Livewire\Web;
 
 use App\Models\Product;
 use App\Models\Store;
+use App\Models\Url;
 use App\Support\LimitedPaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
-use Livewire\Attributes\Url;
+use Livewire\Attributes\Url as AttrUrl;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -15,7 +16,7 @@ class SearchProducts extends Component
 {
     use WithPagination;
 
-    #[Url]
+    #[AttrUrl]
     public string $q = '';
 
     public $countryCode;
@@ -31,11 +32,11 @@ class SearchProducts extends Component
 
         // search by url
         if (Str::startsWith($this->q, 'https://')) {
-            $byUrl = Product::searchByUrl($this->q);
+            $byUrl = Url::resolve($this->q);
 
-            if ($byUrl->count() == 1) {
-                // if there's only one result, redirect to the pdp
-                $this->redirect($byUrl->first()->link());
+            // if there's only one result, redirect to the pdp
+            if ($byUrl && $byUrl->product) {
+                $this->redirect($byUrl->product->link());
             }
         }
 
@@ -43,13 +44,13 @@ class SearchProducts extends Component
         $bySku = Product::whereIn('store_id', $storeIds)->whereSku($this->q);
         $bySkuCount = $bySku->count();
 
+        // if there's only one result, redirect to the pdp
         if ($bySkuCount == 1) {
-            // if there's only one result, redirect to the pdp
             $this->redirect($bySku->first()->link());
         }
 
+        // if there is more than one result, show the grid
         if ($bySkuCount > 1) {
-            // if there is more than one result, show the grid
             return $bySku;
         }
 

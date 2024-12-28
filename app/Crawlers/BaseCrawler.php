@@ -3,6 +3,7 @@
 namespace App\Crawlers;
 
 use App\Models\Product;
+use App\Models\Store;
 use App\Models\Url;
 use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Http\Response;
@@ -10,7 +11,11 @@ use Illuminate\Support\Facades\Http;
 
 abstract class BaseCrawler
 {
-    protected static string $pattern = '';
+    protected static ?string $storeCode = null;
+
+    protected static ?string $pattern = null;
+
+    protected static ?int $skuPatternIndex = null;
 
     protected int $cooldown = 1;
 
@@ -30,6 +35,23 @@ abstract class BaseCrawler
     public static function matchesPattern($url): bool
     {
         return preg_match(static::$pattern, $url);
+    }
+
+    public static function matchesProduct($href): ?Product
+    {
+        if (static::$skuPatternIndex !== null) {
+            preg_match(static::$pattern, $href, $matches);
+
+            if (isset($matches[static::$skuPatternIndex])) {
+                $store = Store::whereCode(static::$storeCode)->first();
+
+                if ($store) {
+                    return Product::whereStoreId($store->id)->whereSku($matches[1])->first();
+                }
+            }
+        }
+
+        return null;
     }
 
     abstract protected function parse(mixed $body): int;

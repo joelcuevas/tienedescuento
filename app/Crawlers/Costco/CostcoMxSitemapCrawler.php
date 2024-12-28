@@ -9,11 +9,7 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class CostcoMxSitemapCrawler extends WebBaseCrawler
 {
-    protected static string $pattern = '#^https:/www\.costco\.com\.mx/sitemap.*\.xml$#';
-
-    protected int $cooldown = 1;
-
-    protected string $baseUrl = 'https://www.costco.com.mx/rest/v2/mexico/products/search?category=%s&currentPage=0&pageSize=100&lang=es_MX&curr=MXN&fields=FULL';
+    protected static ?string $pattern = '#^https:/www\.costco\.com\.mx/sitemap.*\.xml$#';
 
     protected function parse(mixed $dom): int
     {
@@ -25,7 +21,10 @@ class CostcoMxSitemapCrawler extends WebBaseCrawler
             $categoryCode = $matches[1] ?? null;
 
             if ($categoryCode) {
-                $href = sprintf($this->baseUrl, $categoryCode);
+                // convert the web url to a json-crawlable url
+                $jsonUrl = 'https://www.costco.com.mx/rest/v2/mexico/products/search?category=%s&currentPage=0&pageSize=100&lang=es_MX&curr=MXN&fields=FULL';
+                $href = sprintf($jsonUrl, $categoryCode);
+
                 ResolveUrl::dispatch($href);
             }
         });

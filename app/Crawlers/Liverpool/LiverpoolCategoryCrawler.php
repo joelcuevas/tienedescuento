@@ -2,15 +2,12 @@
 
 namespace App\Crawlers\Liverpool;
 
-use App\Jobs\DelayUrl;
 use App\Models\Url;
 use Illuminate\Http\Response;
 
 class LiverpoolCategoryCrawler extends LiverpoolBaseCrawler
 {
-    protected static string $pattern = '#^https://www\.liverpool\.com\.mx/tienda/[^/]+/[^/]+(/page-\d+)?$#';
-
-    protected int $cooldown = 1;
+    protected static ?string $pattern = '#^https://www\.liverpool\.com\.mx/tienda/[^/]+/[^/]+(/page-\d+)?$#';
 
     protected function parse(mixed $dom): int
     {
@@ -27,7 +24,7 @@ class LiverpoolCategoryCrawler extends LiverpoolBaseCrawler
             return Response::HTTP_NO_CONTENT;
         }
 
-        // yes, there is!
+        // there is procesable data!
         $mainContent = $results->query->data->mainContent;
 
         // but this is a category showcase page; do not process

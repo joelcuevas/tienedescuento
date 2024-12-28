@@ -11,7 +11,7 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class ChascityProductCrawler extends WebBaseCrawler
 {
-    protected static string $pattern = '#^https://preciominimo\.chascity\.com/verificaprecio/[^?]+?\?sku=[^&]+$#';
+    protected static ?string $pattern = '#^https://preciominimo\.chascity\.com/verificaprecio/[^?]+?\?sku=[^&]+$#';
 
     protected int $cooldown = 180;
 

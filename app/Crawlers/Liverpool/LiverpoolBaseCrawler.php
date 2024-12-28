@@ -11,6 +11,8 @@ use Illuminate\Support\Str;
 
 abstract class LiverpoolBaseCrawler extends WebBaseCrawler
 {
+    protected static ?string $storeCode = 'liverpool-mx';
+
     protected Store $store;
 
     protected array $headers = [

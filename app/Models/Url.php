@@ -6,6 +6,7 @@ use App\Models\Traits\Url\HasCrawlers;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Url extends Model
 {
@@ -30,5 +31,10 @@ class Url extends Model
             ->where(fn ($q) => $q->whereNull('reserved_at')->orWhere('reserved_at', '<', now()->subHours(3)))
             ->limit($limit)
             ->orderBy('scheduled_at');
+    }
+
+    public function product(): HasOne
+    {
+        return $this->hasOne(Product::class);
     }
 }

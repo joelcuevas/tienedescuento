@@ -2,18 +2,13 @@
 
 namespace App\Crawlers\Costco;
 
-use App\Crawlers\JsonBaseCrawler;
 use App\Models\Category;
-use App\Models\Product;
-use App\Models\Store;
 use App\Models\Url;
 use Illuminate\Http\Response;
 
 class CostcoMxCategoryCrawler extends CostcoMxBaseCrawler
 {
-    protected static string $pattern = '#^https://www\.costco\.com\.mx/rest/v2/mexico/products/search(\?.+)?$#';
-
-    protected int $cooldown = 1;
+    protected static ?string $pattern = '#^https://www\.costco\.com\.mx/rest/v2/mexico/products/search(\?.+)?$#';
 
     protected function parse(mixed $json): int
     {
@@ -22,6 +17,7 @@ class CostcoMxCategoryCrawler extends CostcoMxBaseCrawler
             return Response::HTTP_NO_CONTENT;
         }
 
+        // get the page category and iterate over the products
         $category = $this->getCategory($json);
 
         foreach ($json->products as $product) {
