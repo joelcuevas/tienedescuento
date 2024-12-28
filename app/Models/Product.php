@@ -74,7 +74,7 @@ class Product extends Model
 
     public function categoryBrandLink(): string
     {
-        return route('catalogs.category_brand', [$this->store->slug, $this->categories->first()->slug, $this->brand_slug]);
+        return route('catalogs.category_brand', [$this->store->slug, $this->categories->last()->slug, $this->brand_slug]);
     }
 
     public function prices(): HasMany
