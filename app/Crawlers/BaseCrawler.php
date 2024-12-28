@@ -32,16 +32,6 @@ abstract class BaseCrawler
         return preg_match(static::$pattern, $url);
     }
 
-    public function resolveProduct(): ?Product
-    {
-        return null;
-    }
-
-    protected function recentlyCrawled(): bool
-    {
-        return false;
-    }
-
     abstract protected function parse(mixed $body): int;
 
     abstract protected function formatBody(string $body): mixed;
@@ -57,18 +47,6 @@ abstract class BaseCrawler
         }
 
         $this->setup();
-
-        $crawledToday = config('app.env') != 'local' && $this->url->crawled_at >= now()->startOfDay();
-
-        if ($crawledToday || $this->recentlyCrawled()) {
-            if ($this->url->crawled_at == null) {
-                $this->hit(Response::HTTP_ALREADY_REPORTED);
-            } else {
-                $this->url->release();
-            }
-
-            return;
-        }
 
         try {
             $href = $this->url->href;
