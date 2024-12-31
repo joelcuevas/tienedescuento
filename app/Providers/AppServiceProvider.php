@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Http\Middleware\SetCountryCode;
+use App\Support\LimitedPaginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -33,5 +35,9 @@ class AppServiceProvider extends ServiceProvider
         Model::unguard();
 
         Livewire::addPersistentMiddleware([SetCountryCode::class]);
+
+        Builder::macro('paginate', function ($perPage = 36) {
+            return LimitedPaginator::fromQuery($this, $perPage, $perPage * 10);
+        });
     }
 }

@@ -12,9 +12,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Laravel\Scout\Searchable;
 
 class Product extends Model
 {
+    use Searchable;
     use HasFactory;
     use HasPrices;
 
@@ -102,6 +104,22 @@ class Product extends Model
         return 'products_index';
     }
 
+    public function toSearchableArray(): array
+    {
+        return [
+            'store_name' => $this->store->name,
+            'sku' => $this->sku, 
+            'title' => $this->title, 
+            'brand' => $this->brand, 
+            'priced_date' => $this->priced_date,
+        ];
+    }
+
+    protected function makeAllSearchableUsing(Builder $query): Builder
+    {
+        return $query->with('store');
+    }
+
     public static function scopeRecent(Builder $query): Builder
     {
         return $query->where('priced_at', '>=', now()->subDays(self::DAYS_OUTDATED));
@@ -123,10 +141,5 @@ class Product extends Model
                 '=',
                 'cp.product_id'
             );
-    }
-
-    public static function scopeSearch(Builder $query, string $term): Builder
-    {
-        return $query->whereRaw('MATCH(brand, sku, title) AGAINST(? IN BOOLEAN MODE)', ["{$term}*"]);
     }
 }

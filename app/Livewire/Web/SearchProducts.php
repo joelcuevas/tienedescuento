@@ -26,7 +26,7 @@ class SearchProducts extends Component
         $this->countryCode = $countryCode;
     }
 
-    private function search(): Builder
+    private function search()
     {
         $storeIds = Store::whereCountry($this->countryCode)->pluck('id')->all();
 
@@ -62,13 +62,10 @@ class SearchProducts extends Component
 
     public function render()
     {
-        $query = $this->search()
-            ->recent()
-            ->with('store')
-            ->orderByDesc('discount');
+        $query = $this->search()->orderByDesc('discount');
 
         return view('livewire.web.search-products')->with([
-            'products' => LimitedPaginator::fromQuery($query, 36, 360),
+            'products' => $query->paginate(36)->load('store'),
         ]);
     }
 }
