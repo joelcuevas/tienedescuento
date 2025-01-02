@@ -196,6 +196,22 @@ return [
             'nice' => 0,
         ],
 
+        'system' => [
+            'connection' => 'redis',
+            'queue' => ['system'],
+            'balance' => 'auto',
+            'balanceMaxShift' => 1,
+            'balanceCooldown' => 3,
+            'autoScalingStrategy' => 'time',
+            'maxProcesses' => 20,
+            'maxTime' => 0,
+            'maxJobs' => 0,
+            'memory' => 128,
+            'tries' => 3,
+            'timeout' => 10,
+            'nice' => 0,
+        ],
+
         'crawlers-fast' => [
             'connection' => 'redis',
             'queue' => [],
@@ -236,20 +252,8 @@ return [
                 'timeout' => 10,
             ],
 
-            'crawlers-fast' => [
-                'queue' => ['liverpool', 'costco-mx'],
-                'timeout' => 30,
-            ],
-
-            'crawlers-slow' => [
-                'queue' => ['chascity'],
-                'timeout' => 60,
-            ],
-        ],
-
-        'local' => [
-            'default' => [
-                'queue' => ['default'],
+            'system' => [
+                'queue' => ['system'],
                 'timeout' => 10,
             ],
 
@@ -262,6 +266,9 @@ return [
                 'queue' => ['chascity'],
                 'timeout' => 60,
             ],
+        ],
+
+        'local' => [
         ],
     ],
 ];
