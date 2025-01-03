@@ -218,13 +218,7 @@ return [
     'environments' => [
         'production' => [
             'default' => array_merge($defaults, [
-                'queue' => ['default'],
-                'maxProcesses' => 5,
-                'timeout' => 10,
-            ]),
-
-            'system' => array_merge($defaults, [
-                'queue' => ['system'],
+                'queue' => ['default', 'system'],
                 'maxProcesses' => 5,
                 'timeout' => 10,
             ]),
@@ -237,7 +231,7 @@ return [
 
             'liverpool' => array_merge($defaults, [
                 'queue' => ['liverpool'],
-                'maxProcesses' => 20,
+                'maxProcesses' => 10,
                 'timeout' => 30,
             ]),
 
