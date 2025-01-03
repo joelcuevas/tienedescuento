@@ -51,24 +51,27 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
                     $url?->delay();
                 }
 
-                $product = Product::updateOrCreate([
-                    'store_id' => $this->store->id,
-                    'sku' => $meta->id,
-                ], [
-                    'brand' => $this->getBrand($meta),
-                    'title' => ucwords($title),
-                    'url_id' => $url?->id,
-                    'external_url' => $externalUrl,
-                    'image_url' => $imageUrl,
-                ]);
+                $product = Product::whereStoreId($this->store->id)->whereSku($meta->id)->first();
+
+                if (! $product) {
+                    $product = Product::create([
+                        'store_id' => $this->store->id,
+                        'sku' => $meta->id,
+                        'brand' => $this->getBrand($meta),
+                        'title' => ucwords($title),
+                        'url_id' => $url?->id,
+                        'external_url' => $externalUrl,
+                        'image_url' => $imageUrl,
+                    ]);
+
+                    $categories = $this->getCategories($meta);
+                    $product->categories()->syncWithoutDetaching($categories);
+                }
 
                 $product->prices()->create([
                     'price' => $price,
                     'source' => 'liverpool-'.$source,
                 ]);
-
-                $categories = $this->getCategories($meta);
-                $product->categories()->syncWithoutDetaching($categories);
 
                 return $product;
             }

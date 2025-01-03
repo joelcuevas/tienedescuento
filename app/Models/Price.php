@@ -25,7 +25,7 @@ class Price extends Model
             // if there's already a price for the date, keep the min
             $existing = $price->product->prices()
                 ->whereSource($price->source)
-                ->wherePricedAt($price->priced_at)
+                ->wherePricedDate($price->priced_date)
                 ->first();
 
             if ($existing) {

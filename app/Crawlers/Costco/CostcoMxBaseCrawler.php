@@ -37,16 +37,21 @@ abstract class CostcoMxBaseCrawler extends JsonBaseCrawler
             $url?->delay();
         }
 
-        $product = Product::updateOrCreate([
-            'store_id' => $this->store->id,
-            'sku' => $data['sku'],
-        ], [
-            'brand' => null,
-            'title' => strip_tags($data['title']),
-            'url_id' => $url?->id,
-            'external_url' => $data['external_url'],
-            'image_url' => $data['image_url'],
-        ]);
+        $product = Product::whereStoreId($this->store->id)->whereSku($data['sku'])->first();
+
+        if (! $product) {
+            $product = Product::create([
+                'store_id' => $this->store->id,
+                'sku' => $data['sku'],
+                'brand' => null,
+                'title' => strip_tags($data['title']),
+                'url_id' => $url?->id,
+                'external_url' => $data['external_url'],
+                'image_url' => $data['image_url'],
+            ]);
+
+            $product->categories()->syncWithoutDetaching($data['categories']);
+        }
 
         $price = (float) str_replace(['$', ','], '', $data['price']);
 
@@ -54,8 +59,6 @@ abstract class CostcoMxBaseCrawler extends JsonBaseCrawler
             'price' => $price,
             'source' => 'costco-'.$source,
         ]);
-
-        $product->categories()->syncWithoutDetaching($data['categories']);
     }
 
     protected function getImageUrl(object $product): ?string
