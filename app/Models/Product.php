@@ -40,6 +40,12 @@ class Product extends Model
             $product->brand = Str::limit($product->brand, 250);
             $product->brand_slug = $product->brand ? Str::slug($product->brand) : null;
         });
+
+        static::saved(function (Product $product) {
+            if ($product->wasChanged(['sku', 'title', 'brand'])) {
+                $product->searchable();
+            }
+        });
     }
 
     protected function category(): Attribute
@@ -111,7 +117,6 @@ class Product extends Model
             'sku' => $this->sku, 
             'title' => $this->title, 
             'brand' => $this->brand, 
-            'priced_date' => $this->priced_date,
         ];
     }
 
