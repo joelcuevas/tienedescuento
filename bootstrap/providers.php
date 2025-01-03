@@ -6,5 +6,4 @@ return [
     App\Providers\HorizonServiceProvider::class,
     App\Providers\JetstreamServiceProvider::class,
     App\Providers\SocialstreamServiceProvider::class,
-    App\Providers\TelescopeServiceProvider::class,
 ];
