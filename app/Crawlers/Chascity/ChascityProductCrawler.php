@@ -72,13 +72,15 @@ class ChascityProductCrawler extends WebBaseCrawler
         // store the prices for the product
         $product = $this->resolveProduct();
 
-        foreach ($prices as $price) {
-            $product->prices()->create([
-                'price' => $price[0],
-                'source' => 'chascity',
-                'priced_at' => new Carbon($price[1]),
-            ]);
-        }
+        Product::withoutSyncingToSearch(function() use ($product, $prices) {
+            foreach ($prices as $price) {
+                $product->prices()->create([
+                    'price' => $price[0],
+                    'source' => 'chascity',
+                    'priced_at' => new Carbon($price[1]),
+                ]);
+            }
+        });
 
         // good; do not re-crawl anytime soon
         return Response::HTTP_ALREADY_REPORTED;
