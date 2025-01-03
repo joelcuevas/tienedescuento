@@ -219,13 +219,13 @@ return [
         'production' => [
             'default' => array_merge($defaults, [
                 'queue' => ['default'],
-                'maxProcesses' => 20,
+                'maxProcesses' => 5,
                 'timeout' => 10,
             ]),
 
             'system' => array_merge($defaults, [
                 'queue' => ['system'],
-                'maxProcesses' => 10,
+                'maxProcesses' => 5,
                 'timeout' => 10,
             ]),
 
@@ -243,7 +243,7 @@ return [
 
             'chascity' => array_merge($defaults, [
                 'queue' => ['chascity'],
-                'maxProcesses' => 10,
+                'maxProcesses' => 5,
                 'timeout' => 60,
             ]),
         ],
