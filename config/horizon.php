@@ -232,19 +232,19 @@ return [
             'costco-mx' => array_merge($defaults, [
                 'queue' => ['costco-mx'],
                 'maxProcesses' => 10,
-                'timeout' => 10,
+                'timeout' => 30,
             ]),
 
             'liverpool' => array_merge($defaults, [
                 'queue' => ['liverpool'],
                 'maxProcesses' => 5,
-                'timeout' => 10,
+                'timeout' => 30,
             ]),
 
             'chascity' => array_merge($defaults, [
                 'queue' => ['chascity'],
                 'maxProcesses' => 10,
-                'timeout' => 30,
+                'timeout' => 60,
             ]),
         ],
 
