@@ -237,7 +237,7 @@ return [
 
             'liverpool' => array_merge($defaults, [
                 'queue' => ['liverpool'],
-                'maxProcesses' => 5,
+                'maxProcesses' => 10,
                 'timeout' => 30,
             ]),
 

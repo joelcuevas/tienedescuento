@@ -14,6 +14,7 @@ class Url extends Model
     use HasFactory;
 
     public $attributes = [
+        'priority' => 99,
         'hits' => 0,
         'streak' => 0,
     ];
@@ -28,7 +29,7 @@ class Url extends Model
     {
         return $builder
             ->where('scheduled_at', '<', now())
-            ->where(fn ($q) => $q->whereNull('reserved_at')->orWhere('reserved_at', '<', now()->subHours(3)))
+            ->where(fn ($q) => $q->whereNull('reserved_at')->orWhere('reserved_at', '<', now()->subHours(1)))
             ->limit($limit)
             ->orderBy('priority');
     }

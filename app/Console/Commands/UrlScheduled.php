@@ -14,15 +14,17 @@ class UrlScheduled extends Command
 
     public function handle()
     {
-        $urls = Url::scheduled($this->option('limit'));
+        $query = Url::query();
 
         if ($this->option('domain')) {
-            $urls->where(function (Builder $query) {
+            $query->where(function (Builder $query) {
                 foreach ($this->option('domain') as $domain) {
                     $query->orWhere('domain', $domain);
                 }
             });
         }
+
+        $urls = $query->scheduled($this->option('limit'));
 
         foreach ($urls->get() as $url) {
             $this->line("[URL {$url->id}] {$url->href}");
