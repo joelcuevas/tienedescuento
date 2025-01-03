@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\File;
 
 trait HasCrawlers
 {
-    public static function resolve(string $href): ?Url
+    public static function resolve(string $href, int $priority = 99): ?Url
     {
         // first check if this url is an alias
         $alias = self::resolveAlias($href);
@@ -33,6 +33,7 @@ trait HasCrawlers
 
                 // if there's not, create a new one
                 $url = Url::create([
+                    'priority' => $priority,
                     'href' => $href,
                     'domain' => parse_url($href, PHP_URL_HOST),
                     'scheduled_at' => now()->subMinutes(1),

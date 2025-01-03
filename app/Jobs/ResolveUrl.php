@@ -12,10 +12,11 @@ class ResolveUrl implements ShouldQueue
 
     public function __construct(
         protected string $href,
+        protected int $priority = 99,
     ) {}
 
     public function handle(): void
     {
-        Url::resolve($this->href);
+        Url::resolve($this->href, $this->priority);
     }
 }

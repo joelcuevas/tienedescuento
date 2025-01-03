@@ -39,7 +39,7 @@ class CostcoMxCategoryCrawler extends CostcoMxBaseCrawler
         if ($json->pagination->currentPage < $json->pagination->totalPages - 1) {
             $page = $json->pagination->currentPage + 1;
             $href = preg_replace('/currentPage=\d+/', 'currentPage='.$page, $this->url->href);
-            $nextUrl = Url::resolve($href);
+            $nextUrl = Url::resolve($href, 20);
 
             // force-discover the next page
             if ($nextUrl->status != Response::HTTP_OK) {

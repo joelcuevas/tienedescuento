@@ -46,7 +46,7 @@ class LiverpoolCategoryCrawler extends LiverpoolBaseCrawler
 
                 if ($currentPage < $noOfPages) {
                     $href = preg_replace('/\/page-\d+$/', '', $this->url->href);
-                    $nextUrl = Url::resolve($href.'/page-'.($currentPage + 1));
+                    $nextUrl = Url::resolve($href.'/page-'.($currentPage + 1), 20);
 
                     // force-discover the next page
                     if ($nextUrl->status != Response::HTTP_OK) {

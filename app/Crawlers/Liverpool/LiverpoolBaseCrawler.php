@@ -44,7 +44,8 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
                 $externalUrl = "https://www.liverpool.com.mx/tienda/pdp/{$slug}/{$meta->id}";
                 $imageUrl = $this->getImageUrl($meta);
 
-                $url = Url::resolve($externalUrl);
+                $priority = $source == 'category' ? 20 : 30;
+                $url = Url::resolve($externalUrl, $priority);
 
                 if ($source == 'category') {
                     $url?->delay();
