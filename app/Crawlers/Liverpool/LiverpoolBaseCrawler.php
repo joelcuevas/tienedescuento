@@ -39,7 +39,8 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
             $price = $meta?->minimumPromoPrice ?? $meta?->minimumListPrice;
 
             if ($price) {
-                $slug = Str::of($meta->title)->lower()->replace(' ', '-');
+                $title = strip_tags($meta->title);
+                $slug = Str::of($title)->lower()->replace(' ', '-');
                 $externalUrl = "https://www.liverpool.com.mx/tienda/pdp/{$slug}/{$meta->id}";
                 $imageUrl = $this->getImageUrl($meta);
 
@@ -54,7 +55,7 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
                     'sku' => $meta->id,
                 ], [
                     'brand' => $this->getBrand($meta),
-                    'title' => ucwords(strip_tags($meta->title)),
+                    'title' => ucwords($title),
                     'url_id' => $url?->id,
                     'external_url' => $externalUrl,
                     'image_url' => $imageUrl,

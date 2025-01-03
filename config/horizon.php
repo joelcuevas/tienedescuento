@@ -2,6 +2,22 @@
 
 use Illuminate\Support\Str;
 
+$defaults = [
+    'connection' => 'redis',
+    'queue' => ['default'],
+    'balance' => 'auto',
+    'balanceMaxShift' => 1,
+    'balanceCooldown' => 3,
+    'autoScalingStrategy' => 'time',
+    'maxProcesses' => 20,
+    'maxTime' => 0,
+    'maxJobs' => 0,
+    'memory' => 128,
+    'tries' => 3,
+    'timeout' => 10,
+    'nice' => 0,
+]; 
+
 return [
 
     /*
@@ -180,21 +196,7 @@ return [
     */
 
     'defaults' => [
-        'default' => [
-            'connection' => 'redis',
-            'queue' => ['default'],
-            'balance' => 'auto',
-            'balanceMaxShift' => 1,
-            'balanceCooldown' => 3,
-            'autoScalingStrategy' => 'time',
-            'maxProcesses' => 20,
-            'maxTime' => 0,
-            'maxJobs' => 0,
-            'memory' => 128,
-            'tries' => 3,
-            'timeout' => 10,
-            'nice' => 0,
-        ],
+        'default' => $defaults,
 
         'system' => [
             'connection' => 'redis',
@@ -211,64 +213,47 @@ return [
             'timeout' => 10,
             'nice' => 0,
         ],
-
-        'crawlers-fast' => [
-            'connection' => 'redis',
-            'queue' => [],
-            'balance' => 'auto',
-            'balanceMaxShift' => 1,
-            'balanceCooldown' => 3,
-            'autoScalingStrategy' => 'time',
-            'maxProcesses' => 10,
-            'maxTime' => 0,
-            'maxJobs' => 0,
-            'memory' => 128,
-            'tries' => 3,
-            'timeout' => 30,
-            'nice' => 0,
-        ],
-
-        'crawlers-slow' => [
-            'connection' => 'redis',
-            'queue' => [],
-            'balance' => 'auto',
-            'balanceMaxShift' => 1,
-            'balanceCooldown' => 3,
-            'autoScalingStrategy' => 'time',
-            'maxProcesses' => 10,
-            'maxTime' => 0,
-            'maxJobs' => 0,
-            'memory' => 128,
-            'tries' => 3,
-            'timeout' => 60,
-            'nice' => 0,
-        ],
     ],
 
     'environments' => [
         'production' => [
-            'default' => [
+            'default' => array_merge($defaults, [
                 'queue' => ['default'],
+                'maxProcesses' => 20,
                 'timeout' => 10,
-            ],
+            ]),
 
-            'system' => [
+            'system' => array_merge($defaults, [
                 'queue' => ['system'],
+                'maxProcesses' => 10,
                 'timeout' => 10,
-            ],
+            ]),
 
-            'crawlers-fast' => [
-                'queue' => ['liverpool', 'costco-mx'],
-                'timeout' => 30,
-            ],
+            'costco-mx' => array_merge($defaults, [
+                'queue' => ['costco-mx'],
+                'maxProcesses' => 10,
+                'timeout' => 10,
+            ]),
 
-            'crawlers-slow' => [
+            'liverpool' => array_merge($defaults, [
+                'queue' => ['liverpool'],
+                'maxProcesses' => 5,
+                'timeout' => 10,
+            ]),
+
+            'chascity' => array_merge($defaults, [
                 'queue' => ['chascity'],
-                'timeout' => 60,
-            ],
+                'maxProcesses' => 10,
+                'timeout' => 30,
+            ]),
         ],
 
         'local' => [
+            'default' => array_merge($defaults, [
+                'queue' => ['default'],
+                'maxProcesses' => 20,
+                'timeout' => 10,
+            ]),
         ],
     ],
 ];
