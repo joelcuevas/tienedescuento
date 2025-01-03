@@ -30,7 +30,7 @@ class Url extends Model
             ->where('scheduled_at', '<', now())
             ->where(fn ($q) => $q->whereNull('reserved_at')->orWhere('reserved_at', '<', now()->subHours(3)))
             ->limit($limit)
-            ->orderBy('scheduled_at');
+            ->orderBy('id');
     }
 
     public function product(): HasOne
