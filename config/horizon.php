@@ -196,23 +196,6 @@ return [
     */
 
     'defaults' => [
-        'default' => $defaults,
-
-        'system' => [
-            'connection' => 'redis',
-            'queue' => ['system'],
-            'balance' => 'auto',
-            'balanceMaxShift' => 1,
-            'balanceCooldown' => 3,
-            'autoScalingStrategy' => 'time',
-            'maxProcesses' => 20,
-            'maxTime' => 0,
-            'maxJobs' => 0,
-            'memory' => 128,
-            'tries' => 3,
-            'timeout' => 10,
-            'nice' => 0,
-        ],
     ],
 
     'environments' => [
