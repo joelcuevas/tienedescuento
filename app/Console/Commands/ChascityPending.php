@@ -48,7 +48,7 @@ class ChascityPending extends Command
                 $product->sku,
             );
 
-            $url = Url::resolve($href);
+            $url = Url::resolve($href, 30);
             $alreadyResolved = $url->crawled_at ? 'skip' : 'follow';
 
             $this->line("[Product {$product->id}] [$alreadyResolved] {$href}");

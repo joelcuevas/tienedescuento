@@ -24,7 +24,7 @@ class LiverpoolDiscover extends Command
             ->get();
 
         foreach ($products as $product) {
-            Url::resolve($product->external_url);
+            Url::resolve($product->external_url, 30);
             $this->line("[Product {$product->id}] {$product->external_url}");
         }
     }
