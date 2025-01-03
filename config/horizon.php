@@ -201,7 +201,7 @@ return [
     'environments' => [
         'production' => [
             'default' => array_merge($defaults, [
-                'queue' => ['default', 'system'],
+                'queue' => ['default', 'telescope', 'scout'],
                 'maxProcesses' => 5,
                 'timeout' => 10,
             ]),
