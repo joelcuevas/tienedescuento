@@ -77,10 +77,12 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
                     profile("SKU: $meta->id - Product created");
                 }
 
-                $product->prices()->create([
-                    'price' => $price,
-                    'source' => 'liverpool-'.$source,
-                ]);
+                Product::withoutSyncingToSearch(function() use ($product, $price, $source) {
+                    $product->prices()->create([
+                        'price' => $price,
+                        'source' => 'liverpool-'.$source,
+                    ]);
+                });
 
                 profile("SKU: $meta->id - Price added");
 
