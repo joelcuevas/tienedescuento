@@ -22,6 +22,8 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
 
     protected function setup(): void
     {
+        start_profiling();
+
         $this->store = Store::firstOrCreate([
             'country' => 'mx',
             'slug' => 'liverpool',
@@ -33,12 +35,15 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
 
     protected function saveProduct(mixed $record, string $source): ?Product
     {
+        
         $meta = $record?->allMeta;
 
         if ($meta && $meta?->id) {
             $price = $meta?->minimumPromoPrice ?? $meta?->minimumListPrice;
 
             if ($price) {
+                profile("[$meta->id] Start");
+
                 $title = strip_tags($meta->title);
                 $slug = Str::slug($title);
                 $externalUrl = "https://www.liverpool.com.mx/tienda/pdp/{$slug}/{$meta->id}";
@@ -47,11 +52,15 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
                 $priority = $source == 'category' ? 20 : 30;
                 $url = Url::resolve($externalUrl, $priority);
 
+                profile("[$meta->id] Resolve");
+
                 if ($source == 'category') {
                     $url?->delay();
                 }
 
                 $product = Product::whereStoreId($this->store->id)->whereSku($meta->id)->first();
+
+                profile("[$meta->id] Find");
 
                 if (! $product) {
                     $product = Product::create([
@@ -66,12 +75,16 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
 
                     $categories = $this->getCategories($meta);
                     $product->categories()->syncWithoutDetaching($categories);
+
+                    profile("[$meta->id] Create");
                 }
 
                 $product->prices()->create([
                     'price' => $price,
                     'source' => 'liverpool-'.$source,
                 ]);
+
+                profile("[$meta->id] Price");
 
                 return $product;
             }
