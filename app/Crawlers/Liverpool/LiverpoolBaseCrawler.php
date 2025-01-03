@@ -22,8 +22,6 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
 
     protected function setup(): void
     {
-        start_profiling();
-
         $this->store = Store::firstOrCreate([
             'country' => 'mx',
             'slug' => 'liverpool',
@@ -42,7 +40,7 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
             $price = $meta?->minimumPromoPrice ?? $meta?->minimumListPrice;
 
             if ($price) {
-                profile("[$meta->id] Start");
+                profile("SKU: $meta->id - Saving");
 
                 $title = strip_tags($meta->title);
                 $slug = Str::slug($title);
@@ -52,7 +50,7 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
                 $priority = $source == 'category' ? 20 : 30;
                 $url = Url::resolve($externalUrl, $priority);
 
-                profile("[$meta->id] Resolve");
+                profile("SKU: $meta->id - URL resolved");
 
                 if ($source == 'category') {
                     $url?->delay();
@@ -60,7 +58,7 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
 
                 $product = Product::whereStoreId($this->store->id)->whereSku($meta->id)->first();
 
-                profile("[$meta->id] Find");
+                profile("SKU: $meta->id - Product retrieved");
 
                 if (! $product) {
                     $product = Product::create([
@@ -76,7 +74,7 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
                     $categories = $this->getCategories($meta);
                     $product->categories()->syncWithoutDetaching($categories);
 
-                    profile("[$meta->id] Create");
+                    profile("SKU: $meta->id - Product created");
                 }
 
                 $product->prices()->create([
@@ -84,7 +82,7 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
                     'source' => 'liverpool-'.$source,
                 ]);
 
-                profile("[$meta->id] Price");
+                profile("SKU: $meta->id - Price added");
 
                 return $product;
             }

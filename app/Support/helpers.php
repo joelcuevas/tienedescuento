@@ -1,17 +1,46 @@
 <?php
 
-function console(string $output) 
+function console_log(string $log) 
 {
     $console = new Symfony\Component\Console\Output\ConsoleOutput;
-    $console->writeln($output);
+    $console->writeln($log);
 }
 
-function start_profiling()
+function cloudwatch_log(string $log, array $context = [])
 {
-    $GLOBALS['profiling'] = microtime(true);
+    \Log::channel('cloudwatch')->info($log, $context);
 }
 
-function profile(string $reference)
+function start_profiling(string $log)
 {
-    console($reference . ' ' . round(microtime(true) -  $GLOBALS['profiling'], 3));
+    if (! config('logging.profiler')) {
+        return;
+    }
+
+    $now = microtime(true);
+    
+    $GLOBALS['profiling_session'] = uniqid();
+    $GLOBALS['profiling_start'] = $now;
+    $GLOBALS['profiling_previous'] = $now;
+
+    cloudwatch_log($log . ' - Profiling started', [
+        'session' => $GLOBALS['profiling_session'],
+    ]);
+}
+
+function profile(string $log)
+{
+    if (! config('logging.profiler')) {
+        return;
+    }
+    
+    $now = microtime(true);
+
+    cloudwatch_log($log, [
+        'session' => $GLOBALS['profiling_session'],
+        'stopwatch' => round($now - $GLOBALS['profiling_start'], 3),
+        'increment' => round($now - $GLOBALS['profiling_previous'], 3),
+    ]);
+
+    $GLOBALS['profiling_previous'] = $now;
 }

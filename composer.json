@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.0",
         "meilisearch/meilisearch-php": "^1.12",
+        "pagevamp/laravel-cloudwatch-logs": "^1.1",
         "rawilk/laravel-settings": "^3.4",
         "sentry/sentry-laravel": "^4.10",
         "symfony/dom-crawler": "^7.1"
