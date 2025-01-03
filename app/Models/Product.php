@@ -38,7 +38,7 @@ class Product extends Model
             $product->slug = Str::slug($product->title);
 
             $product->brand = Str::limit($product->brand, 250);
-            $product->brand_slug = Str::slug($product->brand);
+            $product->brand_slug = $product->brand ? Str::slug($product->brand) : null;
         });
     }
 

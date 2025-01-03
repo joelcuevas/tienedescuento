@@ -40,7 +40,7 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
 
             if ($price) {
                 $title = strip_tags($meta->title);
-                $slug = Str::of($title)->lower()->replace(' ', '-');
+                $slug = Str::slug($title);
                 $externalUrl = "https://www.liverpool.com.mx/tienda/pdp/{$slug}/{$meta->id}";
                 $imageUrl = $this->getImageUrl($meta);
 
