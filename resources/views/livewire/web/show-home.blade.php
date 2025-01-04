@@ -12,8 +12,9 @@
     <ul class="flex space-x-6">
         @foreach ($stores as $store)
             <li>
-                <a href="{{ $store->link() }}" alt="{{ $store->name }}">
-                    <img class="h-20 rounded-full" src="{{ $store->image_url }}">
+                <a href="{{ $store->link() }}" alt="{{ $store->name }}" class="flex flex-col justify-center items-center space-y-2">
+                    <img class="h-20 rounded-full border border-gray-300 shadow-sm" src="{{ $store->image_url }}">
+                    <div class="text-xs">{{ $store->name }}</div>
                 </a>
             </li>
         @endforeach
