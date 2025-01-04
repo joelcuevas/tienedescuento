@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 
 class CostcoMxSitemapCrawler extends WebBaseCrawler
 {
-    protected static ?string $pattern = '#^https:/www\.costco\.com\.mx/sitemap.*\.xml$#';
+    protected static ?string $pattern = '#^https://www\.costco\.com\.mx/sitemap.*\.xml$#';
 
     protected function parse(mixed $dom): int
     {
