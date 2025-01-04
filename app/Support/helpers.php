@@ -1,5 +1,12 @@
 <?php
 
+function country()
+{
+    return match(request()->countryCode) {
+        'mx' => 'México',
+    };
+}
+
 function mmyy()
 {
     return ucwords(now()->translatedFormat('F Y'));
