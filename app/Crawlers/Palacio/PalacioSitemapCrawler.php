@@ -16,7 +16,7 @@ class PalacioSitemapCrawler extends PalacioBaseCrawler
 
         $dom->filterXPath('//ns:loc')->each(function (Crawler $node) {
             $href = $node->text();
-            ResolveUrl::dispatch($href, 10);
+            ResolveUrl::dispatch($href, 20);
         });
 
         return Response::HTTP_OK;

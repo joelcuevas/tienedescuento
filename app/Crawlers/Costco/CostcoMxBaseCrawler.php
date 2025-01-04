@@ -29,9 +29,7 @@ abstract class CostcoMxBaseCrawler extends JsonBaseCrawler
     {
         $crawl = 'https://www.costco.com.mx/rest/v2/mexico/products/%s/?fields=FULL&lang=es_MX&curr=MXN';
         $href = sprintf($crawl, $data['sku']);
-
-        $priority = $source == 'category' ? 20 : 30;
-        $url = Url::resolve($href, $priority);
+        $url = Url::resolve($href, 30);
 
         if ($source == 'category') {
             $url?->delay();

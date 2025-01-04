@@ -35,9 +35,7 @@ abstract class PalacioBaseCrawler extends WebBaseCrawler
     {
         $sku = $item->filter('meta[itemprop="sku"]')->attr('content');
         $href = $item->filter('meta[itemprop="url"]')->attr('content');
-
-        $priority = $source == 'category' ? 20 : 30;
-        $url = Url::resolve($href, $priority);
+        $url = Url::resolve($href, 30);
 
         if ($source == 'category') {
             $url?->delay();
