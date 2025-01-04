@@ -5,6 +5,7 @@ namespace App\Crawlers\Palacio;
 use App\Jobs\ResolveUrl;
 use Illuminate\Http\Response;
 use Symfony\Component\DomCrawler\Crawler;
+use Illuminate\Support\Str;
 
 class PalacioSitemapCrawler extends PalacioBaseCrawler
 {
@@ -16,7 +17,9 @@ class PalacioSitemapCrawler extends PalacioBaseCrawler
 
         $dom->filterXPath('//ns:loc')->each(function (Crawler $node) {
             $href = $node->text();
-            ResolveUrl::dispatch($href, 20);
+
+            $priority = Str::endsWith($href, '.xml') ? 10 : 20;
+            ResolveUrl::dispatch($href, $priority);
         });
 
         return Response::HTTP_OK;

@@ -6,6 +6,7 @@ use App\Crawlers\WebBaseCrawler;
 use App\Jobs\ResolveUrl;
 use Illuminate\Http\Response;
 use Symfony\Component\DomCrawler\Crawler;
+use Illuminate\Support\Str;
 
 class CostcoMxSitemapCrawler extends WebBaseCrawler
 {
@@ -25,7 +26,8 @@ class CostcoMxSitemapCrawler extends WebBaseCrawler
                 $jsonUrl = 'https://www.costco.com.mx/rest/v2/mexico/products/search?category=%s&currentPage=0&pageSize=100&lang=es_MX&curr=MXN&fields=FULL';
                 $href = sprintf($jsonUrl, $categoryCode);
 
-                ResolveUrl::dispatch($href, 20);
+                $priority = Str::endsWith($href, '.xml') ? 10 : 20;
+                ResolveUrl::dispatch($href, $priority);
             }
         });
 
