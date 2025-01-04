@@ -72,7 +72,7 @@ class ChascityProductCrawler extends WebBaseCrawler
         // store the prices for the product
         $product = $this->resolveProduct();
 
-        Product::withoutSyncingToSearch(function() use ($product, $prices) {
+        Product::withoutSyncingToSearch(function () use ($product, $prices) {
             foreach ($prices as $price) {
                 $product->prices()->create([
                     'price' => $price[0],

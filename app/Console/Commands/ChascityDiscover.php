@@ -8,9 +8,9 @@ use App\Models\Url;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Builder;
 
-class ChascityPending extends Command
+class ChascityDiscover extends Command
 {
-    protected $signature = 'chascity:pending {--limit=10}';
+    protected $signature = 'chascity:discover {--limit=10}';
 
     protected $description = 'Schedule for crawling products without Chascity prices';
 
@@ -18,6 +18,7 @@ class ChascityPending extends Command
     {
         $this->schedule('liverpool');
         $this->schedule('costco');
+        $this->schedule('palacio');
     }
 
     private function schedule(string $storeSlug): void
@@ -41,10 +42,15 @@ class ChascityPending extends Command
             ->limit($this->option('limit'))
             ->get();
 
+        $chascitySlug = match($storeSlug) {
+            'palacio' => 'palaciohierro',
+            default => $storeSlug,
+        };
+
         foreach ($products as $product) {
             $href = sprintf(
                 'https://preciominimo.chascity.com/verificaprecio/%s?sku=%s',
-                $storeSlug,
+                $chascitySlug,
                 $product->sku,
             );
 

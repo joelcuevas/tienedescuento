@@ -33,7 +33,6 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
 
     protected function saveProduct(mixed $record, string $source): ?Product
     {
-        
         $meta = $record?->allMeta;
 
         if ($meta && $meta?->id) {
@@ -77,7 +76,7 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
                     profile("SKU: $meta->id - Product created");
                 }
 
-                Product::withoutSyncingToSearch(function() use ($product, $price, $source) {
+                Product::withoutSyncingToSearch(function () use ($product, $price, $source) {
                     $product->prices()->create([
                         'price' => $price,
                         'source' => 'liverpool-'.$source,

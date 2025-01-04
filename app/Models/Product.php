@@ -16,9 +16,9 @@ use Laravel\Scout\Searchable;
 
 class Product extends Model
 {
-    use Searchable;
     use HasFactory;
     use HasPrices;
+    use Searchable;
 
     const DAYS_OUTDATED = 3;
 
@@ -114,9 +114,9 @@ class Product extends Model
     {
         return [
             'store_name' => $this->store->name,
-            'sku' => $this->sku, 
-            'title' => $this->title, 
-            'brand' => $this->brand, 
+            'sku' => $this->sku,
+            'title' => $this->title,
+            'brand' => $this->brand,
         ];
     }
 

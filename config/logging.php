@@ -12,9 +12,9 @@ return [
     | APP: Performance Profiling Configuration
     |--------------------------------------------------------------------------
     |
-    | Enables performance profiling for the application. When enabled, the 
-    | `start_profiling()` and `profile()` helper functions will log detailed 
-    | profiling data, such as execution times, to the CloudWatch logging driver 
+    | Enables performance profiling for the application. When enabled, the
+    | `start_profiling()` and `profile()` helper functions will log detailed
+    | profiling data, such as execution times, to the CloudWatch logging driver
     | for analysis and monitoring.
     |
     */
@@ -147,14 +147,14 @@ return [
             'region' => env('CLOUDWATCH_LOG_REGION', env('AWS_DEFAULT_REGION', '')),
             'credentials' => [
                 'key' => env('CLOUDWATCH_LOG_KEY', ''),
-                'secret' => env('CLOUDWATCH_LOG_SECRET', '')
+                'secret' => env('CLOUDWATCH_LOG_SECRET', ''),
             ],
             'stream_name' => env('CLOUDWATCH_LOG_STREAM_NAME', 'Laravel'),
             'retention' => env('CLOUDWATCH_LOG_RETENTION_DAYS', 3),
             'group_name' => env('CLOUDWATCH_LOG_GROUP_NAME', 'Laravel'),
             'version' => env('CLOUDWATCH_LOG_VERSION', 'latest'),
-            'formatter' => \Monolog\Formatter\JsonFormatter::class,       
-            'batch_size' => env('CLOUDWATCH_LOG_BATCH_SIZE', 10000),    
+            'formatter' => \Monolog\Formatter\JsonFormatter::class,
+            'batch_size' => env('CLOUDWATCH_LOG_BATCH_SIZE', 10000),
             'via' => \Pagevamp\Logger::class,
         ],
 

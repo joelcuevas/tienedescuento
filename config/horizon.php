@@ -16,7 +16,7 @@ $defaults = [
     'tries' => 3,
     'timeout' => 10,
     'nice' => 0,
-]; 
+];
 
 return [
 
@@ -208,12 +208,18 @@ return [
 
             'costco-mx' => array_merge($defaults, [
                 'queue' => ['costco-mx'],
-                'maxProcesses' => 10,
+                'maxProcesses' => 5,
                 'timeout' => 30,
             ]),
 
             'liverpool' => array_merge($defaults, [
                 'queue' => ['liverpool'],
+                'maxProcesses' => 5,
+                'timeout' => 30,
+            ]),
+
+            'palacio' => array_merge($defaults, [
+                'queue' => ['palacio'],
                 'maxProcesses' => 10,
                 'timeout' => 30,
             ]),

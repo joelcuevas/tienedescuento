@@ -4,6 +4,7 @@ namespace App\Models\Traits\Url;
 
 use App\Jobs\CrawlUrl;
 use App\Models\Url;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
 
 trait HasCrawlers
@@ -63,6 +64,7 @@ trait HasCrawlers
     {
         $this->scheduled_at = now()->addHours($hours);
         $this->delayed_at = now();
+        $this->status = Response::HTTP_RESET_CONTENT;
 
         return $this->save();
     }

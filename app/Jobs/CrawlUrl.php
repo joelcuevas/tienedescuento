@@ -16,10 +16,10 @@ class CrawlUrl implements ShouldQueue
 
     public function handle(): void
     {
-        if ($this->url->scheduled_at->isAfter(now())) {
+        if (config('app.env') !== 'local' && $this->url->scheduled_at->isAfter(now())) {
             return;
         }
-        
+
         $this->url->crawl();
     }
 }

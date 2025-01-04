@@ -33,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
 
         Carbon::setLocale($locale);
         setlocale(LC_TIME, $locale);
-        //DB::statement("SET lc_time_names = '{$locale}'");
+        // DB::statement("SET lc_time_names = '{$locale}'");
 
         Model::unguard();
 

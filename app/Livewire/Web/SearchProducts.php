@@ -5,8 +5,6 @@ namespace App\Livewire\Web;
 use App\Models\Product;
 use App\Models\Store;
 use App\Models\Url;
-use App\Support\LimitedPaginator;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Url as AttrUrl;
 use Livewire\Component;
