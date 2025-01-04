@@ -34,10 +34,12 @@ Route::middleware(
         Route::get('/stores', ShowStores::class)->name('stores.index');
         Route::get('/search', SearchProducts::class)->name('products.search');
 
+        Route::get('/c/{categorySlug}', ShowCatalog::class)->name('catalogs.category');
+        
         Route::get('/{storeSlug}', ShowCatalog::class)->name('catalogs.store');
-        Route::get('/{storeSlug}/b/{brandSlug}', ShowCatalog::class)->name('catalogs.brand');
-        Route::get('/{storeSlug}/c/{categorySlug}', ShowCatalog::class)->name('catalogs.category');
-        Route::get('/{storeSlug}/c/{categorySlug}/b/{brandSlug}', ShowCatalog::class)->name('catalogs.category_brand');
+        Route::get('/{storeSlug}/b/{brandSlug}', ShowCatalog::class)->name('catalogs.store_brand');
+        Route::get('/{storeSlug}/c/{categorySlug}', ShowCatalog::class)->name('catalogs.store_category');
+        Route::get('/{storeSlug}/c/{categorySlug}/b/{brandSlug}', ShowCatalog::class)->name('catalogs.store_category_brand');
 
         Route::get('/{storeSlug}/p/{productSku}/{productSlug}', ShowProduct::class)->name('products.show');
     });

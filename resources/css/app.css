@@ -6,10 +6,6 @@
     display: none;
 }
 
-.min-line-clamp-2 {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    min-height: calc(2 * 1.5em);
-    -webkit-line-clamp: 2;
+strong, b {
+    @apply font-medium;
 }

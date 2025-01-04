@@ -1,6 +1,6 @@
-<nav x-data="{ menuOpen: false }" class="bg-white">
+<nav x-data="{ menuOpen: false }" class="bg-white border-b border-gray-200">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 border-b border-gray-100">
+    <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
         <div class="flex justify-between">
             <div class="flex items-center">
                 <!-- Logo -->
@@ -21,7 +21,7 @@
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <div class="hidden lg:flex">
                     <form method="GET" action="{{ route('products.search')}}">
-                        <x-input name="q" class="!rounded-full !w-60 text-sm" placeholder="{{ __('Search') }}..." />
+                        <x-input name="q" class="!rounded-full !w-60 text-sm" placeholder="{{ __('What are you looking for?') }}" />
                     </form>
                 </div>
                 @if (Auth::user())

@@ -1,7 +1,7 @@
 <x-slot name="title">
     {{ $product->title }}
     {{ $product->discount > 0 ? "con {$product->discount}% de descuento" : 'descubre su descuento' }}
-    en {{ now()->translatedFormat('F Y') }}
+    en {{ mmyy() }}
 </x-slot>
 
 <div>

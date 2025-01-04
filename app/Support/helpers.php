@@ -1,5 +1,10 @@
 <?php
 
+function mmyy()
+{
+    return ucwords(now()->translatedFormat('F Y'));
+}
+
 function console_log(string $log)
 {
     $console = new Symfony\Component\Console\Output\ConsoleOutput;

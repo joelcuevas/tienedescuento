@@ -72,17 +72,17 @@ class Product extends Model
 
     public function brandLink(): string
     {
-        return route('catalogs.brand', [$this->store->slug, $this->brand_slug]);
+        return route('catalogs.store_brand', [$this->store->slug, $this->brand_slug]);
     }
 
     public function categoryLink(): string
     {
-        return route('catalogs.category', [$this->store->slug, $this->categories->last()->slug]);
+        return route('catalogs.store_category', [$this->store->slug, $this->categories->last()->slug]);
     }
 
     public function categoryBrandLink(): string
     {
-        return route('catalogs.category_brand', [$this->store->slug, $this->categories->last()->slug, $this->brand_slug]);
+        return route('catalogs.store_category_brand', [$this->store->slug, $this->categories->last()->slug, $this->brand_slug]);
     }
 
     public function prices(): HasMany

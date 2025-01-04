@@ -1,7 +1,9 @@
 {
+    "All rights reserved": "Todos los derechos reservados",
     "Brand": "Marca",
     "Category": "Categoría",
     "Discounts": "Descuentos",
+    "Enter your email": "Ingresa tu correo",
     "Featured": "Destacados",
     "Next": "Siguiente",
     "Previous": "Anterior",
@@ -9,9 +11,12 @@
     "Search": "Buscar",
     "Store": "Tienda",
     "Stores": "Tiendas",
+    "Subscribe to newsletter": "Suscribirme a la newsletter",
+    "Subscribe to our newsletter": "Suscríbete a nuestra newsletter",
     "Track Prices": "Monitorear Precios",
     "Trends": "Tendencias",
     "Profile": "Perfil",
     "Log Out": "Cerrar Sesión",
-    "Unknown": "Desconocido"
+    "Unknown": "Desconocido",
+    "What are you looking for?": "¿Qué estás buscando?"
 }
