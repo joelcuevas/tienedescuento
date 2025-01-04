@@ -102,7 +102,7 @@ trait HasCrawlers
 
         $streak = ($status == $this->status) ? $this->streak + 1 : 1;
 
-        if ($status >= 300) {
+        if ($status != 200) {
             $penalty = 2 ** (($streak % 7) - 1);
             $scheduledAt = $penalty;
         } else {
