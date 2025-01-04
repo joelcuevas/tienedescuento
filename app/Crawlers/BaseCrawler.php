@@ -100,9 +100,9 @@ abstract class BaseCrawler
             }
         } catch (HttpClientException $e) {
             $status = Response::HTTP_SERVICE_UNAVAILABLE;
-        } finally {
-            $this->hit($status);
         }
+
+        $this->hit($status);
     }
 
     protected function hit($status)

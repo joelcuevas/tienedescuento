@@ -25,7 +25,7 @@ class CostcoMxSitemapCrawler extends WebBaseCrawler
                 $jsonUrl = 'https://www.costco.com.mx/rest/v2/mexico/products/search?category=%s&currentPage=0&pageSize=100&lang=es_MX&curr=MXN&fields=FULL';
                 $href = sprintf($jsonUrl, $categoryCode);
 
-                ResolveUrl::dispatch($href, 10);
+                ResolveUrl::dispatch($href, 20);
             }
         });
 

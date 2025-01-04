@@ -24,7 +24,7 @@ class LiverpoolSitemapCrawler extends LiverpoolBaseCrawler
                 return;
             }
 
-            ResolveUrl::dispatch($href, 10);
+            ResolveUrl::dispatch($href, 20);
         });
 
         return Response::HTTP_OK;

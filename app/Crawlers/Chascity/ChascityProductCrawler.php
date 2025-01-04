@@ -17,7 +17,13 @@ class ChascityProductCrawler extends WebBaseCrawler
 
     public function resolveProduct(): ?Product
     {
-        $storeSlug = basename(parse_url($this->url->href, PHP_URL_PATH));
+        $chascitySlug = basename(parse_url($this->url->href, PHP_URL_PATH));
+
+        $storeSlug = match($chascitySlug) {
+            'palaciohierro' => 'palacio',
+            default => $chascitySlug,
+        };
+
         parse_str(parse_url($this->url->href, PHP_URL_QUERY), $query);
         $productSku = $query['sku'];
 
