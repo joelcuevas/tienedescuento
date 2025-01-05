@@ -15,7 +15,7 @@ return  [
                     'keywords' => ['laptop'],
                 ],
                 'Pantallas' => [
-                    'keywords' => ['pantalla', 'streaming', 'proyector', 'tv', 'television', 'video'],
+                    'keywords' => ['pantalla', 'streaming', 'proyector'],
                 ],
             ],
         ],
