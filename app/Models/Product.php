@@ -130,9 +130,9 @@ class Product extends Model
         return $query->where('priced_at', '>=', now()->subDays(self::DAYS_OUTDATED));
     }
 
-    public static function scopeWhereCategory(Builder $query, string $categorySlug, int $depth = 0): Builder
+    public static function scopeWhereCategory(Builder $query, mixed $scope, int $depth = 0): Builder
     {
-        $categoryIds = Category::whereSlugTree($categorySlug)->pluck('id')->all();
+        $categoryIds = Category::whereSlugTree($scope)->pluck('id')->all();
 
         return $query
             ->joinSub(
@@ -146,5 +146,20 @@ class Product extends Model
                 '=',
                 'cp.product_id'
             );
+    }
+
+    public static function scopeWhereTaxonomy(Builder $query, string $taxonomySlug, int $depth = 0): Builder
+    {
+        $taxonomies = Taxonomy::whereSlugTree($taxonomySlug)->get();
+        
+        $categoryIds = DB::table('category_taxonomy')
+            ->whereIn('taxonomy_id', $taxonomies->pluck('id')->all())
+            ->pluck('category_id')
+            ->unique()
+            ->all();
+
+        $query->whereCategory($categoryIds);
+
+        return $query;
     }
 }

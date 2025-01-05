@@ -14,7 +14,7 @@
         @foreach ($stores as $store)
             <li>
                 <a href="{{ $store->link() }}" alt="{{ $store->name }}" class="flex flex-col justify-center items-center space-y-2">
-                    <img class="h-24 rounded-full p-0.5 border border-gray-200 hover:border-gray-400/50" src="{{ $store->image_url }}" alt="{{ $store->name }}">
+                    <img class="h-24 w-24 rounded-full p-0.5 border border-gray-200 hover:border-gray-400/50" src="{{ $store->image_url }}" alt="Ver descuentos de {{ $store->name }}">
                     <div class="text-xs text-gray-600">{{ $store->name }}</div>
                 </a>
             </li>

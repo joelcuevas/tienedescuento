@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -47,13 +48,35 @@ class Category extends Model
         return $this->belongsToMany(Product::class);
     }
 
-    public static function scopeWhereSlugTree(Builder $query, string $slug, int $depth = 1): Builder
+    public static function scopeWhereSlugTree(Builder $query, mixed $scope, int $depth = 2): Builder
     {
-        $categoryIds = collect(DB::select('
+        $condition = 'false';
+        $params = [];
+
+        if (is_integer($scope)) {
+            $scope = [$scope];
+        }
+
+        if (is_array($scope)) {
+            if (count($scope) == 0) {
+                $scope = [-1];
+            }
+
+            $placeholders = implode(',', array_fill(0, count($scope), '?'));
+            $condition = "id in ({$placeholders})";
+            $params = [...$scope, $depth];
+        } else if (is_string($scope)) {
+            $condition = 'slug = ?';
+            $params = [$scope, $depth];
+        } else {
+            throw new Exception('Invalid scope format');
+        }
+
+        $categoryIds = collect(DB::select("
             WITH RECURSIVE category_hierarchy AS (
                 SELECT id, parent_id, slug, 1 AS depth
                 FROM categories
-                WHERE slug = ?
+                WHERE {$condition}
 
                 UNION ALL
 
@@ -63,7 +86,7 @@ class Category extends Model
                 WHERE ch.depth < ?
             )
             SELECT id FROM category_hierarchy
-        ', [$slug, $depth]))->pluck('id')->toArray();
+        ", $params))->pluck('id')->toArray();
 
         return $query->whereIn('id', $categoryIds);
     }

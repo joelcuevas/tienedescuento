@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Store;
+use App\Models\Taxonomy;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
@@ -28,5 +29,7 @@ class DatabaseSeeder extends Seeder
             ->hasPrices(10)
             ->has(Category::factory(1)->state(fn () => ['store_id' => $store->id]))
             ->create();
+
+        Artisan::call('taxonomy:build');
     }
 }

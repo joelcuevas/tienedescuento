@@ -15,6 +15,7 @@ class ShowCatalog extends Component
     {
         $countryCode = request()->countryCode;
 
+        // only search into current country stores
         $query = Product::query()
             ->whereHas('store', function ($query) use ($countryCode) {
                 $query->where('stores.country', $countryCode);
@@ -27,14 +28,22 @@ class ShowCatalog extends Component
         $storeSlug = request()->storeSlug;
         $categorySlug = request()->categorySlug;
         $brandSlug = request()->brandSlug;
+        $taxonomySlug = null;
 
+        // if there is a store slug, show the store catalog
         $store = Store::whereCountry($countryCode)->whereSlug($storeSlug)->first();
 
         if ($store) {
             $query->whereStoreId($store->id);
         } else {
-            $categorySlug = $storeSlug;
+            // if no store is found, asume it's a taxonomy
+            $taxonomySlug = $storeSlug;
+            $categorySlug = null;
             $brandSlug = null;
+        }
+
+        if ($taxonomySlug) {
+            $query->whereTaxonomy($taxonomySlug, 2);
         }
 
         if ($categorySlug) {

@@ -38,6 +38,8 @@ abstract class BaseCrawler
                 'id' => $this->url->id,
                 'href' => $this->url->href,
             ]);
+
+            $scope->setTag('crawler', $this->url->crawler_class);
         });
     }
 
