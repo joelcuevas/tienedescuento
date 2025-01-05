@@ -11,34 +11,11 @@ class ShowHome extends Component
 {
     public function render()
     {
-        $hot = ['celulares', 'tablets', 'laptops', 'pantallas', 'refrigeradores'];
-        $featured = [];
-
-        foreach ($hot as $category) {
-            $title = Str::title($category);
-
-            if (config('app.env') == 'production') {
-                $query = Product::whereCategory($category);
-            } else {
-                $query = Product::inRandomOrder();
-            }
-
-            $products = $query
-                ->with('store')
-                ->recent()
-                ->orderByDesc('discount')
-                ->take(6)
-                ->get();
-
-            $featured[$category] = [
-                'title' => $title,
-                'products' => $products,
-            ];
-        }
+        $categories = ['celulares', 'tablets', 'laptops', 'pantallas', 'refrigeradores'];
 
         return view('livewire.web.show-home')->with([
             'stores' => Store::orderBy('name')->get(),
-            'featured' => $featured,
+            'categories' => $categories,
         ]);
     }
 }

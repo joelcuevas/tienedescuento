@@ -9,6 +9,7 @@
 
 <div class="space-y-10">
     <h1 class="font-medium text-gray-900">Los Mejores Descuentos de {{ country() }} en {{ mmyy() }}</h1>
+    
     <ul class="flex space-x-6">
         @foreach ($stores as $store)
             <li>
@@ -35,25 +36,8 @@
     @endif
 
     <div class="space-y-12">
-        @foreach ($featured as $category => $data)
-            <div>
-                <div class="flex items-center mb-4 space-x-5">
-                    <h2 class="font-medium text-gray-900">
-                        Hasta {{ $data['products']->first()->discount }}% de Descuento en {{ $data['title'] }}
-                    </h2>
-
-                    <x-link 
-                        class="block text-sm" 
-                        href="{{ route('catalogs.store', $category) }}"
-                        alt="Ver más descuentos en {{ $category }}"
-                    >
-                        <span>Ver más</span>
-                        <i class="fa fa-arrow-right text-xs"></i>
-                    </x-link>
-                </div>
-
-                <x-product-grid :products="$data['products']" />
-            </div>
+        @foreach ($categories as $category)
+            <livewire:web.featured-products :$category lazy />
         @endforeach
     </div>
 </div>
