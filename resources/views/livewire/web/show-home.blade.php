@@ -36,8 +36,8 @@
     @endif
 
     <div class="space-y-12">
-        @foreach ($categories as $category)
-            <livewire:web.featured-products :key="$category" :$category lazy />
+        @foreach ($taxonomies as $taxonomy)
+            <livewire:web.featured-products :key="$taxonomy" :$taxonomy lazy />
         @endforeach
     </div>
 </div>

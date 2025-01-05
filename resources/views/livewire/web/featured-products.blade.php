@@ -6,8 +6,8 @@
 
         <x-link 
             class="block text-sm" 
-            href="{{ route('catalogs.store', $category) }}"
-            alt="Ver más descuentos en {{ $category }}"
+            href="{{ route('catalogs.store', $taxonomy) }}"
+            alt="Ver más descuentos en {{ $taxonomy }}"
         >
             <span>Ver más</span>
             <i class="fa fa-arrow-right text-xs"></i>

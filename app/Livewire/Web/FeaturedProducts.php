@@ -9,17 +9,17 @@ use Livewire\Component;
 #[Lazy]
 class FeaturedProducts extends Component
 {
-    public string $category;
+    public string $taxonomy;
 
-    public function mount(string $category)
+    public function mount(string $taxonomy)
     {
-        $this->category = $category;
+        $this->taxonomy = $taxonomy;
     }
 
     public function render()
     {
         if (config('app.env') == 'production') {
-            $query = Product::whereCategory($this->category);
+            $query = Product::whereTaxonomy($this->taxonomy);
         } else {
             $query = Product::inRandomOrder();
         }
@@ -32,7 +32,7 @@ class FeaturedProducts extends Component
             ->get();
 
         return view('livewire.web.featured-products')->with([
-            'title' => ucwords($this->category),
+            'title' => ucwords($this->taxonomy),
             'products' => $products,
         ]);
     }
