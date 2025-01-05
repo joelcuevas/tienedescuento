@@ -6,7 +6,7 @@ return  [
             'keywords' => ['electronica', 'electronico', 'tecnologia'],
             'children' => [
                 'Celulares' => [
-                    'keywords' => ['celular', 'smartphone'],
+                    'keywords' => ['celulares', 'smartphone'],
                 ],
                 'Tablets' => [
                     'keywords' => ['tablet', 'tableta', 'ipad'],

@@ -43,11 +43,11 @@ class ShowCatalog extends Component
         }
 
         if ($taxonomySlug) {
-            $query->whereTaxonomy($taxonomySlug, 2);
+            $query->whereTaxonomy($countryCode, $taxonomySlug);
         }
 
         if ($categorySlug) {
-            $query->whereCategory($categorySlug, 2);
+            $query->whereCategory($categorySlug);
             $category = Category::whereSlug($categorySlug)->first();
 
             if ($category) {

@@ -41,25 +41,4 @@ class Taxonomy extends Model
     {
         return $this->belongsToMany(Category::class);
     }
-
-    public static function scopeWhereSlugTree(Builder $query, string $slug, int $depth = 1): Builder
-    {
-        $taxonomyIds = collect(DB::select('
-            WITH RECURSIVE taxonomy_hierarchy AS (
-                SELECT id, parent_id, slug, 1 AS depth
-                FROM taxonomies
-                WHERE slug = ?
-
-                UNION ALL
-
-                SELECT t.id, t.parent_id, t.slug, th.depth + 1
-                FROM taxonomies t
-                INNER JOIN taxonomy_hierarchy th ON t.parent_id = th.id
-                WHERE th.depth < ?
-            )
-            SELECT id FROM taxonomy_hierarchy
-        ', [$slug, $depth]))->pluck('id')->toArray();
-
-        return $query->whereIn('id', $taxonomyIds);
-    }
 }

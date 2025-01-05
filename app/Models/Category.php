@@ -48,7 +48,7 @@ class Category extends Model
         return $this->belongsToMany(Product::class);
     }
 
-    public static function scopeWhereSlugTree(Builder $query, mixed $scope, int $depth = 1): Builder
+    public static function scopeWhereTree(Builder $query, mixed $scope, int $maxDepth = 3): Builder
     {
         $condition = 'false';
         $params = [];
@@ -64,10 +64,10 @@ class Category extends Model
 
             $placeholders = implode(',', array_fill(0, count($scope), '?'));
             $condition = "id in ({$placeholders})";
-            $params = [...$scope, $depth];
+            $params = [...$scope, $maxDepth];
         } else if (is_string($scope)) {
             $condition = 'slug = ?';
-            $params = [$scope, $depth];
+            $params = [$scope, $maxDepth];
         } else {
             throw new Exception('Invalid scope format');
         }

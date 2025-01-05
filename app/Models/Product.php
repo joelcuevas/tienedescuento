@@ -130,27 +130,16 @@ class Product extends Model
         return $query->where('priced_at', '>=', now()->subDays(self::DAYS_OUTDATED));
     }
 
-    public static function scopeWhereCategory(Builder $query, mixed $scope, int $depth = 1): Builder
+    public static function scopeWhereCategory(Builder $query, mixed $slug): Builder
     {
-        $categoryIds = Category::whereSlugTree($scope, $depth)->pluck('id')->all();
+        $ids = Category::whereSlug($slug)->pluck('id')->all();
 
-        return $query
-            ->joinSub(
-                DB::table('category_product')
-                    ->select('product_id')
-                    ->distinct()
-                    ->forceIndex('category_product_category_id_product_id_index')
-                    ->whereIn('category_id', $categoryIds),
-                'cp',
-                'products.id',
-                '=',
-                'cp.product_id'
-            );
+        return $query->whereCategoryIds($ids);
     }
 
-    public static function scopeWhereTaxonomy(Builder $query, string $taxonomySlug, int $depth = 1): Builder
+    public static function scopeWhereTaxonomy(Builder $query, string $country, string $slug): Builder
     {
-        $taxonomies = Taxonomy::whereSlugTree($taxonomySlug, $depth)->get();
+        $taxonomies = Taxonomy::whereCountry($country)->whereSlug($slug)->get();
         
         $categoryIds = DB::table('category_taxonomy')
             ->whereIn('taxonomy_id', $taxonomies->pluck('id')->all())
@@ -158,8 +147,22 @@ class Product extends Model
             ->unique()
             ->all();
 
-        $query->whereCategory($categoryIds);
+        return $query->whereCategoryIds($categoryIds);
+    }
 
-        return $query;
+    public static function scopeWhereCategoryIds(Builder $query, array $ids): Builder
+    {
+        return $query
+            ->joinSub(
+                DB::table('category_product')
+                    ->select('product_id')
+                    ->distinct()
+                    ->forceIndex('category_product_category_id_product_id_index')
+                    ->whereIn('category_id', $ids),
+                'cp',
+                'products.id',
+                '=',
+                'cp.product_id'
+            );
     }
 }
