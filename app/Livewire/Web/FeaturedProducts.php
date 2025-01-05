@@ -9,17 +9,20 @@ use Livewire\Component;
 #[Lazy]
 class FeaturedProducts extends Component
 {
+    public string $country;
+
     public string $taxonomy;
 
-    public function mount(string $taxonomy)
+    public function mount(string $country, string $taxonomy)
     {
+        $this->country = $country;
         $this->taxonomy = $taxonomy;
     }
 
     public function render()
     {
         if (config('app.env') == 'production') {
-            $query = Product::whereTaxonomy($this->taxonomy);
+            $query = Product::whereTaxonomy($this->country, $this->taxonomy);
         } else {
             $query = Product::inRandomOrder();
         }

@@ -37,7 +37,7 @@
 
     <div class="space-y-12">
         @foreach ($taxonomies as $taxonomy)
-            <livewire:web.featured-products :key="$taxonomy" :$taxonomy lazy />
+            <livewire:web.featured-products :key="$taxonomy" :country="request()->countryCode" :$taxonomy lazy />
         @endforeach
     </div>
 </div>
