@@ -33,6 +33,14 @@ abstract class PalacioBaseCrawler extends WebBaseCrawler
 
     protected function saveProduct(object $item, array $categories, string $source): void
     {
+        $priceDom = $item->filter('meta[itemprop="lowPrice"]');
+
+        // the product is not available anymore
+        if ($priceDom->count() == 0) {
+            return;
+        }
+
+        $price = $priceDom->attr('content');
         $sku = $item->filter('meta[itemprop="sku"]')->attr('content');
         $href = $item->filter('meta[itemprop="url"]')->attr('content');
         $url = Url::resolve($href, 30);
@@ -62,9 +70,7 @@ abstract class PalacioBaseCrawler extends WebBaseCrawler
             $product->categories()->syncWithoutDetaching($categories);
         }
 
-        Product::withoutSyncingToSearch(function () use ($product, $item, $source) {
-            $price = $item->filter('meta[itemprop="lowPrice"]')->attr('content');
-
+        Product::withoutSyncingToSearch(function () use ($product, $price, $source) {
             $product->prices()->create([
                 'price' => $price,
                 'source' => 'palacio-'.$source,
