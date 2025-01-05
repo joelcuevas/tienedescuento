@@ -102,7 +102,7 @@ abstract class BaseCrawler
 
             if ($status == Response::HTTP_OK) {
                 $body = $this->formatBody($response->body());
-throw new \Exception('Prueba');
+
                 if ($body == null) {
                     $status = Response::HTTP_GONE;
                 } else {
