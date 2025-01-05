@@ -2,7 +2,7 @@
 
 <div class="relative bg-gray-100/80 rounded-xl p-2 w-full aspect-[3/4] group-hover:bg-gray-200/70 flex items-center">
     <div class="rounded-lg overflow-hidden w-full {{ $product->store->thumbAspect() == 'square' ? '' : 'h-full' }}">
-        <img src="{{ $product->image_url }}" alt="{{ $product->title }}" class="mix-blend-multiply w-full h-full rounded-lg {{ $product->store->thumbAspect() == 'square' ? 'object-scale-down' : 'object-cover' }}">
+        <img src="{{ $product->image_url }}" alt="{{ $product->title }}" loading="lazy" class="mix-blend-multiply w-full h-full rounded-lg {{ $product->store->thumbAspect() == 'square' ? 'object-scale-down' : 'object-cover' }}">
     </div>
     
     @if ($product->discount > 0)

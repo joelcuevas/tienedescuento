@@ -13,7 +13,7 @@
                         <div class="mt-1 flex space-x-2 items-center">
                             @if ($product->discount > 0)
                                 <div class="text-sm font-medium text-red-700">{{ $product->latest_price_formatted }}</div>
-                                <div class="text-xs line-through text-gray-400">{{ $product->regular_price_formatted }}</div>
+                                <div class="text-xs line-through text-gray-500">{{ $product->regular_price_formatted }}</div>
                             @elseif ($product->discount < 0)
                                 <div>{{ $product->latest_price_formatted }}</div>
                             @else

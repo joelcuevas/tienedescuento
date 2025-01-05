@@ -9,12 +9,12 @@
 
 <div class="space-y-10">
     <h1 class="font-medium text-gray-900">Los Mejores Descuentos de {{ country() }} en {{ mmyy() }}</h1>
-    
+
     <ul class="flex space-x-6">
         @foreach ($stores as $store)
             <li>
                 <a href="{{ $store->link() }}" alt="{{ $store->name }}" class="flex flex-col justify-center items-center space-y-2">
-                    <img class="h-24 rounded-full p-0.5 border border-gray-200 hover:border-gray-400/50" src="{{ $store->image_url }}">
+                    <img class="h-24 rounded-full p-0.5 border border-gray-200 hover:border-gray-400/50" src="{{ $store->image_url }}" alt="{{ $store->name }}">
                     <div class="text-xs text-gray-600">{{ $store->name }}</div>
                 </a>
             </li>
@@ -37,7 +37,7 @@
 
     <div class="space-y-12">
         @foreach ($categories as $category)
-            <livewire:web.featured-products :$category lazy />
+            <livewire:web.featured-products :key="$category" :$category lazy />
         @endforeach
     </div>
 </div>
