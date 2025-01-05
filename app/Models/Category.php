@@ -48,7 +48,7 @@ class Category extends Model
         return $this->belongsToMany(Product::class);
     }
 
-    public static function scopeWhereSlugTree(Builder $query, mixed $scope, int $depth = 2): Builder
+    public static function scopeWhereSlugTree(Builder $query, mixed $scope, int $depth = 1): Builder
     {
         $condition = 'false';
         $params = [];

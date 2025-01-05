@@ -42,7 +42,7 @@ class Taxonomy extends Model
         return $this->belongsToMany(Category::class);
     }
 
-    public static function scopeWhereSlugTree(Builder $query, string $slug, int $depth = 2): Builder
+    public static function scopeWhereSlugTree(Builder $query, string $slug, int $depth = 1): Builder
     {
         $taxonomyIds = collect(DB::select('
             WITH RECURSIVE taxonomy_hierarchy AS (
