@@ -8,6 +8,7 @@ use App\Models\Url;
 use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
+use Sentry;
 
 abstract class BaseCrawler
 {
@@ -29,6 +30,16 @@ abstract class BaseCrawler
     public function __construct(
         protected Url $url,
     ) {}
+
+    private function setupSentry()
+    {
+        Sentry\configureScope(function (Sentry\State\Scope $scope): void {
+            $scope->setContext('URL', [
+                'id' => $this->url->id,
+                'href' => $this->url->href,
+            ]);
+        });
+    }
 
     protected function setup(): void {}
 
@@ -60,6 +71,8 @@ abstract class BaseCrawler
 
     public function crawl(): void
     {
+        $this->setupSentry();
+        
         start_profiling('URL: '.$this->url->id);
         $this->startingTime = microtime(true);
 
@@ -89,7 +102,7 @@ abstract class BaseCrawler
 
             if ($status == Response::HTTP_OK) {
                 $body = $this->formatBody($response->body());
-
+throw new \Exception('Prueba');
                 if ($body == null) {
                     $status = Response::HTTP_GONE;
                 } else {

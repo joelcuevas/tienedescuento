@@ -10,6 +10,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
+use Sentry;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -41,6 +42,22 @@ class AppServiceProvider extends ServiceProvider
 
         Builder::macro('paginate', function ($perPage = 36) {
             return LimitedPaginator::fromQuery($this, $perPage, $perPage * 10);
+        });
+
+        DB::listen(function ($query) {
+            // combine query with its bindings
+            $sqlWithBindings = vsprintf(
+                str_replace('?', "'%s'", $query->sql),
+                array_map('addslashes', $query->bindings),
+            );
+        
+            // add to sentry breadcrumbs
+            Sentry\addBreadcrumb(new Sentry\Breadcrumb(
+                Sentry\Breadcrumb::LEVEL_INFO,
+                'db.sql.query',
+                'query.formatted',
+                $sqlWithBindings,
+            ));
         });
     }
 }
