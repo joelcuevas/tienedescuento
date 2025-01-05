@@ -52,7 +52,8 @@ abstract class PalacioBaseCrawler extends WebBaseCrawler
         $product = Product::whereStoreId($this->store->id)->whereSku($sku)->first();
 
         if (! $product) {
-            $brand = $item->filter('meta[itemprop="brand"]')->attr('content');
+            $brandDom = $item->filter('meta[itemprop="brand"]');
+            $brand = $brandDom->count() ? $brandDom->attr('content') : null;
             $name = $item->filter('meta[itemprop="name"]')->attr('content');
             $image = $item->filter('meta[itemprop="image"]')->attr('content');
             $title = $brand.' '.$name;
