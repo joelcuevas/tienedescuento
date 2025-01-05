@@ -46,9 +46,13 @@ class AppServiceProvider extends ServiceProvider
 
         DB::listen(function ($query) {
             // combine query with its bindings
+            $pdo = DB::getPdo();
+
             $sqlWithBindings = vsprintf(
-                str_replace('?', "'%s'", $query->sql),
-                array_map('addslashes', $query->bindings),
+                str_replace('?', "%s", $query->sql), 
+                array_map(function ($value) use ($pdo) {
+                    return is_null($value) ? 'NULL' : $pdo->quote($value);
+                }, $query->bindings),
             );
         
             // add to sentry breadcrumbs
