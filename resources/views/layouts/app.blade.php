@@ -51,7 +51,7 @@
                 <div class="pb-8 lg:pb-12 mb-8 lg:mb-12 lg:flex lg:items-center lg:justify-between lg:space-x-12 border-b border-gray-200">
                     <div>
                         <h3 class="text-sm font-bold text-gray-900 mb-2">@lang('Subscribe to our newsletter')</h3>
-                        <p>¿Quieres ahorrar en tus compras? Recibe las mejores ofertas en celulares, tablets y pantallas, descuentos exclusivos en ropa de marca para toda la familia y rebajas por ventas nocturnas en estufas, refrigeradores y más. Te ayudamos a conseguir los mejores precios en tiempo real.</p>
+                        <p class="text-gray-600">¿Quieres ahorrar en tus compras? Recibe las mejores ofertas en celulares, tablets y pantallas, descuentos exclusivos en ropa de marca para toda la familia y rebajas por ventas nocturnas en estufas, refrigeradores y más. Te ayudamos a conseguir los mejores precios en tiempo real.</p>
                     </div>
                     <div>
                         <label for="email-address" class="sr-only">Email address</label>

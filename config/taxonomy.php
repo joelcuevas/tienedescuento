@@ -31,5 +31,26 @@ return  [
                 ],
             ],
         ],
+
+        'Videojuegos' => [
+            'keywords' => ['videojuegos'],
+            'children' => [
+                'Nintendo' => [
+                    'keywords' => ['nintendo', 'switch', 'nintendo-switch'],
+                ],
+                'PlayStation' => [
+                    'keywords' => ['playstation'],
+                ],
+                'Xbox' => [
+                    'keywords' => ['xbox'],
+                ],
+                'Accesorios' => [
+                    'keywords' => ['accesorios', 'accesorios-para-videojuegos', 'accesorios-xbox', 'accesorios-playstation', 'accesorios-nintendo'],
+                ],
+                'Gaming' => [
+                    'keywords' => ['gaming', '!computadoras-para-gamers'],
+                ],
+            ],
+        ],
     ],
 ];

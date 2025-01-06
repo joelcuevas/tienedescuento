@@ -40,14 +40,39 @@ class TaxonomyBuild extends Command
                 'order' => $order,
             ]);
 
-            $categoryIds = Category::query()
-                ->when(count($topIds), fn ($q) => $q->whereTree($topIds))
-                ->whereIn('slug', $config['keywords'])
-                ->select('id')
-                ->distinct()
-                ->pluck('id')
-                ->all();
+            $nestedKeywords = array_filter($config['keywords'], function($k) {
+                return ! str_starts_with($k, '!');
+            });
 
+            $forcedKeywords = array_map(function($k) {
+                return substr($k, 1);
+            }, array_filter($config['keywords'], function($k) {
+                return str_starts_with($k, '!');
+            }));
+
+            $nestedIds = [];
+            $forcedIds = [];
+
+            if (count($nestedKeywords)) {
+                $nestedIds = Category::query()
+                    ->when(count($topIds), fn ($q) => $q->whereTree($topIds))
+                    ->whereIn('slug', $nestedKeywords)
+                    ->select('id')
+                    ->distinct()
+                    ->pluck('id')
+                    ->all();
+            }
+
+            if (count($forcedKeywords)) {
+                $forcedIds = Category::query()
+                    ->whereIn('slug', $forcedKeywords)
+                    ->select('id')
+                    ->distinct()
+                    ->pluck('id')
+                    ->all();
+            }
+
+            $categoryIds = [...$nestedIds, ...$forcedIds];
             $taxonomy->categories()->sync($categoryIds);
 
             if (isset($config['children']) && count($config['children'])) {
