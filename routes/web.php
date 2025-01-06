@@ -28,6 +28,7 @@ Route::middleware(
         StoreIntendedUrl::class,
     ])
     ->prefix('{countryCode}')
+    ->whereIn('countryCode', config('params.countries'))
     ->group(function () {
         Route::get('/', ShowHome::class)->name('home');
 

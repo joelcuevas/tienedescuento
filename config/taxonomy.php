@@ -3,31 +3,31 @@
 return  [
     'mx' => [
         'Electrónica' => [
-            'keywords' => ['electronica', 'electronico', 'tecnologia'],
+            'keywords' => ['electronica', 'electronico', 'tecnologia', 'computadoras-y-tablets'],
             'children' => [
                 'Celulares' => [
-                    'keywords' => ['celulares', 'smartphone'],
+                    'keywords' => ['celulares', 'reacondicionados', 'iphone'],
                 ],
                 'Tablets' => [
-                    'keywords' => ['tablet', 'tableta', 'ipad'],
+                    'keywords' => ['tablets', 'ipad'],
                 ],
                 'Laptops' => [
                     'keywords' => ['laptop'],
                 ],
                 'Pantallas' => [
-                    'keywords' => ['pantalla', 'streaming', 'proyector'],
+                    'keywords' => ['pantallas', 'pantallas-y-proyectores'],
                 ],
             ],
         ],
 
         'Línea Blanca' => [
-            'keywords' => ['linea-blanca'],
+            'keywords' => ['linea-blanca', 'linea-blanca-y-electrodomesticos'],
             'children' => [
                 'Refrigeradores' => [
-                    'keywords' => ['refrigerador'],
+                    'keywords' => ['refrigeradores', 'refrigeradores-y-congeladores'],
                 ],
                 'Lavadoras y Secadoras' => [
-                    'keywords' => ['lavado', 'secado'],
+                    'keywords' => ['lavadoras', 'secadoras', 'lavasecadora', 'lavasecadoras', 'centro-de-lavado', 'centros-de-lavado', 'lavadoras-y-secadoras'],
                 ],
             ],
         ],

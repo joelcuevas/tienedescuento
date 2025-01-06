@@ -137,13 +137,19 @@ class Product extends Model
         return $query->whereCategoryIds($ids);
     }
 
-    public static function scopeWhereTaxonomy(Builder $query, string $country, string $slug): Builder
+    public static function scopeWhereTaxonomy(Builder $query, string $country, string $slug, int $depth = 3): Builder
     {
         $taxonomies = Taxonomy::whereCountry($country)->whereSlug($slug)->get();
         
-        $categoryIds = DB::table('category_taxonomy')
+        $topCategoryIds = DB::table('category_taxonomy')
             ->whereIn('taxonomy_id', $taxonomies->pluck('id')->all())
             ->pluck('category_id')
+            ->unique()
+            ->all();
+
+        $categoryIds = Category::whereTree($topCategoryIds, $depth)
+            ->select('id')
+            ->pluck('id')
             ->unique()
             ->all();
 
