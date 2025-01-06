@@ -15,7 +15,9 @@ class SearchProducts extends Component
     use WithPagination;
 
     #[AttrUrl]
-    public string $q = '';
+    public string $query = '';
+
+    public string $title;
 
     public $countryCode;
 
@@ -29,8 +31,8 @@ class SearchProducts extends Component
         $storeIds = Store::whereCountry($this->countryCode)->pluck('id')->all();
 
         // search by url
-        if (Str::startsWith($this->q, 'https://')) {
-            $byUrl = Url::resolve($this->q);
+        if (Str::startsWith($this->query, 'https://')) {
+            $byUrl = Url::resolve($this->query);
 
             // if there's only one result, redirect to the pdp
             if ($byUrl && $byUrl->product) {
@@ -39,7 +41,7 @@ class SearchProducts extends Component
         }
 
         // search by sku
-        $bySku = Product::whereIn('store_id', $storeIds)->whereSku($this->q);
+        $bySku = Product::whereIn('store_id', $storeIds)->whereSku($this->query);
         $bySkuCount = $bySku->count();
 
         // if there's only one result, redirect to the pdp
@@ -53,17 +55,24 @@ class SearchProducts extends Component
         }
 
         // if no matches, search by terms
-        $bySearch = Product::search($this->q);
+        $bySearch = Product::search($this->query)->take(Product::PAGE_SIZE * Product::MAX_PAGES);
 
         return $bySearch;
     }
 
     public function render()
     {
-        $query = $this->search()->orderByDesc('discount');
+        $products = $this->search()
+            ->orderByDesc('discount')
+            ->limitedPaginate(Product::PAGE_SIZE)
+            ->appends(['query' => $this->query]);
 
-        return view('livewire.web.search-products')->with([
-            'products' => $query->paginate(36)->load('store'),
+        // load at the undelying collection to not modify the paginator
+        $products->getCollection()->load('store');
+
+        return view('livewire.web.show-catalog')->with([
+            'title' => $this->query,
+            'products' => $products,
         ]);
     }
 }

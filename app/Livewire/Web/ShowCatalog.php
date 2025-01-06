@@ -6,9 +6,12 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Store;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class ShowCatalog extends Component
 {
+    use WithPagination;
+
     private array $title = [];
 
     public function render()
@@ -72,7 +75,7 @@ class ShowCatalog extends Component
         return view('livewire.web.show-catalog')->with([
             'store' => $store,
             'title' => implode(' / ', array_unique($this->title)),
-            'products' => $query->paginate(36),
+            'products' => $query->limitedPaginate(Product::PAGE_SIZE),
         ]);
     }
 }

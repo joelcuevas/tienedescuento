@@ -21,6 +21,8 @@ class Product extends Model
     use Searchable;
 
     const DAYS_OUTDATED = 3;
+    const PAGE_SIZE = 24;
+    const MAX_PAGES = 10;
 
     protected $attributes = [
         'views' => 0,

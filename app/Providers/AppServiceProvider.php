@@ -3,12 +3,14 @@
 namespace App\Providers;
 
 use App\Http\Middleware\SetCountryCode;
+use App\Models\Product;
 use App\Support\LimitedPaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Scout\Builder as ScoutBuilder;
 use Livewire\Livewire;
 use Sentry;
 
@@ -39,11 +41,24 @@ class AppServiceProvider extends ServiceProvider
         Model::unguard();
 
         Livewire::addPersistentMiddleware([SetCountryCode::class]);
+        
+        $this->addLimitedPaginationToQueries();
+        $this->addSqlBindingsToSentryLogs();
+    }
 
-        Builder::macro('paginate', function ($perPage = 36) {
-            return LimitedPaginator::fromQuery($this, $perPage, $perPage * 10);
+    private function addLimitedPaginationToQueries()
+    {
+        Builder::macro('limitedPaginate', function ($perPage = Product::PAGE_SIZE) {
+            return LimitedPaginator::fromQuery($this, $perPage, $perPage * Product::MAX_PAGES);
         });
 
+        ScoutBuilder::macro('limitedPaginate', function ($perPage = 36, $pageName = 'page', $page = null) {
+            return $this->paginate($perPage, $pageName, $page);
+        });
+    }
+
+    private function addSqlBindingsToSentryLogs()
+    {
         DB::listen(function ($query) {
             // combine query with its bindings
             $pdo = DB::getPdo();

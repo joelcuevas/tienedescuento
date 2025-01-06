@@ -1,5 +1,5 @@
 <div>
-    @if ($store)
+    @if (isset($store) && $store)
         <div class="flex items-center mb-10 space-x-6">
             <div>
                 <a href="{{ $store->link() }}">
