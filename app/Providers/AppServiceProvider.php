@@ -52,7 +52,7 @@ class AppServiceProvider extends ServiceProvider
             return LimitedPaginator::fromQuery($this, $perPage, $perPage * Product::MAX_PAGES);
         });
 
-        ScoutBuilder::macro('limitedPaginate', function ($perPage = 36, $pageName = 'page', $page = null) {
+        ScoutBuilder::macro('limitedPaginate', function ($perPage = Product::PAGE_SIZE, $pageName = 'page', $page = null) {
             return $this->paginate($perPage, $pageName, $page);
         });
     }

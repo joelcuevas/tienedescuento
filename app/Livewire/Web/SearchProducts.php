@@ -55,7 +55,7 @@ class SearchProducts extends Component
         }
 
         // if no matches, search by terms
-        $bySearch = Product::search($this->query)->take(Product::PAGE_SIZE * Product::MAX_PAGES);
+        $bySearch = Product::search($this->query);
 
         return $bySearch;
     }
@@ -64,7 +64,7 @@ class SearchProducts extends Component
     {
         $products = $this->search()
             ->orderByDesc('discount')
-            ->limitedPaginate(Product::PAGE_SIZE)
+            ->limitedPaginate()
             ->appends(['query' => $this->query]);
 
         // load at the undelying collection to not modify the paginator
