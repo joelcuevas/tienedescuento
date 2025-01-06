@@ -47,6 +47,7 @@
         
         <footer class="mt-12 border-t border-gray-200 text-sm">
             <div class="mx-auto max-w-7xl overflow-hidden px-4 md:px-6 lg:px-8 py-8 lg:py-12 bg-white">
+                <x-taxonomy-tree />
                 <div class="pb-8 lg:pb-12 mb-8 lg:mb-12 lg:flex lg:items-center lg:justify-between lg:space-x-12 border-b border-gray-200">
                     <div>
                         <h3 class="text-sm font-bold text-gray-900 mb-2">@lang('Subscribe to our newsletter')</h3>

@@ -27,6 +27,11 @@ class Taxonomy extends Model
         });
     }
 
+    public function link(): string
+    {
+        return route('catalogs.store', [$this->slug]);
+    }
+
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Taxonomy::class, 'parent_id');
