@@ -21,11 +21,7 @@ class FeaturedProducts extends Component
 
     public function render()
     {
-        if (config('app.env') == 'production') {
-            $query = Product::whereTaxonomy($this->country, $this->taxonomy);
-        } else {
-            $query = Product::inRandomOrder();
-        }
+        $query = Product::whereTaxonomy($this->country, $this->taxonomy);
 
         $products = $query
             ->with('store')
