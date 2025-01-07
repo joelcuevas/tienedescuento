@@ -9,6 +9,7 @@ Schedule::command('liverpool:discover --limit=25')->everyMinute();
 
 Schedule::command('url:scheduled --domain=preciominimo.chascity.com --limit=25')->everyMinute();
 Schedule::command('url:scheduled --domain=www.liverpool.com.mx --limit=25')->everyMinute();
+Schedule::command('url:scheduled --domain=www.suburbia.com.mx --limit=25')->everyMinute();
 Schedule::command('url:scheduled --domain=www.elpalaciodehierro.com --limit=25')->everyMinute();
 Schedule::command('url:scheduled --domain=www.costco.com.mx --limit=50')->everyMinute();
 
