@@ -23,6 +23,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | APP: Metrics Logging to CloudWatch
+    |--------------------------------------------------------------------------
+    |
+    | Logged metrics can be visualized in a CloudWatch Dashboard for real-time
+    | monitoring and alerting, enabling insights into application performance,
+    | user behavior, and system health.
+    |
+    */
+
+    'dashboard' => env('LOG_DASHBOARD', false),
+
+    /*
+    |--------------------------------------------------------------------------
     | Default Log Channel
     |--------------------------------------------------------------------------
     |
@@ -149,12 +162,29 @@ return [
                 'key' => env('CLOUDWATCH_LOG_KEY', ''),
                 'secret' => env('CLOUDWATCH_LOG_SECRET', ''),
             ],
-            'stream_name' => env('CLOUDWATCH_LOG_STREAM_NAME', 'Laravel'),
-            'retention' => env('CLOUDWATCH_LOG_RETENTION_DAYS', 3),
             'group_name' => env('CLOUDWATCH_LOG_GROUP_NAME', 'Laravel'),
-            'version' => env('CLOUDWATCH_LOG_VERSION', 'latest'),
+            'stream_name' => 'default',
+            'retention' => 3,
+            'version' => 'latest',
             'formatter' => \Monolog\Formatter\JsonFormatter::class,
-            'batch_size' => env('CLOUDWATCH_LOG_BATCH_SIZE', 10000),
+            'batch_size' => 10000,
+            'via' => \Pagevamp\Logger::class,
+        ],
+
+        'dashboard' => [
+            'driver' => 'custom',
+            'name' => env('CLOUDWATCH_LOG_NAME', ''),
+            'region' => env('CLOUDWATCH_LOG_REGION', env('AWS_DEFAULT_REGION', '')),
+            'credentials' => [
+                'key' => env('CLOUDWATCH_LOG_KEY', ''),
+                'secret' => env('CLOUDWATCH_LOG_SECRET', ''),
+            ],
+            'group_name' => env('CLOUDWATCH_LOG_GROUP_NAME', 'Laravel'),
+            'stream_name' => 'dashboard',
+            'retention' => 7,
+            'version' => 'latest',
+            'formatter' => \Monolog\Formatter\JsonFormatter::class,
+            'batch_size' => 10000,
             'via' => \Pagevamp\Logger::class,
         ],
 

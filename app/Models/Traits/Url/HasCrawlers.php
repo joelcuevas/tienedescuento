@@ -62,9 +62,17 @@ trait HasCrawlers
 
     public function delay(int $hours = 48): bool
     {
+        $status = Response::HTTP_RESET_CONTENT;
         $this->scheduled_at = now()->addHours($hours);
         $this->delayed_at = now();
-        $this->status = Response::HTTP_RESET_CONTENT;
+        $this->status = $status;
+
+        logger_dashboard('url-crawled', [
+            'id' => $this->id,
+            'domain' => $this->domain,
+            'status' => $status,
+            'status_group' => substr($status, 0, 1).'xx',
+        ]);
 
         return $this->save();
     }
@@ -118,6 +126,13 @@ trait HasCrawlers
         $this->delayed_at = null;
         $this->hits = $this->hits + 1;
         $this->save();
+
+        logger_dashboard('url-crawled', [
+            'id' => $this->id,
+            'domain' => $this->domain,
+            'status' => $status,
+            'status_group' => substr($status, 0, 1).'xx',
+        ]);
     }
 
     private static function resolveCrawler($href): ?string

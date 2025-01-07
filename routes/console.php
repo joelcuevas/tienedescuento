@@ -13,4 +13,3 @@ Schedule::command('url:scheduled --domain=www.elpalaciodehierro.com --limit=25')
 Schedule::command('url:scheduled --domain=www.costco.com.mx --limit=50')->everyMinute();
 
 Schedule::command('horizon:snapshot')->everyFiveMinutes();
-Schedule::command('telescope:prune')->daily();

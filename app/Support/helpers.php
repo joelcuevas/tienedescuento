@@ -12,15 +12,24 @@ function mmyy()
     return ucwords(now()->translatedFormat('F Y'));
 }
 
-function console_log(string $log)
+function logger_console(string $log)
 {
     $console = new Symfony\Component\Console\Output\ConsoleOutput;
     $console->writeln($log);
 }
 
-function cloudwatch_log(string $log, array $context = [])
+function logger_cloudwatch(string $log, array $context = [])
 {
     \Log::channel('cloudwatch')->info($log, $context);
+}
+
+function logger_dashboard(string $log, array $context = [])
+{
+    if (! config('logging.dashboard')) {
+        return;
+    }
+
+    \Log::channel('dashboard')->info($log, $context);
 }
 
 function start_profiling(string $log)
@@ -35,7 +44,7 @@ function start_profiling(string $log)
     $GLOBALS['profiling_start'] = $now;
     $GLOBALS['profiling_previous'] = $now;
 
-    cloudwatch_log($log.' - Profiling started', [
+    logger_cloudwatch($log.' - Profiling started', [
         'session' => $GLOBALS['profiling_session'],
     ]);
 }
@@ -48,7 +57,7 @@ function profile(string $log)
 
     $now = microtime(true);
 
-    cloudwatch_log($log, [
+    logger_cloudwatch($log, [
         'session' => $GLOBALS['profiling_session'],
         'stopwatch' => round($now - $GLOBALS['profiling_start'], 3),
         'increment' => round($now - $GLOBALS['profiling_previous'], 3),
