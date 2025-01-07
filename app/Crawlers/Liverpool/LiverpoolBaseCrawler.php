@@ -43,6 +43,11 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
                 $slug = Str::slug($title);
                 $externalUrl = "https://www.liverpool.com.mx/tienda/pdp/{$slug}/{$meta->id}";
                 $imageUrl = $this->getImageUrl($meta);
+
+                if ($source == 'product') {
+                    $externalUrl = $this->url->href;
+                }
+
                 $url = Url::resolve($externalUrl, 30);
 
                 if ($source == 'category') {
