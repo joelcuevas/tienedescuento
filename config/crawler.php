@@ -13,6 +13,13 @@ return [
             'throttle_every' => 60,
         ],
 
+        'www.suburbia.com.mx' => [
+            'queue' => 'suburbia',
+            'proxied' => true,
+            'throttle_allow' => 60,
+            'throttle_every' => 60,
+        ],
+
         'www.elpalaciodehierro.com' => [
             'queue' => 'palacio',
             'proxied' => false,

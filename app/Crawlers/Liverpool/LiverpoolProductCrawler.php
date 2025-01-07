@@ -2,12 +2,13 @@
 
 namespace App\Crawlers\Liverpool;
 
-use App\Models\Product;
 use Illuminate\Http\Response;
 
 class LiverpoolProductCrawler extends LiverpoolBaseCrawler
 {
-    protected static ?string $pattern = '#^https://www\.liverpool\.com\.mx/tienda/pdp/(?:.+/)?(\d+)(?:\?.*)?$#';
+    protected static ?string $storeCode = 'liverpool-mx';
+    
+    protected static ?string $pattern = '#^https://www\.liverpool\.com\.mx/tienda/pdp/(?:.+/)?(\w+)(?:\?.*)?$#';
 
     protected static ?int $skuPatternIndex = 1;
 

@@ -7,6 +7,8 @@ use Illuminate\Http\Response;
 
 class LiverpoolCategoryCrawler extends LiverpoolBaseCrawler
 {
+    protected static ?string $storeCode = 'liverpool-mx';
+    
     protected static ?string $pattern = '#^https://www\.liverpool\.com\.mx/tienda/[^/]+/[^/]+(/page-\d+)?$#';
 
     protected function parse(mixed $dom): int

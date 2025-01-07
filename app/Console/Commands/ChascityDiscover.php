@@ -19,11 +19,16 @@ class ChascityDiscover extends Command
         $this->schedule('liverpool');
         $this->schedule('costco');
         $this->schedule('palacio');
+        $this->schedule('suburbia');
     }
 
     private function schedule(string $storeSlug): void
     {
         $store = Store::whereCountry('mx')->whereSlug($storeSlug)->first();
+
+        if (! $store) {
+            return;
+        }
 
         $nextId = (int) cache('chascity.next-id-'.$storeSlug, 0);
 

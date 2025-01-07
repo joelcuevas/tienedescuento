@@ -11,9 +11,13 @@ use Illuminate\Support\Str;
 
 abstract class LiverpoolBaseCrawler extends WebBaseCrawler
 {
-    protected static ?string $storeCode = 'liverpool-mx';
-
     protected Store $store;
+
+    protected string $domain;
+
+    protected string $name;
+
+    protected string $slug;
 
     protected array $headers = [
         'User-Agent' => 'PostmanRuntime/7.42.0',
@@ -22,12 +26,22 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
 
     protected function setup(): void
     {
+        if (static::$storeCode == 'liverpool-mx') {
+            $this->domain = 'https://www.liverpool.com.mx';
+            $this->name = 'Liverpool';
+            $this->slug = 'liverpool';
+        } else {
+            $this->domain = 'https://www.suburbia.com.mx';
+            $this->name = 'Suburbia';
+            $this->slug = 'suburbia';
+        }
+
         $this->store = Store::firstOrCreate([
             'country' => 'mx',
-            'slug' => 'liverpool',
+            'slug' => $this->slug,
         ], [
-            'name' => 'Liverpool',
-            'external_url' => 'https://www.liverpool.com.mx',
+            'name' => $this->name,
+            'external_url' => $this->domain,
         ]);
     }
 
@@ -41,7 +55,7 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
             if ($price) {
                 $title = strip_tags($meta->title);
                 $slug = Str::slug($title);
-                $externalUrl = "https://www.liverpool.com.mx/tienda/pdp/{$slug}/{$meta->id}";
+                $externalUrl = $this->domain."/tienda/pdp/{$slug}/{$meta->id}";
                 $imageUrl = $this->getImageUrl($meta);
 
                 if ($source == 'product') {
@@ -74,7 +88,7 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
                 Product::withoutSyncingToSearch(function () use ($product, $price, $source) {
                     $product->prices()->create([
                         'price' => $price,
-                        'source' => 'liverpool-'.$source,
+                        'source' => $this->slug.'-'.$source,
                     ]);
                 });
 
@@ -147,7 +161,7 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
                         'code' => $code,
                     ], [
                         'title' => $title,
-                        'external_url' => "https://www.liverpool.com.mx/tienda/{$slug}/{$code}",
+                        'external_url' => $this->domain."/tienda/{$slug}/{$code}",
                         'parent_id' => $parentId,
                     ]);
 
