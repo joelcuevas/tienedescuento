@@ -55,7 +55,7 @@ class ChascityDiscover extends Command
             );
 
             $url = Url::resolve($href, 30);
-            $alreadyResolved = $url->crawled_at ? 'skip' : 'follow';
+            $alreadyResolved = $url && $url->crawled_at ? 'skip' : 'follow';
 
             $this->line("[Product {$product->id}] [$alreadyResolved] {$href}");
 
