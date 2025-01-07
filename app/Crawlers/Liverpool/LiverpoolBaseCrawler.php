@@ -39,23 +39,17 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
             $price = $meta?->minimumPromoPrice ?? $meta?->minimumListPrice;
 
             if ($price) {
-                profile("SKU: $meta->id - Saving");
-
                 $title = strip_tags($meta->title);
                 $slug = Str::slug($title);
                 $externalUrl = "https://www.liverpool.com.mx/tienda/pdp/{$slug}/{$meta->id}";
                 $imageUrl = $this->getImageUrl($meta);
                 $url = Url::resolve($externalUrl, 30);
 
-                profile("SKU: $meta->id - URL resolved");
-
                 if ($source == 'category') {
                     $url?->delay();
                 }
 
                 $product = Product::whereStoreId($this->store->id)->whereSku($meta->id)->first();
-
-                profile("SKU: $meta->id - Product retrieved");
 
                 if (! $product) {
                     $product = Product::create([
@@ -70,8 +64,6 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
 
                     $categories = $this->getCategories($meta);
                     $product->categories()->syncWithoutDetaching($categories);
-
-                    profile("SKU: $meta->id - Product created");
                 }
 
                 Product::withoutSyncingToSearch(function () use ($product, $price, $source) {
@@ -80,8 +72,6 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
                         'source' => 'liverpool-'.$source,
                     ]);
                 });
-
-                profile("SKU: $meta->id - Price added");
 
                 return $product;
             }

@@ -75,7 +75,6 @@ abstract class BaseCrawler
     {
         $this->setupSentry();
         
-        start_profiling('URL: '.$this->url->id);
         $this->startingTime = microtime(true);
 
         if (! $this->matchesPattern($this->url->href)) {
@@ -84,9 +83,7 @@ abstract class BaseCrawler
             return;
         }
 
-        profile('URL: '.$this->url->id.' - Setting up crawler');
         $this->setup();
-        profile('URL: '.$this->url->id.' - Crawler setup');
 
         try {
             $href = $this->url->href;
@@ -95,12 +92,9 @@ abstract class BaseCrawler
             if ($proxied) {
                 $href = config('crawler.proxy_url', '').$this->url->href;
             }
-
-            profile('URL: '.$this->url->id.' - Starting HTTP request');
+            
             $response = Http::withHeaders($this->headers)->get($href);
             $status = $response->status();
-
-            profile('URL: '.$this->url->id.' - HTTP request finished');
 
             if ($status == Response::HTTP_OK) {
                 $body = $this->formatBody($response->body());
@@ -108,9 +102,7 @@ abstract class BaseCrawler
                 if ($body == null) {
                     $status = Response::HTTP_GONE;
                 } else {
-                    profile('URL: '.$this->url->id.' - Parsing body');
                     $status = $this->parse($body);
-                    profile('URL: '.$this->url->id.' - Body parsed');
                 }
             }
         } catch (HttpClientException $e) {
@@ -125,7 +117,6 @@ abstract class BaseCrawler
         if ($this->url) {
             $startingTime = $this->startingTime ?? microtime(true);
             $this->url->hit($status, $this->cooldown, $startingTime);
-            profile('URL: '.$this->url->id.' - URL hit');
         }
     }
 }

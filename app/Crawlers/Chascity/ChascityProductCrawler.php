@@ -22,7 +22,7 @@ class ChascityProductCrawler extends WebBaseCrawler
         $storeSlug = match($chascitySlug) {
             'palaciohierro' => 'palacio',
             default => $chascitySlug,
-        };
+        };  
 
         parse_str(parse_url($this->url->href, PHP_URL_QUERY), $query);
         $productSku = $query['sku'];

@@ -12,24 +12,9 @@ function mmyy()
     return ucwords(now()->translatedFormat('F Y'));
 }
 
-function logger_console(string $log)
-{
-    $console = new Symfony\Component\Console\Output\ConsoleOutput;
-    $console->writeln($log);
-}
-
 function logger_cloudwatch(string $log, array $context = [])
 {
     \Log::channel('cloudwatch')->info($log, $context);
-}
-
-function logger_dashboard(string $log, array $context = [])
-{
-    if (! config('logging.dashboard')) {
-        return;
-    }
-
-    \Log::channel('dashboard')->info($log, $context);
 }
 
 function start_profiling(string $log)
