@@ -220,13 +220,13 @@ return [
 
             'suburbia' => array_merge($defaults, [
                 'queue' => ['suburbia'],
-                'maxProcesses' => 5,
+                'maxProcesses' => 10,
                 'timeout' => 30,
             ]),
 
             'palacio' => array_merge($defaults, [
                 'queue' => ['palacio'],
-                'maxProcesses' => 10,
+                'maxProcesses' => 5,
                 'timeout' => 30,
             ]),
 
