@@ -48,7 +48,7 @@ class Category extends Model
         return $this->belongsToMany(Product::class);
     }
 
-    public static function scopeWhereTree(Builder $query, mixed $scope, int $maxDepth = 3): Builder
+    public static function scopeWhereIsChildOf(Builder $query, mixed $scope, int $maxDepth = 3): Builder
     {
         $condition = 'false';
         $params = [];

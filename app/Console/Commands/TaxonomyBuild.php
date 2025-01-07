@@ -12,7 +12,7 @@ class TaxonomyBuild extends Command
 {
     protected $signature = 'taxonomy:build';
 
-    protected $description = 'Command description';
+    protected $description = 'Builds a hierarchical taxonomy tree for categories';
 
     public function handle()
     {
@@ -23,7 +23,7 @@ class TaxonomyBuild extends Command
         }
     }
 
-    private function build(string $country, array $taxons, int $parentId = null, array $topIds = [])
+    private function build(string $country, array $taxons, int $parentId = null, array $topCategoriesIds = [])
     {
         $order = -1;
 
@@ -40,22 +40,31 @@ class TaxonomyBuild extends Command
                 'order' => $order,
             ]);
 
-            $nestedKeywords = array_filter($config['keywords'], function($k) {
-                return ! str_starts_with($k, '!');
+            $globalKeywords = array_filter($config['keywords'], function($k) {
+                return ! str_starts_with($k, '>');
             });
 
-            $forcedKeywords = array_map(function($k) {
+            $nestedKeywords = array_map(function($k) {
                 return substr($k, 1);
             }, array_filter($config['keywords'], function($k) {
-                return str_starts_with($k, '!');
+                return str_starts_with($k, '>');
             }));
 
+            $globalIds = [];
             $nestedIds = [];
-            $forcedIds = [];
+
+            if (count($globalKeywords)) {
+                $globalIds = Category::query()
+                    ->whereIn('slug', $globalKeywords)
+                    ->select('id')
+                    ->distinct()
+                    ->pluck('id')
+                    ->all();
+            }
 
             if (count($nestedKeywords)) {
                 $nestedIds = Category::query()
-                    ->when(count($topIds), fn ($q) => $q->whereTree($topIds))
+                    ->when(count($topCategoriesIds), fn ($q) => $q->whereIsChildOf($topCategoriesIds))
                     ->whereIn('slug', $nestedKeywords)
                     ->select('id')
                     ->distinct()
@@ -63,16 +72,7 @@ class TaxonomyBuild extends Command
                     ->all();
             }
 
-            if (count($forcedKeywords)) {
-                $forcedIds = Category::query()
-                    ->whereIn('slug', $forcedKeywords)
-                    ->select('id')
-                    ->distinct()
-                    ->pluck('id')
-                    ->all();
-            }
-
-            $categoryIds = [...$nestedIds, ...$forcedIds];
+            $categoryIds = [...$globalIds, ...$nestedIds];
             $taxonomy->categories()->sync($categoryIds);
 
             if (isset($config['children']) && count($config['children'])) {

@@ -6,7 +6,7 @@ return  [
             'keywords' => ['electronica', 'electronico', 'tecnologia', 'computadoras-y-tablets'],
             'children' => [
                 'Celulares' => [
-                    'keywords' => ['celulares', 'reacondicionados', 'iphone'],
+                    'keywords' => ['celulares', '>reacondicionados', 'iphone'],
                 ],
                 'Tablets' => [
                     'keywords' => ['tablets', 'ipad'],
@@ -15,19 +15,25 @@ return  [
                     'keywords' => ['laptop'],
                 ],
                 'Pantallas' => [
-                    'keywords' => ['pantallas', 'pantallas-y-proyectores'],
+                    'keywords' => ['>pantallas', 'pantallas-y-proyectores'],
                 ],
             ],
         ],
 
-        'Línea Blanca' => [
-            'keywords' => ['linea-blanca', 'linea-blanca-y-electrodomesticos'],
+        'Electrodomésticos' => [
+            'keywords' => ['linea-blanca', 'electrodomesticos', 'linea-blanca-y-electrodomesticos'],
             'children' => [
                 'Refrigeradores' => [
                     'keywords' => ['refrigeradores', 'refrigeradores-y-congeladores'],
                 ],
                 'Lavadoras y Secadoras' => [
                     'keywords' => ['lavadoras', 'secadoras', 'lavasecadora', 'lavasecadoras', 'centro-de-lavado', 'centros-de-lavado', 'lavadoras-y-secadoras'],
+                ],
+                'Estufas y Hornos' => [
+                    'keywords' => ['estufas', 'parrillas', 'estufas-parrillas', 'hornos', '>campanas', 'campanas-cocina'],
+                ],
+                'Cocina y Hogar' => [
+                    'keywords' => ['electrodomesticos', 'electrodomesticos-de-cocina', 'electrodomesticos-del-hogar', 'electrodomesticos-de-casa'],
                 ],
             ],
         ],
@@ -45,12 +51,13 @@ return  [
                     'keywords' => ['xbox'],
                 ],
                 'Accesorios' => [
-                    'keywords' => ['accesorios', 'accesorios-para-videojuegos', 'accesorios-xbox', 'accesorios-playstation', 'accesorios-nintendo'],
+                    'keywords' => ['>accesorios', 'accesorios-para-videojuegos', 'accesorios-xbox', 'accesorios-playstation', 'accesorios-nintendo'],
                 ],
                 'Gaming' => [
-                    'keywords' => ['gaming', '!computadoras-para-gamers'],
+                    'keywords' => ['gaming', 'computadoras-para-gamers'],
                 ],
             ],
         ],
+
     ],
 ];

@@ -143,13 +143,13 @@ class Product extends Model
     {
         $taxonomies = Taxonomy::whereCountry($country)->whereSlug($slug)->get();
         
-        $topCategoryIds = DB::table('category_taxonomy')
+        $categoryIds = DB::table('category_taxonomy')
             ->whereIn('taxonomy_id', $taxonomies->pluck('id')->all())
             ->pluck('category_id')
             ->unique()
             ->all();
 
-        $categoryIds = Category::whereTree($topCategoryIds, $depth)
+        $categoryIds = Category::whereIsChildOf($categoryIds, $depth)
             ->select('id')
             ->pluck('id')
             ->unique()
