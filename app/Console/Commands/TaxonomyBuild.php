@@ -41,8 +41,14 @@ class TaxonomyBuild extends Command
             ]);
 
             $globalKeywords = array_filter($config['keywords'], function($k) {
-                return ! str_starts_with($k, '>');
+                return ! in_array(substr($k, 1), ['>', '#']);
             });
+
+            $codeKeywords = array_map(function($k) {
+                return substr($k, 1);
+            }, array_filter($config['keywords'], function($k) {
+                return str_starts_with($k, '#');
+            }));
 
             $nestedKeywords = array_map(function($k) {
                 return substr($k, 1);
@@ -51,11 +57,21 @@ class TaxonomyBuild extends Command
             }));
 
             $globalIds = [];
+            $codeIds = [];
             $nestedIds = [];
 
             if (count($globalKeywords)) {
                 $globalIds = Category::query()
                     ->whereIn('slug', $globalKeywords)
+                    ->select('id')
+                    ->distinct()
+                    ->pluck('id')
+                    ->all();
+            }
+
+            if (count($codeKeywords)) {
+                $codeIds = Category::query()
+                    ->whereIn('code', $codeKeywords)
                     ->select('id')
                     ->distinct()
                     ->pluck('id')
@@ -72,7 +88,7 @@ class TaxonomyBuild extends Command
                     ->all();
             }
 
-            $categoryIds = [...$globalIds, ...$nestedIds];
+            $categoryIds = [...$globalIds, ...$codeIds, ...$nestedIds];
             $taxonomy->categories()->sync($categoryIds);
 
             if (isset($config['children']) && count($config['children'])) {

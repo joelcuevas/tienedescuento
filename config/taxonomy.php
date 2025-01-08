@@ -62,5 +62,18 @@ return  [
             ],
         ],
 
+        'Mujer' => [
+            'keywords' => ['#catst4003072', '#cat-c8724db3'],
+
+            'children' => [
+                'Ropa' => [
+                    'keywords' => ['>ropa'],
+                ],
+                'Zapatos' => [
+                    'keywords' => ['>zapatos', '>calzado'],
+                ]
+            ],
+        ]
+
     ],
 ];
