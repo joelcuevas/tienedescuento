@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Models\Category;
 use App\Models\Taxonomy;
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -22,6 +21,10 @@ class TaxonomyBuild extends Command
         foreach ($config as $country => $taxons) {
             $this->build($country, $taxons);
         }
+
+        $orphanIds = Taxonomy::whereDoesntHave('subtaxonomies')->whereNull('parent_id')->pluck('id');
+        DB::table('category_taxonomy')->whereIn('taxonomy_id', $orphanIds)->delete();
+        Taxonomy::whereIn('id', $orphanIds)->delete();
     }
 
     private function build(string $country, array $taxons, int $parentId = null, string $prefix = '', array $topCategoriesIds = [])

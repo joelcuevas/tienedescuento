@@ -71,7 +71,7 @@ return  [
 
             'children' => [
                 'Relojes y Joyería' => [
-                    'keywords' => ['relojes-y-joyeria', 'joyeria', 'relojes'],
+                    'keywords' => ['>relojes-y-joyeria', '>joyeria', '>relojes'],
                 ],
                 'Bolsas y Accesorios' => [
                     'keywords' => ['>bolsas', '>accesorios-de-mujer', '>bolsos-y-carteras'],
@@ -100,7 +100,7 @@ return  [
 
             'children' => [
                 'Relojes y Joyería' => [
-                    'keywords' => ['relojes-y-joyeria', 'joyeria', 'relojes'],
+                    'keywords' => ['>relojes-y-joyeria', '>joyeria', '>relojes'],
                 ],
                 'Trajes y Sacos' => [
                     'keywords' => ['>trajes', '>sacos', '>sacos-blazers', '>abrigos'],
