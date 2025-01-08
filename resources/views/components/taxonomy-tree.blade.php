@@ -1,5 +1,5 @@
 <div>
-    <div class="h-[20rem] overflow-auto columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
+    <div class="max-h-[20rem] overflow-auto columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-6">
         @foreach ($taxonomies as $taxonomy)
             <div class="break-inside-avoid">
                 <h3 class="mb-2">

@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Taxonomy;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class TaxonomyBuild extends Command
@@ -23,9 +24,10 @@ class TaxonomyBuild extends Command
         }
     }
 
-    private function build(string $country, array $taxons, int $parentId = null, array $topCategoriesIds = [])
+    private function build(string $country, array $taxons, int $parentId = null, string $prefix = '', array $topCategoriesIds = [])
     {
         $order = -1;
+        $childrenIds = [];
 
         foreach ($taxons as $taxon => $config) {
             $slug = Str::slug($taxon);
@@ -33,12 +35,15 @@ class TaxonomyBuild extends Command
 
             $taxonomy = Taxonomy::updateOrCreate([
                 'country' => $country,
-                'slug' => $slug,
+                'slug' => $prefix.$slug,
             ], [
                 'title' => $taxon,
                 'parent_id' => $parentId,
                 'order' => $order,
             ]);
+
+            $childrenIds[] = $taxonomy->id;
+            $subPrefix = $prefix.$taxonomy->slug.'-';
 
             $globalKeywords = array_filter($config['keywords'], function($k) {
                 return ! in_array(substr($k, 1), ['>', '#']);
@@ -92,8 +97,13 @@ class TaxonomyBuild extends Command
             $taxonomy->categories()->sync($categoryIds);
 
             if (isset($config['children']) && count($config['children'])) {
-                $this->build($country, $config['children'], $taxonomy->id, $categoryIds);
+                $this->build($country, $config['children'], $taxonomy->id, $subPrefix, $categoryIds);
             }
         }
+
+        Taxonomy::query()
+            ->whereParentId($parentId)
+            ->whereNotIn('id', $childrenIds)
+            ->update(['parent_id' => null]);
     }
 }

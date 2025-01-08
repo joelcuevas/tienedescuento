@@ -12,8 +12,8 @@ return  [
                 'Tablets' => [
                     'keywords' => ['tablets', 'ipad'],
                 ],
-                'Laptops' => [
-                    'keywords' => ['laptop'],
+                'Laptops y Desktop' => [
+                    'keywords' => ['laptops', 'desktop', '>gamers', 'pc-gamer', 'laptop-gamer', 'computadoras-de-escritorio', 'computadoras-para-gamers'],
                 ],
                 'Pantallas' => [
                     'keywords' => ['>pantallas', 'pantallas-y-proyectores'],
@@ -63,17 +63,62 @@ return  [
         ],
 
         'Mujer' => [
-            'keywords' => ['#catst4003072', '#cat-c8724db3'],
+            'keywords' => [
+                '#catst4003072', // liverpool, suburbia
+                '#cat-c8724db3', // palacio
+                '#cos_10.1',     // costco
+            ],
 
             'children' => [
-                'Ropa' => [
-                    'keywords' => ['>ropa'],
+                'Relojes y Joyería' => [
+                    'keywords' => ['relojes-y-joyeria', 'joyeria', 'relojes'],
+                ],
+                'Bolsas y Accesorios' => [
+                    'keywords' => ['>bolsas', '>accesorios-de-mujer', '>bolsos-y-carteras'],
                 ],
                 'Zapatos' => [
                     'keywords' => ['>zapatos', '>calzado'],
-                ]
+                ],
+                'Ropa' => [
+                    'keywords' => ['>ropa', '>camisas', '>blusas', '>pantalones-y-shorts', '>vestidos-y-faldas'],
+                ],
+                'Chamarras' => [
+                    'keywords' => ['>chamarras', '>sueteres', '>sudaderas', '>chamarras-moda', '>sueteres-moda', '>sudaderas-moda', '>sueteres-y-chamarras'],
+                ],
+                'Deportiva' => [
+                    'keywords' => ['>ropa-deportiva', '>activewear-y-lifestyle', '>deportes'],
+                ],
             ],
-        ]
+        ],
+
+        'Hombre' => [
+            'keywords' => [
+                '#cat5020003',   // liverpool, suburbia
+                '#cat-8ba022ac', // palacio
+                '#cos_10.2',     // costco
+            ],
+
+            'children' => [
+                'Relojes y Joyería' => [
+                    'keywords' => ['relojes-y-joyeria', 'joyeria', 'relojes'],
+                ],
+                'Trajes y Sacos' => [
+                    'keywords' => ['>trajes', '>sacos', '>sacos-blazers', '>abrigos'],
+                ],
+                'Zapatos' => [
+                    'keywords' => ['>zapatos', '>calzado'],
+                ],
+                'Ropa' => [
+                    'keywords' => ['>ropa', '>camisas', '>playeras-y-polo', '>shorts-y-bermudas', '>pantalones-y-shorts', '>bermudas-shorts'],
+                ],
+                'Chamarras' => [
+                    'keywords' => ['>chamarras', '>sueteres', '>sudaderas', '>chamarras-moda', '>sueteres-moda', '>sudaderas-moda', '>sueteres-y-chamarras'],
+                ],
+                'Deportiva' => [
+                    'keywords' => ['>ropa-deportiva'],
+                ],
+            ],
+        ],
 
     ],
 ];

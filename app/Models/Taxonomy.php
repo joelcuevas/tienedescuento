@@ -23,7 +23,10 @@ class Taxonomy extends Model
     {
         static::saving(function (Taxonomy $taxonomy) {
             $taxonomy->title = Str::limit($taxonomy->title, 250);
-            $taxonomy->slug = Str::slug($taxonomy->title);
+
+            if (! $taxonomy->slug) {
+                $taxonomy->slug = Str::slug($taxonomy->title);
+            }
         });
     }
 
