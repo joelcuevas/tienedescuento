@@ -47,7 +47,7 @@ class ChascityDiscover extends Command
             ->limit($this->option('limit'))
             ->get();
 
-        $chascitySlug = match($storeSlug) {
+        $chascitySlug = match ($storeSlug) {
             'palacio' => 'palaciohierro',
             default => $storeSlug,
         };

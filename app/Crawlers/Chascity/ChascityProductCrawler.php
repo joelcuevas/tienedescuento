@@ -19,7 +19,7 @@ class ChascityProductCrawler extends WebBaseCrawler
     {
         preg_match(static::$pattern, $this->url->href, $matches);
 
-        $storeSlug = match($matches[1]) {
+        $storeSlug = match ($matches[1]) {
             'palaciohierro' => 'palacio',
             default => $matches[1],
         };

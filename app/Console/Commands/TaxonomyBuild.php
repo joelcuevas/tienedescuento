@@ -27,7 +27,7 @@ class TaxonomyBuild extends Command
         Taxonomy::whereIn('id', $orphanIds)->delete();
     }
 
-    private function build(string $country, array $taxons, int $parentId = null, string $prefix = '', array $topCategoriesIds = [])
+    private function build(string $country, array $taxons, ?int $parentId = null, string $prefix = '', array $topCategoriesIds = [])
     {
         $order = -1;
         $childrenIds = [];
@@ -48,19 +48,19 @@ class TaxonomyBuild extends Command
             $childrenIds[] = $taxonomy->id;
             $subPrefix = $prefix.$taxonomy->slug.'-';
 
-            $globalKeywords = array_filter($config['keywords'], function($k) {
+            $globalKeywords = array_filter($config['keywords'], function ($k) {
                 return ! in_array(substr($k, 1), ['>', '#']);
             });
 
-            $codeKeywords = array_map(function($k) {
+            $codeKeywords = array_map(function ($k) {
                 return substr($k, 1);
-            }, array_filter($config['keywords'], function($k) {
+            }, array_filter($config['keywords'], function ($k) {
                 return str_starts_with($k, '#');
             }));
 
-            $nestedKeywords = array_map(function($k) {
+            $nestedKeywords = array_map(function ($k) {
                 return substr($k, 1);
-            }, array_filter($config['keywords'], function($k) {
+            }, array_filter($config['keywords'], function ($k) {
                 return str_starts_with($k, '>');
             }));
 

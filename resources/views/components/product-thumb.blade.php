@@ -7,7 +7,7 @@
     
     @if ($product->discount > 0)
         <div class="absolute top-2 right-2 inline-flex text-xs rounded-full bg-red-700 text-white px-2 leading-6">
-            -{{ abs($product->discount) }}% REAL
+            -{{ abs($product->discount) }}%
         </div>
     @endif
 

@@ -48,28 +48,30 @@ class ShowCatalog extends Component
 
         if ($taxonomySlug) {
             $taxonomy = Taxonomy::whereCountry($countryCode)->whereSlug($taxonomySlug)->first();
+            abort_unless($taxonomy, 404);
+
             $query->whereTaxonomy($taxonomy);
 
             if ($taxonomy) {
                 $this->title[] = $taxonomy->title;
             }
-        }
+        } else {
+            if ($categorySlug) {
+                $query->whereCategory($categorySlug);
+                $category = Category::whereSlug($categorySlug)->first();
 
-        if ($categorySlug) {
-            $query->whereCategory($categorySlug);
-            $category = Category::whereSlug($categorySlug)->first();
-
-            if ($category) {
-                $this->title[] = $category->title;
+                if ($category) {
+                    $this->title[] = $category->title;
+                }
             }
-        }
 
-        if ($brandSlug) {
-            $query->where('brand_slug', $brandSlug);
-            $brand = Product::whereBrandSlug($brandSlug)->first();
+            if ($brandSlug) {
+                $query->where('brand_slug', $brandSlug);
+                $brand = Product::whereBrandSlug($brandSlug)->first();
 
-            if ($brand) {
-                $this->title[] = $brand->brand;
+                if ($brand) {
+                    $this->title[] = $brand->brand;
+                }
             }
         }
 

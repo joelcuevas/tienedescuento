@@ -1,6 +1,6 @@
-<?php 
+<?php
 
-return  [
+return [
     'mx' => [
         'Electrónica' => [
             'keywords' => ['electronica', 'electronico', 'tecnologia', 'computadoras-y-tablets'],
@@ -42,7 +42,7 @@ return  [
 
         'Videojuegos' => [
             'keywords' => ['videojuegos'],
-            
+
             'children' => [
                 'Nintendo' => [
                     'keywords' => ['nintendo', 'switch', 'nintendo-switch'],

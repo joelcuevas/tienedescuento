@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\StoreIntendedUrl;
 use App\Livewire\Admin\ShowTracking;
+use App\Livewire\NotFoundPage;
 use App\Livewire\Web\SearchProducts;
 use App\Livewire\Web\ShowCatalog;
 use App\Livewire\Web\ShowHome;
@@ -30,13 +31,15 @@ Route::middleware(
     ->prefix('{countryCode}')
     ->whereIn('countryCode', config('params.countries'))
     ->group(function () {
+        Route::get('/404', NotFoundPage::class)->name('404');
+
         Route::get('/', ShowHome::class)->name('home');
 
         Route::get('/stores', ShowStores::class)->name('stores.index');
         Route::get('/search', SearchProducts::class)->name('products.search');
 
         Route::get('/c/{categorySlug}', ShowCatalog::class)->name('catalogs.category');
-        
+
         Route::get('/{storeSlug}', ShowCatalog::class)->name('catalogs.store');
         Route::get('/{storeSlug}/b/{brandSlug}', ShowCatalog::class)->name('catalogs.store_brand');
         Route::get('/{storeSlug}/c/{categorySlug}', ShowCatalog::class)->name('catalogs.store_category');

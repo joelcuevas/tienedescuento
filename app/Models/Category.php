@@ -53,7 +53,7 @@ class Category extends Model
         $condition = 'false';
         $params = [];
 
-        if (is_integer($scope)) {
+        if (is_int($scope)) {
             $scope = [$scope];
         }
 
@@ -65,7 +65,7 @@ class Category extends Model
             $placeholders = implode(',', array_fill(0, count($scope), '?'));
             $condition = "id in ({$placeholders})";
             $params = [...$scope, $maxDepth];
-        } else if (is_string($scope)) {
+        } elseif (is_string($scope)) {
             $condition = 'slug = ?';
             $params = [$scope, $maxDepth];
         } else {

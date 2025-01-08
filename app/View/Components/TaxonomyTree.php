@@ -9,9 +9,7 @@ use Illuminate\View\Component;
 
 class TaxonomyTree extends Component
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function render(): View|Closure|string
     {

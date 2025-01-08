@@ -41,7 +41,7 @@ class AppServiceProvider extends ServiceProvider
         Model::unguard();
 
         Livewire::addPersistentMiddleware([SetCountryCode::class]);
-        
+
         $this->addLimitedPaginationToQueries();
         $this->addSqlBindingsToSentryLogs();
     }
@@ -62,14 +62,14 @@ class AppServiceProvider extends ServiceProvider
         DB::listen(function ($query) {
             // combine query with its bindings
             $pdo = DB::getPdo();
-            $q = str_replace('%', '%%', str_replace('?', "%s", $query->sql));
+            $q = str_replace('%', '%%', str_replace('?', '%s', $query->sql));
 
             $sqlWithBindings = vsprintf($q, array_map(function ($value) use ($pdo) {
                 return is_null($value) ? 'NULL' : $pdo->quote($value);
             }, $query->bindings));
 
             $sqlWithBindings = str_replace('%%', '%', $sqlWithBindings);
-        
+
             // add to sentry breadcrumbs
             Sentry\addBreadcrumb(new Sentry\Breadcrumb(
                 Sentry\Breadcrumb::LEVEL_INFO,

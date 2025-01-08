@@ -79,7 +79,7 @@ abstract class BaseCrawler
     public function crawl(): void
     {
         $this->setupSentry();
-        
+
         $this->startingTime = microtime(true);
 
         if (! $this->matchesPattern($this->url->href)) {
@@ -97,7 +97,7 @@ abstract class BaseCrawler
             if ($proxied) {
                 $href = config('crawlers.proxy_url', '').$this->url->href;
             }
-            
+
             $response = Http::withHeaders($this->headers)->get($href);
             $status = $response->status();
 

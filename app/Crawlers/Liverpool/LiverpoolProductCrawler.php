@@ -7,7 +7,7 @@ use Illuminate\Http\Response;
 class LiverpoolProductCrawler extends LiverpoolBaseCrawler
 {
     protected static ?string $storeCode = 'liverpool-mx';
-    
+
     protected static ?string $pattern = '#^https://www\.liverpool\.com\.mx/tienda/pdp/(?:.+/)?(\w+)(?:\?.*)?$#';
 
     protected static ?int $skuPatternIndex = 1;

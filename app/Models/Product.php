@@ -21,7 +21,9 @@ class Product extends Model
     use Searchable;
 
     const DAYS_OUTDATED = 3;
+
     const PAGE_SIZE = 24;
+
     const MAX_PAGES = 25;
 
     protected $attributes = [
@@ -140,7 +142,7 @@ class Product extends Model
     }
 
     public static function scopeWhereTaxonomy(Builder $query, Taxonomy $taxonomy, int $depth = 3): Builder
-    {      
+    {
         $categoryIds = DB::table('category_taxonomy')
             ->whereTaxonomyId($taxonomy->id)
             ->pluck('category_id')

@@ -16,7 +16,7 @@ class SearchProducts extends Component
 
     #[AttrUrl]
     public string $query = '';
-    
+
     private function search()
     {
         $storeIds = Store::whereCountry(request()->countryCode)->pluck('id')->all();

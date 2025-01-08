@@ -10,7 +10,7 @@ use Symfony\Component\DomCrawler\Crawler;
 class LiverpoolSitemapCrawler extends LiverpoolBaseCrawler
 {
     protected static ?string $storeCode = 'liverpool-mx';
-    
+
     protected static ?string $pattern = '#^https://www\.liverpool\.com\.mx/sitemap/[^/]+\.xml$#';
 
     protected array $ignore = ['/pdps-', '/ck-'];

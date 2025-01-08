@@ -2,7 +2,7 @@
 
 function country()
 {
-    return match(request()->countryCode) {
+    return match (request()->countryCode) {
         'mx' => 'México',
     };
 }

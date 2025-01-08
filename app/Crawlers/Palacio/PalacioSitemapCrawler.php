@@ -4,8 +4,8 @@ namespace App\Crawlers\Palacio;
 
 use App\Jobs\ResolveUrl;
 use Illuminate\Http\Response;
-use Symfony\Component\DomCrawler\Crawler;
 use Illuminate\Support\Str;
+use Symfony\Component\DomCrawler\Crawler;
 
 class PalacioSitemapCrawler extends PalacioBaseCrawler
 {
