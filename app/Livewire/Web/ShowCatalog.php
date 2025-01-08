@@ -27,6 +27,7 @@ class ShowCatalog extends Component
             ->with(['store'])
             ->recent()
             ->orderByDesc('discount')
+            ->orderByDesc('priced_at')
             ->limit(360);
 
         $storeSlug = request()->storeSlug;
