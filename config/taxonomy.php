@@ -4,6 +4,7 @@ return  [
     'mx' => [
         'Electrónica' => [
             'keywords' => ['electronica', 'electronico', 'tecnologia', 'computadoras-y-tablets'],
+
             'children' => [
                 'Celulares' => [
                     'keywords' => ['celulares', '>reacondicionados', 'iphone'],
@@ -22,6 +23,7 @@ return  [
 
         'Electrodomésticos' => [
             'keywords' => ['linea-blanca', 'electrodomesticos', 'linea-blanca-y-electrodomesticos'],
+
             'children' => [
                 'Refrigeradores' => [
                     'keywords' => ['refrigeradores', 'refrigeradores-y-congeladores'],
@@ -40,6 +42,7 @@ return  [
 
         'Videojuegos' => [
             'keywords' => ['videojuegos'],
+            
             'children' => [
                 'Nintendo' => [
                     'keywords' => ['nintendo', 'switch', 'nintendo-switch'],

@@ -6,4 +6,8 @@ return [
 
     'countries' => ['mx'],
 
+    'home_taxonomies' => [
+        'mx' => ['celulares', 'tablets', 'laptops', 'pantallas', 'refrigeradores'],
+    ],
+
 ];

@@ -67,6 +67,11 @@ abstract class BaseCrawler
         return null;
     }
 
+    public function resolveProduct(): ?Product
+    {
+        return static::matchesProduct($this->url->href);
+    }
+
     abstract protected function parse(mixed $body): int;
 
     abstract protected function formatBody(string $body): mixed;
@@ -90,7 +95,7 @@ abstract class BaseCrawler
             $proxied = $this->url->getCrawlerConfig('proxied', false);
 
             if ($proxied) {
-                $href = config('crawler.proxy_url', '').$this->url->href;
+                $href = config('crawlers.proxy_url', '').$this->url->href;
             }
             
             $response = Http::withHeaders($this->headers)->get($href);

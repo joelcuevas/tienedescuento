@@ -11,26 +11,23 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class ChascityProductCrawler extends WebBaseCrawler
 {
-    protected static ?string $pattern = '#^https://preciominimo\.chascity\.com/verificaprecio/[^?]+?\?sku=[^&]+$#';
+    protected static ?string $pattern = '#^https://preciominimo\.chascity\.com/verificaprecio/([^?]+)\?sku=([^&]+)$#';
 
     protected int $cooldown = 180;
 
     public function resolveProduct(): ?Product
     {
-        $chascitySlug = basename(parse_url($this->url->href, PHP_URL_PATH));
+        preg_match(static::$pattern, $this->url->href, $matches);
 
-        $storeSlug = match($chascitySlug) {
+        $storeSlug = match($matches[1]) {
             'palaciohierro' => 'palacio',
-            default => $chascitySlug,
-        };  
-
-        parse_str(parse_url($this->url->href, PHP_URL_QUERY), $query);
-        $productSku = $query['sku'];
+            default => $matches[1],
+        };
 
         $store = Store::whereCountry('mx')->whereSlug($storeSlug)->first();
 
         if ($store) {
-            return $store->products()->whereSku($productSku)->first();
+            return Product::whereStoreId($store->id)->whereSku($matches[2])->first();
         }
 
         return null;

@@ -21,7 +21,7 @@
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <div class="hidden lg:flex">
                     <form method="GET" action="{{ route('products.search')}}">
-                        <x-input name="query" class="!rounded-full !w-60 text-sm" placeholder="{{ __('What are you looking for?') }}" />
+                        <x-input name="query" value="{{ request()->get('query') }}" class="!rounded-full !w-60 text-sm" placeholder="{{ __('What are you looking for?') }}" />
                     </form>
                 </div>
                 @if (Auth::user())

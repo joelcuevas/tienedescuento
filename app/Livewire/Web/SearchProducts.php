@@ -16,19 +16,10 @@ class SearchProducts extends Component
 
     #[AttrUrl]
     public string $query = '';
-
-    public string $title;
-
-    public $countryCode;
-
-    public function mount(string $countryCode)
-    {
-        $this->countryCode = $countryCode;
-    }
-
+    
     private function search()
     {
-        $storeIds = Store::whereCountry($this->countryCode)->pluck('id')->all();
+        $storeIds = Store::whereCountry(request()->countryCode)->pluck('id')->all();
 
         // search by url
         if (Str::startsWith($this->query, 'https://')) {

@@ -10,7 +10,7 @@ class UrlScheduled extends Command
 {
     protected $signature = 'url:scheduled {--limit=50} {--domain=*}';
 
-    protected $description = 'Retrieve scheduled URLs from the database for crawling';
+    protected $description = 'Retrieve scheduled URLs for crawling';
 
     public function handle()
     {

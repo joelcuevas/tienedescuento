@@ -167,6 +167,6 @@ trait HasCrawlers
 
     public function getCrawlerConfig(string $key, mixed $default = null): mixed
     {
-        return config('crawler.domains')[$this->domain][$key] ?? $default;
+        return config('crawlers.domains')[$this->domain][$key] ?? $default;
     }
 }

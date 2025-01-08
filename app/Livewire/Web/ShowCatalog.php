@@ -5,6 +5,7 @@ namespace App\Livewire\Web;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Store;
+use App\Models\Taxonomy;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -46,8 +47,8 @@ class ShowCatalog extends Component
         }
 
         if ($taxonomySlug) {
-            $query->whereTaxonomy($countryCode, $taxonomySlug);
-            $taxonomy = Category::whereSlug($taxonomySlug)->first();
+            $taxonomy = Taxonomy::whereCountry($countryCode)->whereSlug($taxonomySlug)->first();
+            $query->whereTaxonomy($taxonomy);
 
             if ($taxonomy) {
                 $this->title[] = $taxonomy->title;

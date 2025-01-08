@@ -12,7 +12,7 @@ class ChascityDiscover extends Command
 {
     protected $signature = 'chascity:discover {--limit=10}';
 
-    protected $description = 'Schedule for crawling products without Chascity prices';
+    protected $description = 'Schedule products without Chascity prices';
 
     public function handle()
     {

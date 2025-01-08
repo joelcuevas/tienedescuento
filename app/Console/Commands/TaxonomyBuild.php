@@ -12,7 +12,7 @@ class TaxonomyBuild extends Command
 {
     protected $signature = 'taxonomy:build';
 
-    protected $description = 'Builds a hierarchical taxonomy tree for categories';
+    protected $description = 'Build a hierarchical taxonomy tree for categories';
 
     public function handle()
     {
@@ -31,7 +31,7 @@ class TaxonomyBuild extends Command
             $slug = Str::slug($taxon);
             $order++;
 
-            $taxonomy = Taxonomy::firstOrCreate([
+            $taxonomy = Taxonomy::updateOrCreate([
                 'country' => $country,
                 'slug' => $slug,
             ], [

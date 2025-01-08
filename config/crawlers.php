@@ -9,36 +9,36 @@ return [
         'www.liverpool.com.mx' => [
             'queue' => 'liverpool',
             'proxied' => true,
-            'throttle_allow' => 60,
-            'throttle_every' => 60,
+            'allow' => 15,
+            'every' => 1,
         ],
 
         'www.suburbia.com.mx' => [
             'queue' => 'suburbia',
             'proxied' => true,
-            'throttle_allow' => 60,
-            'throttle_every' => 60,
+            'allow' => 15,
+            'every' => 1,
         ],
 
         'www.elpalaciodehierro.com' => [
             'queue' => 'palacio',
             'proxied' => false,
-            'throttle_allow' => 60,
-            'throttle_every' => 60,
+            'allow' => 25,
+            'every' => 1,
         ],
 
         'www.costco.com.mx' => [
             'queue' => 'costco-mx',
             'proxied' => false,
-            'throttle_allow' => 60,
-            'throttle_every' => 60,
+            'allow' => 25,
+            'every' => 1,
         ],
 
         'preciominimo.chascity.com' => [
             'queue' => 'chascity',
             'proxied' => false,
-            'throttle_allow' => 30,
-            'throttle_every' => 60,
+            'allow' => 15,
+            'every' => 1,
         ],
 
     ],

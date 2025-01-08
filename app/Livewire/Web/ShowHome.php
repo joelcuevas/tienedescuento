@@ -11,11 +11,9 @@ class ShowHome extends Component
 {
     public function render()
     {
-        $taxonomies = ['celulares', 'tablets', 'laptops', 'pantallas', 'refrigeradores'];
-
         return view('livewire.web.show-home')->with([
             'stores' => Store::orderBy('name')->get(),
-            'taxonomies' => $taxonomies,
+            'taxonomies' => config('params.home_taxonomies.'.request()->countryCode),
         ]);
     }
 }
