@@ -7,7 +7,16 @@ return [
     'countries' => ['mx'],
 
     'home_taxonomies' => [
-        'mx' => ['celulares', 'tablets', 'laptops', 'pantallas', 'refrigeradores'],
+        'mx' => [
+            'electronica-celulares', 
+            'electronica-tablets', 
+            'electronica-laptops-y-desktops', 
+            'electronica-pantallas', 
+            'videojuegos',
+            'electrodomesticos-refrigeradores',
+            'electrodomesticos-lavadoras-y-secadoras',
+            'electrodomesticos-cocina-y-hogar',
+        ],
     ],
 
 ];
