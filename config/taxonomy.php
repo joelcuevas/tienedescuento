@@ -18,6 +18,9 @@ return [
                 'Pantallas' => [
                     'keywords' => ['>pantallas', 'pantallas-y-proyectores'],
                 ],
+                'Smart Home' => [
+                    'keywords' => ['smart-home', 'connected-smart-home'],
+                ],
             ],
         ],
 

@@ -2,7 +2,7 @@
     @if ($products->count())
         <div class="flex items-center mb-4 space-x-5">
             <h2 class="font-medium text-gray-900">
-                Hasta {{ $products->first()->discount }}% de Descuento en {{ $title }}
+                Hasta {{ $products->first()->discount }}% de descuento en {{ $title }}
             </h2>
 
             <x-link 

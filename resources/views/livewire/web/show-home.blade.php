@@ -8,7 +8,7 @@
 </x-slot>
 
 <div class="space-y-10">
-    <h1 class="font-medium text-gray-900">Los Mejores Descuentos de {{ country() }} en {{ mmyy() }}</h1>
+    <h1 class="font-medium text-gray-900">Los mejores descuentos de {{ country() }} en {{ mmyy() }}</h1>
 
     <ul class="flex space-x-6">
         @foreach ($stores as $store)
