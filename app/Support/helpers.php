@@ -2,9 +2,7 @@
 
 function country()
 {
-    return match (request()->countryCode) {
-        'mx' => 'México',
-    };
+    return config('params.countries.'.request()->countryCode);
 }
 
 function mmyy()

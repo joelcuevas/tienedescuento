@@ -21,7 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->respond(function (Response $response) {
             if ($response->getStatusCode() === 404) {
-                return new RedirectResponse('404');
+                return new RedirectResponse(route('404'));
             }
 
             return $response;

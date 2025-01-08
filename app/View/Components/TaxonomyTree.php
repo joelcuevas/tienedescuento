@@ -13,7 +13,11 @@ class TaxonomyTree extends Component
 
     public function render(): View|Closure|string
     {
-        $taxonomies = Taxonomy::whereNull('parent_id')->with('subtaxonomies')->get();
+        $taxonomies = Taxonomy::query()
+            ->whereCountry(request()->countryCode)
+            ->whereNull('parent_id')
+            ->with('subtaxonomies')
+            ->get();
 
         return view('components.taxonomy-tree')->with([
             'taxonomies' => $taxonomies,

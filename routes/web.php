@@ -29,7 +29,7 @@ Route::middleware(
         StoreIntendedUrl::class,
     ])
     ->prefix('{countryCode}')
-    ->whereIn('countryCode', config('params.countries'))
+    ->whereIn('countryCode', array_keys(config('params.countries')))
     ->group(function () {
         Route::get('/404', NotFoundPage::class)->name('404');
 
