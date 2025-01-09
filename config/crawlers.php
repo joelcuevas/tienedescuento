@@ -9,7 +9,7 @@ return [
         'www.liverpool.com.mx' => [
             'queue' => 'liverpool',
             'proxied' => true,
-            'allow' => 15,
+            'allow' => 25,
             'every' => 1,
         ],
 
