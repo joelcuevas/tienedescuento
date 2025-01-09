@@ -17,8 +17,10 @@
     <script src="https://kit.fontawesome.com/3c033f8319.js" crossorigin="anonymous"></script>
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9285674270424452" crossorigin="anonymous"></script>
+
+    @if (config('ads.enabled'))
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9285674270424452" crossorigin="anonymous"></script>
+    @endif
     
     @livewireStyles
 </head>
@@ -69,8 +71,6 @@
     
     @livewireScripts
     
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.1.0/dist/chartjs-plugin-annotation.min.js"></script>
     @stack('scripts')
 </body>
 </html>

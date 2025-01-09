@@ -112,6 +112,8 @@
 </div>
 
 @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.1.0/dist/chartjs-plugin-annotation.min.js"></script>
     <script>
         const upperBound = <?php echo json_encode($product->regular_price_upper); ?>;
         const lowerBound = <?php echo json_encode($product->regular_price_lower); ?>;
