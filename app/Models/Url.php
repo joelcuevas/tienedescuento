@@ -31,7 +31,16 @@ class Url extends Model
             ->where('scheduled_at', '<', now())
             ->where(fn ($q) => $q->whereNull('reserved_at')->orWhere('reserved_at', '<', now()->subHours(1)))
             ->limit($limit)
-            ->orderBy('priority');
+            ->orderBy('priority')
+            ->orderBy('scheduled_at');
+    }
+
+    public static function scopeRelegated(Builder $builder, int $limit): Builder
+    {
+        return $builder
+            ->where('scheduled_at', '<', now()->subHours(24))
+            ->limit($limit)
+            ->orderBy('scheduled_at');
     }
 
     public function product(): HasOne

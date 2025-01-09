@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class UrlScheduled extends Command
 {
-    protected $signature = 'url:scheduled {--limit=50} {--domain=*}';
+    protected $signature = 'url:scheduled {--limit=50} {--domain=}';
 
     protected $description = 'Retrieve scheduled URLs for crawling';
 
@@ -17,16 +17,23 @@ class UrlScheduled extends Command
         $query = Url::query();
 
         if ($this->option('domain')) {
-            $query->where(function (Builder $query) {
-                foreach ($this->option('domain') as $domain) {
-                    $query->orWhere('domain', $domain);
-                }
-            });
+            $query->where('domain', $this->option('domain'));
         }
 
-        $urls = $query->scheduled($this->option('limit'));
+        // fetch relegated urls within 30% of the limit
+        $limit = $this->option('limit');
+        $pct30 = round($limit * 0.3, 0);
+        $relegated = clone($query)->relegated($pct30)->get();
 
-        foreach ($urls->get() as $url) {
+        // adjust the limit if relegated urls exist
+        if ($relegated->count()) {
+            $limit -= $pct30;
+        }
+
+        // fetch scheduled urls and merge with relegated urls
+        $urls = $query->scheduled($limit)->get()->merge($relegated);
+
+        foreach ($urls as $url) {
             $this->line("[URL {$url->id}] {$url->href}");
             $url->dispatch();
         }
