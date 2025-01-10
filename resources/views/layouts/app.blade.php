@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="author" content="{{ config('app.name') }}">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://tienedescuento.com/">
+    <link rel="canonical" href="{{ request()->url() }}">
     {!! $meta ?? '' !!}
     
     <title>{!! isset($title) ? $title.' - ' : '' !!} {{ config('app.name') }}</title>
