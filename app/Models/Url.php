@@ -34,6 +34,7 @@ class Url extends Model
             ->orderBy('priority')
             ->orderByRaw('
                 CASE
+                    WHEN status IS NULL THEN 0
                     WHEN status BETWEEN 200 AND 299 THEN 1
                     WHEN status BETWEEN 500 AND 599 THEN 2
                     WHEN status BETWEEN 400 AND 499 THEN 3
