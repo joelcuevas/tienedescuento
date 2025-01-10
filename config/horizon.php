@@ -206,8 +206,14 @@ return [
                 'timeout' => 10,
             ]),
 
-            'strict-firewalls' => array_merge($defaults, [
-                'queue' => ['liverpool', 'suburbia'],
+            'liverpool' => array_merge($defaults, [
+                'queue' => ['liverpool'],
+                'maxProcesses' => 10,
+                'timeout' => 30,
+            ]),
+
+            'suburbia' => array_merge($defaults, [
+                'queue' => ['suburbia'],
                 'maxProcesses' => 10,
                 'timeout' => 30,
             ]),
