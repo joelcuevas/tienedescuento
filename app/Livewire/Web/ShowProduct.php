@@ -48,9 +48,10 @@ class ShowProduct extends Component
             $this->product->categories()->increment('views');
 
             $related = Product::search($this->product->title)
-                ->take(6)
+                ->take(10)
                 ->get()
-                ->except($this->product->id);
+                ->except($this->product->id)
+                ->take(6);
         }
 
         return view('livewire.web.show-product')->with([
