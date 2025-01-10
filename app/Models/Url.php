@@ -32,6 +32,14 @@ class Url extends Model
             ->where(fn ($q) => $q->whereNull('reserved_at')->orWhere('reserved_at', '<', now()->subHours(1)))
             ->limit($limit)
             ->orderBy('priority')
+            ->orderByRaw('
+                CASE
+                    WHEN status BETWEEN 200 AND 299 THEN 1
+                    WHEN status BETWEEN 500 AND 599 THEN 2
+                    WHEN status BETWEEN 400 AND 499 THEN 3
+                    ELSE 4
+                END
+            ')
             ->orderBy('scheduled_at');
     }
 
