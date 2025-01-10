@@ -36,7 +36,7 @@ class FeaturedProducts extends Component
                 ->with('store')
                 ->recent()
                 ->orderByDesc('discount')
-                ->take(7)
+                ->take(6)
                 ->get();
         }
 
