@@ -4,10 +4,8 @@ namespace App\Livewire\Web;
 
 use App\Models\Product;
 use App\Models\Taxonomy;
-use Livewire\Attributes\Lazy;
 use Livewire\Component;
 
-#[Lazy]
 class FeaturedProducts extends Component
 {
     public string $country;
@@ -18,6 +16,11 @@ class FeaturedProducts extends Component
     {
         $this->country = $country;
         $this->taxonomy = $taxonomy;
+    }
+
+    public function placeholder(array $params = [])
+    {
+        return view('components.featured-products-skeleton', $params);
     }
 
     public function render()
