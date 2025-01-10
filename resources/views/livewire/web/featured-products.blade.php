@@ -1,6 +1,6 @@
 <div>
     @if ($products->count())
-        <div class="flex items-center mb-4 space-x-5">
+        <div class="sm:flex sm:items-center sm:space-x-5 mb-4">
             <h2 class="font-medium text-gray-900">
                 Hasta {{ $products->first()->discount }}% de descuento en {{ $title }}
             </h2>
