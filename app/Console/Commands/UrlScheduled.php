@@ -23,7 +23,7 @@ class UrlScheduled extends Command
         // fetch relegated urls within 30% of the limit
         $limit = $this->option('limit');
         $pct30 = round($limit * 0.3, 0);
-        $relegated = clone($query)->relegated($pct30)->get();
+        $relegated = (clone $query)->relegated($pct30)->get();
 
         // adjust the limit if relegated urls exist
         if ($relegated->count()) {
