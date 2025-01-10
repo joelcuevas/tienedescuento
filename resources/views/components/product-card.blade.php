@@ -1,4 +1,10 @@
-<a href="{{ $product->link() }}" title="{{ $product->title }}" class="group text-sm w-full">
+@props(['product', 'textSize' => 'sm'])
+
+@php
+$textSize = $textSize == 'xs' ? 'text-xs' : 'text-sm';
+@endphp
+
+<a href="{{ $product->link() }}" title="{{ $product->title }}" class="group w-full {{ $textSize }}">
     <x-product-thumb :$product :tracker="true" />
 
     <div class="mt-4 text-gray-500 truncate">{{ $product->store->name }}</div>

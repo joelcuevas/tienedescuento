@@ -41,7 +41,7 @@
             <div class="flex items-center space-x-2 mb-10">
                 @if ($product->discount > 0)
                     <div class="text-lg font-medium text-red-700">{{ $product->latest_price_formatted }}</div>
-                    <div class="text-sm line-through text-gray-400">{{ $product->regular_price_formatted }}</div>
+                    <div class="text-sm line-through text-gray-500">{{ $product->regular_price_formatted }}</div>
                 @elseif ($product->discount < 0)
                     <div>{{ $product->latest_price_formatted }}</div>
                     <div class="text-sm text-gray-500">({{ abs($product->discount) }}% más caro)</div>
@@ -95,12 +95,13 @@
             </p>
         </div>
 
-        <div class="lg:col-span-4 lg:row-span-4">
+        <div class="mt-10 lg:mt-0 lg:col-span-4 lg:row-span-4">
             @if ($related) 
-                <h2 class="text-base font-medium mb-4">Productos similares</h2>
+                <h2 class="text-sm text-gray-600 mb-1">Productos Similares</h2>
+                <div class="text-base font-medium mb-4">¡Compara precios antes de comprar!</div>
                 <div class="grid grid-cols-3 gap-x-4 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
                     @foreach ($related as $relatedProduct)
-                        <x-product-card :product="$relatedProduct" />
+                        <x-product-card :product="$relatedProduct" textSize="xs" />
                     @endforeach
                 </div>
             @endif
