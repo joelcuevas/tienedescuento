@@ -22,7 +22,7 @@ class Product extends Model
 
     const DAYS_OUTDATED = 3;
 
-    const PAGE_SIZE = 24;
+    const PAGE_SIZE = 28;
 
     const MAX_PAGES = 25;
 

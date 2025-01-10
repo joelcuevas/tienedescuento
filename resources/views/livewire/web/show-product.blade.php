@@ -5,7 +5,7 @@
 </x-slot>
 
 <div>
-    <div class="lg:grid lg:grid-cols-12 lg:auto-rows-min lg:gap-x-8"> 
+    <div class="lg:grid lg:grid-cols-12 lg:auto-rows-min lg:gap-x-12"> 
         <div class="lg:col-span-2 lg:row-span-4">
             <x-product-thumb :$product />
         </div>
@@ -28,9 +28,15 @@
                 @endif
             </div>
 
-            <h1 class="font-medium text-lg text-balance my-2">{{ $product->title }}</h1>
+            <h1 class="font-medium text-lg my-2">{{ $product->title }}</h1>
 
-            <div class="text-xs text-gray-600 mb-3">SKU: {{ $product->sku }}</div>
+            <div class="text-xs text-gray-600 mb-3">
+                
+                <x-link href="{{ $product->external_url }}" target="_blank" class="text-gray-600">
+                    SKU: {{ $product->sku }} -  Comprarlo en {{ $product->store->name }}
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[0.5rem] text-gray-500 pl-1"></i>
+                </x-link>
+            </div>
 
             <div class="flex items-center space-x-2 mb-10">
                 @if ($product->discount > 0)
@@ -47,35 +53,18 @@
 
             <div class="flex flex-col lg:flex-row items-start lg:items-center lg:space-x-2 space-y-2 lg:space-y-0">
                 @livewire('web.track-product', [$product])
-
-                <x-link-button href="{{ $product->external_url }}" target="_blank" class="px-8 py-2">
-                    Comprarlo en {{ $product->store->name }}
-                    <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-600 pl-1"></i>
-                </x-link-button>
             </div>
-        </div>
-      
-        <div class="lg:col-span-4 lg:row-span-4">
-            @if (config('ads.enabled'))
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9285674270424452" crossorigin="anonymous"></script>
-                <ins class="adsbygoogle"
-                    style="display:block"
-                    data-ad-format="autorelaxed"
-                    data-ad-client="ca-pub-9285674270424452"
-                    data-ad-slot="3697451903">
-                </ins>
-                <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-            @endif
         </div>
 
         <div class="lg:col-span-6 lg:col-start-3 row-start-2">
-            <h2 class="text-sm font-medium mt-10 mb-3">¿Tiene descuento "{{ $product->title }}" en {{ now()->translatedFormat('F Y') }}?</h2>
+            <h2 class="text-sm font-medium mt-10 mb-3">Rastreo de precios {{ $yearsSpan }}</h2>
+            <canvas id="prices-chart" height="60"></canvas>
+
+            <h2 class="text-sm font-medium mt-10 mb-3">¿Tiene descuento "{{ $product->title }}"?</h2>
             @if ($product->hasBestPrice())
                 <p class="text-sm text-gray-600">
                     <span class="font-medium">¡Este es el mejor precio de los últimos {{ $lastMonths }} meses!</span> 
-                    El precio normal de "{{ $product->title }}" suele estar entre 
+                    Su precio normal suele estar entre 
                     <span class="font-medium">{{ $product->regular_price_lower_formatted }}</span> 
                     y <span class="font-medium">{{ $product->regular_price_upper_formatted }}</span>, 
                     por lo que <span class="font-medium">{{ $product->latest_price_formatted }} 
@@ -98,15 +87,23 @@
                 </p>
             @endif
 
-            <h2 class="text-sm font-medium mt-10 mb-3">Historial de precios {{ $yearsSpan }} de "{{ $product->title }}"</h2>
-            <canvas id="prices-chart" height="60"></canvas>
-
             <h2 class="text-sm font-medium mt-10 mb-3">¿Cómo se calcula el descuento real en Tiene Descuento?</h2>
             <p class="text-sm text-gray-600">
                 Algunas marcas cometen la mala práctica de subir sus precios antes de una venta especial. El algoritmo de Tiene Descuento
                 es capaz de identificar el rango de precios en el que suele encontrarse el producto y eliminar esos "falsos descuentos"
                 que las tiendas te quieren hacer creer. El descuento real indicado aquí, considera factores estadísticos para decirte la verdad.
             </p>
+        </div>
+
+        <div class="lg:col-span-4 lg:row-span-4">
+            @if ($related) 
+                <h2 class="text-base font-medium mb-4">Productos similares</h2>
+                <div class="grid grid-cols-3 gap-x-4 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
+                    @foreach ($related as $relatedProduct)
+                        <x-product-card :product="$relatedProduct" />
+                    @endforeach
+                </div>
+            @endif
         </div>
     </div>  
 </div>
@@ -172,7 +169,6 @@
                         },
                         annotation: {
                             annotations: {
-
                                 regularBand: {
                                     type: 'box',
                                     xMin: 0,
@@ -188,7 +184,13 @@
                     },
                     scales: {
                         x: {
-                            ticks: false,
+                            ticks: {
+                                maxTicksLimit: 12,
+                                font: {
+                                    size: 9,
+                                    family: 'figtree',
+                                },
+                            },
                         },
                         y: {
                             ticks: {

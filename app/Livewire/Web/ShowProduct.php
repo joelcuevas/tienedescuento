@@ -25,6 +25,7 @@ class ShowProduct extends Component
     public function render()
     {
         $data = [];
+        $related = null;
 
         $lastMonths = 6;
         $ago = now()->subMonths($lastMonths)->format('Y');
@@ -45,12 +46,18 @@ class ShowProduct extends Component
             $this->product->increment('views');
             $this->product->store()->increment('views');
             $this->product->categories()->increment('views');
+
+            $related = Product::search($this->product->title)
+                ->take(6)
+                ->get()
+                ->except($this->product->id);
         }
 
         return view('livewire.web.show-product')->with([
             'data' => $data,
             'lastMonths' => $lastMonths,
             'yearsSpan' => $yearsSpan,
+            'related' => $related,
         ]);
     }
 }

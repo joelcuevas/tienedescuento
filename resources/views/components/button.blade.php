@@ -8,6 +8,6 @@ if ($primary) {
 }
 @endphp
 
-<button {{ $attributes->merge(['type' => 'submit', 'class' => 'inline-block rounded-full px-8 py-2 text-sm ring-1 shadow-xs ring-inset '.$colors]) }}>
+<button {{ $attributes->merge(['type' => 'submit', 'class' => 'inline-block rounded-full px-8 py-3 text-sm ring-1 shadow-xs ring-inset '.$colors]) }}>
     {{ $slot }}
 </button>

@@ -9,6 +9,6 @@ if ($primary) {
 
 @endphp
 
-<a {{ $attributes->merge(['href' => '#', 'class' => 'inline-block rounded-full px-4 py-2 text-sm ring-1 shadow-xs ring-inset '.$colors]) }}>
+<a {{ $attributes->merge(['href' => '#', 'class' => 'inline-block rounded-full px-8 py-3 text-sm ring-1 shadow-xs ring-inset '.$colors]) }}>
     {{ $slot }}
 </a>
