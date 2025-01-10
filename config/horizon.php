@@ -206,19 +206,13 @@ return [
                 'timeout' => 10,
             ]),
 
-            'liverpool' => array_merge($defaults, [
-                'queue' => ['liverpool'],
+            'strict-firewalls' => array_merge($defaults, [
+                'queue' => ['liverpool', 'suburbia'],
                 'maxProcesses' => 10,
                 'timeout' => 30,
             ]),
 
-            'suburbia' => array_merge($defaults, [
-                'queue' => ['suburbia'],
-                'maxProcesses' => 10,
-                'timeout' => 30,
-            ]),
-
-            'lower-volume' => array_merge($defaults, [
+            'small-inventory' => array_merge($defaults, [
                 'queue' => ['palacio', 'costco-mx'],
                 'maxProcesses' => 10,
                 'timeout' => 30,
