@@ -22,7 +22,7 @@ class SampleProducts extends Controller
             ->whereRelation('prices', 'priced_at', '<=', now()->subDays(60))
             ->has('prices', '>=', 10)
             ->orderByDesc('priced_at')
-            ->limit(100)
+            ->limit(10)
             ->get();
             
         $response = [];
