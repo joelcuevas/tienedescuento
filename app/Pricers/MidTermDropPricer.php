@@ -7,9 +7,10 @@ use Illuminate\Support\Collection;
 
 class MidTermDropPricer
 {
-    const MAX_HISTORY_DAYS = 60;
+    const DAYS_THRESHOLD = 90;
     const RECENT_DAYS = 15;
     const CLUSTER_THRESHOLD = 0.1; // 10% range for clustering
+    const BAND_MARGIN = 0.05; // 5% margin for the band
 
     public function __construct(
         protected Product $product,
@@ -20,7 +21,7 @@ class MidTermDropPricer
         // Fetch prices for the product within the last 60 days
         $prices = $this->product
             ->prices()
-            ->where('priced_at', '>=', now()->subDays(self::MAX_HISTORY_DAYS))
+            ->where('priced_at', '>=', now()->subDays(self::DAYS_THRESHOLD))
             ->orderByDesc('priced_at')
             ->get();
 
@@ -40,9 +41,9 @@ class MidTermDropPricer
         $regularCluster = $this->findMostProbableCluster($clusters);
         $regularPrice = array_sum($regularCluster) / count($regularCluster);
 
-        // Calculate upper and lower bounds of the regular price cluster
-        $regularPriceLower = min($regularCluster);
-        $regularPriceUpper = max($regularCluster);
+        // Calculate upper and lower bounds of the regular price cluster with margin
+        $regularPriceLower = min($regularCluster) - ($regularPrice * self::BAND_MARGIN);
+        $regularPriceUpper = max($regularCluster) + ($regularPrice * self::BAND_MARGIN);
 
         // Get the minimum and maximum prices in the last 60 days
         $minimumPrice = $prices->min('price');
@@ -58,7 +59,6 @@ class MidTermDropPricer
         // Calculate discount and savings
         $discount = 0;
         $savings = 0;
-
         if ($regularPrice > 0) {
             $discount = (($regularPrice - $latestPrice) / $regularPrice) * 100;
             $savings = $regularPrice - $latestPrice;
@@ -73,8 +73,8 @@ class MidTermDropPricer
         $this->product->regular_price_lower = $regularPriceLower;
         $this->product->regular_price_upper = $regularPriceUpper;
         $this->product->discount = $discount;
-        // $this->product->savings = $savings;
-        // $this->product->status = $status;
+        $this->product->savings = $savings;
+        $this->product->status = $status;
 
         return $this->product->save();
     }

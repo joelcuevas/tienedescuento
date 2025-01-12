@@ -40,14 +40,12 @@ class ShowProduct extends Component
         $data = [];
         $related = null;
 
-        $lastMonths = 6;
+        $lastMonths = 2;
         $ago = now()->subMonths($lastMonths)->format('Y');
         $now = now()->format('Y');
         $yearsSpan = $ago == $now ? $now : $ago.'-'.$now;
 
         if ($this->product) {
-            $data = collect();
-
             $data = Price::selectRaw("date_format(priced_date, '%d-%b-%y') as date, priced_date, min(price) as aggregate")
                 ->where('product_id', $this->product->id)
                 ->where('priced_date', '>=', now()->subMonths($lastMonths)->startOfMonth())
@@ -63,6 +61,7 @@ class ShowProduct extends Component
             $related = Product::search($this->product->title)
                 ->take(10)
                 ->get()
+                ->load('store')
                 ->except($this->product->id)
                 ->take(6);
         }

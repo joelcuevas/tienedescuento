@@ -3,11 +3,11 @@
 return [
     'mx' => [
         'Electrónica' => [
-            'keywords' => ['electronica', 'electronico', 'tecnologia', 'computadoras-y-tablets'],
+            'keywords' => ['electronica', 'electronico', 'tecnologia', 'computadoras-y-tablets', 'tablets'],
 
             'children' => [
                 'Celulares' => [
-                    'keywords' => ['celulares', '>reacondicionados', 'iphone'],
+                    'keywords' => ['celulares', '>reacondicionados', 'smartphones'],
                 ],
                 'Tablets' => [
                     'keywords' => ['tablets', 'ipad'],
