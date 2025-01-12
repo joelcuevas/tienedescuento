@@ -119,6 +119,12 @@ trait HasCrawlers
         $this->delayed_at = null;
         $this->hits = $this->hits + 1;
         $this->save();
+
+        if ($this->product) {
+            $isActive = $this->status >= 200 && $this->status <= 299;
+            $this->product->is_active = $isActive;
+            $this->product->save();
+        }
     }
 
     private static function resolveCrawler($href): ?string

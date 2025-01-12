@@ -28,6 +28,7 @@ class Product extends Model
 
     protected $attributes = [
         'views' => 0,
+        'is_active' => true,
     ];
 
     protected $casts = [

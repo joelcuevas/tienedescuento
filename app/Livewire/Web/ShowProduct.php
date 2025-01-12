@@ -6,6 +6,7 @@ use App\Models\Price;
 use App\Models\Product;
 use App\Models\Store;
 use Livewire\Component;
+use Sentry;
 
 class ShowProduct extends Component
 {
@@ -20,6 +21,18 @@ class ShowProduct extends Component
         if ($this->store) {
             $this->product = Product::whereStoreId($this->store->id)->whereSku($productSku)->first();
         }
+
+        Sentry\configureScope(function (Sentry\State\Scope $scope): void {
+            if ($this->product) {
+                $scope->setContext('Product', [
+                    'id' => $this->product->id,
+                ]);
+            }
+
+            if ($this->store) {
+                $scope->setTag('store', $this->store->slug);
+            }
+        });
     }
 
     public function render()

@@ -27,7 +27,10 @@ return new class extends Migration
             $table->decimal('regular_price_upper', 8, 2)->nullable();
             $table->decimal('regular_price_lower', 8, 2)->nullable();
             $table->integer('discount')->nullable();
+            $table->decimal('savings', 12, 2)->nullable();
+            $table->string('status')->nullable();
             $table->date('priced_at')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->text('url');
             $table->text('image_url')->nullable();
             $table->timestamps();
