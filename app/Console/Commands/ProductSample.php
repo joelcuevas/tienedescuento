@@ -77,7 +77,7 @@ class ProductSample extends Command
                     ]);
                 };
             }
-        } if ($this->option('stores')) {
+        } elseif ($this->option('stores')) {
             Artisan::call('url:crawl "https://www.liverpool.com.mx/tienda/pdp/samsung-galaxy-s24-fe-dynamic-amoled-2x-6.7-pulgadas-desbloqueado/1164289479?skuid=1164289482"');
             Artisan::call('url:crawl "https://www.costco.com.mx/rest/v2/mexico/products/685767/?fields=FULL&lang=es_MX&curr=MXN"');
             Artisan::call('url:crawl "https://www.liverpool.com.mx/tienda/celulares/cat5150024"');
