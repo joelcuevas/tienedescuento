@@ -62,7 +62,7 @@ class AppServiceProvider extends ServiceProvider
         DB::listen(function ($query) {
             // combine query with its bindings
             $pdo = DB::getPdo();
-            $q = str_replace('%', '%%', str_replace('?', '%s', $query->sql));
+            $q = str_replace('?', '%s', str_replace('%', '%%', $query->sql));
 
             $sqlWithBindings = vsprintf($q, array_map(function ($value) use ($pdo) {
                 return is_null($value) ? 'NULL' : $pdo->quote($value);
