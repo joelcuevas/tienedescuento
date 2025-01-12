@@ -17,10 +17,6 @@
     <script src="https://kit.fontawesome.com/3c033f8319.js" crossorigin="anonymous"></script>
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    @if (config('ads.enabled'))
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9285674270424452" crossorigin="anonymous"></script>
-    @endif
     
     @livewireStyles
 </head>
