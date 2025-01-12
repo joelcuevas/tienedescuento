@@ -34,7 +34,7 @@ class FeaturedProducts extends Component
             $products = Product::query()
                 ->whereTaxonomy($taxonomy)
                 ->with('store')
-                ->recent()
+                ->onlyRecent()
                 ->orderByDesc('discount')
                 ->take(6)
                 ->get();

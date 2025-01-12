@@ -34,6 +34,7 @@ class Product extends Model
     protected $casts = [
         'priced_at' => 'datetime',
         'priced_date' => 'date',
+        'is_active' => 'boolean',
     ];
 
     protected static function booted(): void
@@ -60,9 +61,16 @@ class Product extends Model
         );
     }
 
+    protected function discount(): Attribute
+    {
+        return Attribute::make(
+            get: fn (int $value) => $this->isOutdated() ? 0 : $value,
+        );
+    }
+
     public function isOutdated(): bool
     {
-        return $this->priced_at < now()->subDays(self::DAYS_OUTDATED);
+        return ! $this->is_active || $this->priced_at < now()->subDays(self::DAYS_OUTDATED);
     }
 
     public function link(): string
@@ -130,9 +138,9 @@ class Product extends Model
         return $query->with('store');
     }
 
-    public static function scopeRecent(Builder $query): Builder
+    public static function scopeOnlyRecent(Builder $query): Builder
     {
-        return $query->where('priced_at', '>=', now()->subDays(self::DAYS_OUTDATED));
+        return $query->whereIsActive(true)->where('priced_at', '>=', now()->subDays(self::DAYS_OUTDATED));
     }
 
     public static function scopeWhereCategory(Builder $query, mixed $slug): Builder
