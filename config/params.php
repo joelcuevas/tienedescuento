@@ -5,7 +5,7 @@ return [
     'default_country' => 'mx',
 
     'countries' => [
-        'mx' => 'México', 
+        'mx' => 'México',
     ],
 
     'home_taxonomies' => [

@@ -13,7 +13,7 @@ class SetCountryCode
     {
         $path = $request->path(); // Get the request path
         $allowedCountries = array_keys(config('params.countries'));
-        $pattern = '#^(' . implode('|', $allowedCountries) . ')(?=/|$)#';
+        $pattern = '#^('.implode('|', $allowedCountries).')(?=/|$)#';
 
         if (preg_match($pattern, $path, $matches)) {
             $country = $matches[1];

@@ -3,13 +3,15 @@
 namespace App\Pricers;
 
 use App\Models\Product;
-use Illuminate\Support\Collection;
 
 class MidTermDropPricer
 {
     const DAYS_THRESHOLD = 90;
+
     const RECENT_DAYS = 15;
+
     const CLUSTER_THRESHOLD = 0.1; // 10% range for clustering
+
     const BAND_MARGIN = 0.05; // 5% margin for the band
 
     public function __construct(
@@ -50,7 +52,7 @@ class MidTermDropPricer
         $maximumPrice = $prices->max('price');
 
         // Get the minimum price in the last 15 days
-        $recentPrices = $prices->filter(fn($price) => $price->priced_at >= now()->subDays(self::RECENT_DAYS));
+        $recentPrices = $prices->filter(fn ($price) => $price->priced_at >= now()->subDays(self::RECENT_DAYS));
         $recentMinPrice = $recentPrices->min('price');
 
         // Determine the status of the latest price
@@ -81,9 +83,6 @@ class MidTermDropPricer
 
     /**
      * Perform clustering on the given prices.
-     *
-     * @param array $prices
-     * @return array
      */
     private function performClustering(array $prices): array
     {
@@ -102,7 +101,7 @@ class MidTermDropPricer
                 }
             }
 
-            if (!$found) {
+            if (! $found) {
                 $clusters[] = [$price];
             }
         }
@@ -112,25 +111,16 @@ class MidTermDropPricer
 
     /**
      * Find the most probable cluster (the one with the highest count).
-     *
-     * @param array $clusters
-     * @return array
      */
     private function findMostProbableCluster(array $clusters): array
     {
-        usort($clusters, fn($a, $b) => count($b) <=> count($a));
+        usort($clusters, fn ($a, $b) => count($b) <=> count($a));
+
         return $clusters[0];
     }
 
     /**
      * Determine the status of the latest price.
-     *
-     * @param float $latestPrice
-     * @param float $regularPrice
-     * @param float $regularPriceLower
-     * @param float $regularPriceUpper
-     * @param float $recentMinPrice
-     * @return string
      */
     private function determineStatus(float $latestPrice, float $regularPrice, float $regularPriceLower, float $regularPriceUpper, float $recentMinPrice): string
     {

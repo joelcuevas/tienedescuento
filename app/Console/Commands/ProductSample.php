@@ -29,7 +29,7 @@ class ProductSample extends Command
 
             $samples = Http::withHeaders([
                 'X-Dev-Mode' => config('dev.mode_code'),
-            ])->get($samplingServer . '/api/products/sample');
+            ])->get($samplingServer.'/api/products/sample');
 
             $store = Store::firstOrCreate([
                 'country' => 'mx',
@@ -75,7 +75,7 @@ class ProductSample extends Command
                         'price' => $price['price'],
                         'source' => 'prod',
                     ]);
-                };
+                }
             }
         } elseif ($this->option('stores')) {
             Artisan::call('url:crawl "https://www.liverpool.com.mx/tienda/pdp/samsung-galaxy-s24-fe-dynamic-amoled-2x-6.7-pulgadas-desbloqueado/1164289479?skuid=1164289482"');

@@ -26,7 +26,7 @@ class SampleProducts extends Controller
             ->orderByDesc('priced_at')
             ->limit(25)
             ->get();
-            
+
         $response = [];
 
         foreach ($products as $product) {
@@ -48,7 +48,7 @@ class SampleProducts extends Controller
             }
 
             $response[] = $data;
-        };
+        }
 
         return $response;
     }

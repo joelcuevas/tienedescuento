@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Models\Url;
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Builder;
 
 class UrlScheduled extends Command
 {
