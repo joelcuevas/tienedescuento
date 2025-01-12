@@ -109,6 +109,15 @@ abstract class PalacioBaseCrawler extends WebBaseCrawler
 
             // return only the last category
             $categoryLeafs[] = $category;
+        } else {
+            $categoryLeafs[] = Category::firstOrCreate([
+                'store_id' => $this->store->id,
+                'code' => 'palacio',
+            ], [
+                'title' => 'Palacio',
+                'external_url' => 'https://www.elpalaciodehierro.com',
+                'parent_id' => null,
+            ]);
         }
 
         return $categoryLeafs;

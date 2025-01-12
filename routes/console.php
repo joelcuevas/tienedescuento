@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Schedule;
 
+Schedule::command('fix:palacio')->everyMinute();
+
 Schedule::command('chascity:discover --limit=15')->everyMinute();
 
 foreach (config('crawlers.domains') as $domain => $config) {
