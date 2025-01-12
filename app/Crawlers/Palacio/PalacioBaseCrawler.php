@@ -110,6 +110,10 @@ abstract class PalacioBaseCrawler extends WebBaseCrawler
             // return only the last category
             $categoryLeafs[] = $category;
         } else {
+            logger()->channel('cloudwatch')->info('No breadcrumbs found on the page', [
+                'url' => $this->url->href,
+            ]);
+
             $categoryLeafs[] = Category::firstOrCreate([
                 'store_id' => $this->store->id,
                 'code' => 'palacio',
