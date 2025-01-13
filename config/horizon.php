@@ -202,7 +202,7 @@ return [
         'production' => [
             'default' => array_merge($defaults, [
                 'queue' => ['default', 'telescope', 'scout'],
-                'maxProcesses' => 5,
+                'maxProcesses' => 10,
                 'timeout' => 10,
             ]),
 
