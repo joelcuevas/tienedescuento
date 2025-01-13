@@ -15,7 +15,7 @@ class FixRepriceAllProducts extends Command
     {
         $products = Product::whereNull('pricer_class')
             ->orderByDesc('discount')
-            ->limit(1000)
+            ->limit(300)
             ->get();
 
         foreach ($products as $product) {
