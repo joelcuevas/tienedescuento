@@ -32,10 +32,10 @@ class SampleProducts extends Controller
         }
 
         $products = Product::query()
-            //->where('discount', '>', 0)
+            ->where('discount', '>', 0)
             ->when($sampleStore, fn ($query) => $query->where('store_id', '<>', $sampleStore->id))
             ->with(['categories', 'prices' => fn ($q) => $q->where('priced_at', '>=', now()->subDays(self::SAMPLE_DAYS))])
-            //->has('prices', '>=', 15)
+            ->has('prices', '>=', 15)
             ->orderByDesc('priced_at')
             ->limit(25)
             ->get();
