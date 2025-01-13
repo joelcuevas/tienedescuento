@@ -57,6 +57,7 @@ class ShowProduct extends Component
             $this->product->categories()->increment('views');
 
             $related = Product::search($this->product->title)
+                //->where('is_active', true) -- enable again after rebuilding the index
                 ->take(10)
                 ->get()
                 ->load('store')

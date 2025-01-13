@@ -140,8 +140,8 @@ return [
         'key' => env('MEILISEARCH_KEY'),
         'index-settings' => [
             Product::class => [
-                'filterableAttributes' => ['store_name', 'sku', 'title', 'brand'],
-                'sortableAttributes' => [],
+                'filterableAttributes' => ['store_name', 'sku', 'title', 'brand', 'is_active'],
+                'sortableAttributes' => ['is_active'],
             ],
         ],
     ],

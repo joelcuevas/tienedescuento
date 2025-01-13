@@ -48,7 +48,7 @@ class Product extends Model
         });
 
         static::saved(function (Product $product) {
-            if ($product->wasChanged(['sku', 'title', 'brand'])) {
+            if ($product->wasChanged(['sku', 'title', 'brand', 'is_active'])) {
                 $product->searchable();
             }
         });
@@ -130,6 +130,7 @@ class Product extends Model
             'sku' => $this->sku,
             'title' => $this->title,
             'brand' => $this->brand,
+            'is_active' => $this->is_active,
         ];
     }
 
