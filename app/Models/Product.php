@@ -20,7 +20,7 @@ class Product extends Model
     use HasPrices;
     use Searchable;
 
-    const DAYS_OUTDATED = 1;
+    const DAYS_OUTDATED = 2;
 
     const PAGE_SIZE = 24;
 
