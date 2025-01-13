@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Http\Middleware\SetCountryCode;
 use App\Models\Product;
 use App\Support\LimitedPaginator;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -32,6 +33,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (app()->environment('local')) {
+            Debugbar::enable();
+        } else {
+            Debugbar::disable();
+        }
+
         $locale = config('app.locale');
 
         Carbon::setLocale($locale);

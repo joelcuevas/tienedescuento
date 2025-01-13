@@ -30,6 +30,8 @@ return new class extends Migration
             $table->decimal('savings', 12, 2)->nullable();
             $table->string('status')->nullable();
             $table->date('priced_at')->nullable();
+            $table->string('pricer_class')->nullable();
+            $table->string('pricer_days_history')->nullable();
             $table->boolean('is_active')->default(true);
             $table->text('url');
             $table->text('image_url')->nullable();

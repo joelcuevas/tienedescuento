@@ -6,64 +6,67 @@
 
 <div>
     <div class="lg:grid lg:grid-cols-12 lg:auto-rows-min lg:gap-x-12"> 
-        <div class="lg:col-span-2 lg:row-span-4">
-            <x-product-thumb :$product />
-        </div>
-
-        <div class="lg:col-span-6 lg:row-span-1">  
-            @if ($product->isOutdated())
-                <div class="rounded-xl bg-yellow-100 px-4 py-4 mb-6 text-xs text-gray-800">
-                    Han pasado algunos días desde el último precio vigente de este producto. Es posible que el artículo se encuentre agotado 
-                    o descontinuado. Verifica directo en la tienda para más información.
+        <div class="lg:col-span-8 lg:row-span-1"> 
+            <div class="flex space-x-6">
+                <div class="w-40">
+                    <x-product-thumb :$product />
                 </div>
-            @endif
 
-            <div class="text-sm flex w-full truncate mt-6 lg:mt-3">
-                <a href="{{ $product->storeLink() }}" class="max-w-[50%] truncate text-gray-600 hover:text-gray-900">{{ $product->store->name }}</a>
-                <span class="text-gray-300 px-2">/</span>
-                <a href="{{ $product->categoryLink() }}" class="max-w-[50%] truncate text-gray-600 hover:text-gray-900">{{ $product->category }}</a>
-                @if ($product->brand)
-                    <span class="text-gray-300 px-2">/</span>
-                    <a href="{{ $product->categoryBrandLink() }}" class="max-w-[50%] truncate text-gray-600 hover:text-gray-900">{{ $product->brand }}</a>
-                @endif
-            </div>
+                <div>
+                    @if ($product->isOutdated())
+                        <div class="rounded-xl bg-yellow-100 px-4 py-4 mb-6 text-xs text-gray-800">
+                            Han pasado algunos días desde el último precio vigente de este producto. Es posible que el artículo se encuentre agotado 
+                            o descontinuado. Verifica directo en la tienda para más información.
+                        </div>
+                    @endif
 
-            <h1 class="font-medium text-lg my-2">{{ $product->title }}</h1>
+                    <div class="text-sm flex w-full truncate mt-6 lg:mt-3">
+                        <a href="{{ $product->storeLink() }}" class="max-w-[50%] truncate text-gray-600 hover:text-gray-900">{{ $product->store->name }}</a>
+                        <span class="text-gray-300 px-2">/</span>
+                        <a href="{{ $product->categoryLink() }}" class="max-w-[50%] truncate text-gray-600 hover:text-gray-900">{{ $product->category }}</a>
+                        @if ($product->brand)
+                            <span class="text-gray-300 px-2">/</span>
+                            <a href="{{ $product->categoryBrandLink() }}" class="max-w-[50%] truncate text-gray-600 hover:text-gray-900">{{ $product->brand }}</a>
+                        @endif
+                    </div>
 
-            <div class="text-xs text-gray-600 mb-3">
-                
-                <x-link href="{{ $product->external_url }}" target="_blank" class="text-gray-600">
-                    SKU: {{ $product->sku }} -  Comprarlo en {{ $product->store->name }}
-                    <i class="fa-solid fa-arrow-up-right-from-square text-[0.5rem] text-gray-500 pl-1"></i>
-                </x-link>
-            </div>
+                    <h1 class="font-medium text-lg my-2">{{ $product->title }}</h1>
 
-            <div class="flex items-center space-x-2 mb-10">
-                @if ($product->discount > 0)
-                    <div class="text-lg font-medium text-red-700">{{ $product->latest_price_formatted }}</div>
-                    <div class="text-sm line-through text-gray-500">{{ $product->regular_price_formatted }}</div>
-                @elseif ($product->discount < 0)
-                    <div>{{ $product->latest_price_formatted }}</div>
-                    <div class="text-sm text-gray-500">({{ abs($product->discount) }}% más caro)</div>
-                @else
-                    <div>{{ $product->latest_price_formatted }}</div>
-                    <div class="text-sm text-gray-500">(precio regular)</div>
-                @endif
-            </div>
+                    <div class="text-xs text-gray-600 mb-3">
+                        <x-link href="{{ $product->external_url }}" target="_blank" class="text-gray-600">
+                            SKU: {{ $product->sku }} -  Comprarlo en {{ $product->store->name }}
+                            <i class="fa-solid fa-arrow-up-right-from-square text-[0.5rem] text-gray-500 pl-1"></i>
+                        </x-link>
+                    </div>
 
-            <div class="flex flex-col lg:flex-row items-start lg:items-center lg:space-x-2 space-y-2 lg:space-y-0">
-                @livewire('web.track-product', [$product])
+                    <div class="flex items-center space-x-2">
+                        @if ($product->discount > 0)
+                            <div class="text-lg font-medium text-red-700">{{ $product->latest_price_formatted }}</div>
+                            <div class="text-sm line-through text-gray-500">{{ $product->regular_price_formatted }}</div>
+                        @elseif ($product->discount < 0)
+                            <div>{{ $product->latest_price_formatted }}</div>
+                            <div class="text-sm text-gray-500">({{ abs($product->discount) }}% más caro)</div>
+                        @else
+                            <div>{{ $product->latest_price_formatted }}</div>
+                            <div class="text-sm text-gray-500">(precio regular)</div>
+                        @endif
+                    </div>
+
+                    <div class="mt-4 flex flex-col lg:flex-row items-start lg:items-center lg:space-x-2 space-y-2 lg:space-y-0">
+                        @livewire('web.track-product', [$product])
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="lg:col-span-6 lg:col-start-3 row-start-2">
+        <div class="lg:col-span-8 row-start-2">
             <h2 class="text-sm font-medium mt-10 mb-3">Rastreo de precios {{ $yearsSpan }}</h2>
             <canvas id="prices-chart" height="60"></canvas>
 
             <h2 class="text-sm font-medium mt-10 mb-3">¿Tiene descuento "{{ $product->title }}"?</h2>
             @if ($product->hasBestPrice())
                 <p class="text-sm text-gray-600">
-                    <span class="font-medium">¡Este es el mejor precio de los últimos {{ $lastMonths }} meses!</span> 
+                    <span class="font-medium">¡Este es el mejor precio de los últimos {{ $lastDays }} días!</span> 
                     Su precio normal suele estar entre 
                     <span class="font-medium">{{ $product->regular_price_lower_formatted }}</span> 
                     y <span class="font-medium">{{ $product->regular_price_upper_formatted }}</span>, 
@@ -125,11 +128,14 @@
                     datasets: [
                         {
                             label: 'Precio',
-                            backgroundColor: '#333',
-                            borderColor: '#333',
-                            borderWidth: 2,
+                            backgroundColor: '#444',
+                            borderColor: '#444',
                             data: @json($data->map(fn ($data) => $data->aggregate)),
                             stepped: 'middle',
+                            borderWidth: 1.5,
+                            pointRadius: 2,
+                            pointHoverRadius: 4,
+                            pointHitRadius: 5,
                         },
                     ],
                 },
@@ -188,7 +194,7 @@
                             ticks: {
                                 maxTicksLimit: 12,
                                 font: {
-                                    size: 9,
+                                    size: 8,
                                     family: 'figtree',
                                 },
                             },
