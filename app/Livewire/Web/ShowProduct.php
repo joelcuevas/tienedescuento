@@ -74,11 +74,11 @@ class ShowProduct extends Component
 
     private function getChartData($lastDays)
     {
-        // Define the start and end dates
+        // define the start and end dates
         $startDate = now()->subDays($lastDays)->startOfDay();
-        $endDate = now()->startOfDay();
+        $endDate = $this->product->priced_at->startOfDay();
 
-        // Fetch the original data
+        // fetch the original data
         $data = Price::selectRaw("date_format(priced_date, '%d-%b-%y') as date, priced_date, min(price) as aggregate")
             ->where('product_id', $this->product->id)
             ->where('priced_date', '>=', $startDate)
@@ -87,28 +87,28 @@ class ShowProduct extends Component
             ->orderBy('priced_date')
             ->get();
 
-        // Adjust startDate to the first known price date
+        // adjust startDate to the first known price date
         $firstKnownDate = Carbon::parse($data->first()->priced_date)->startOfDay();
         $startDate = $firstKnownDate;
 
-        // Fill gaps in dates with the last known price
+        // fill gaps in dates with the last known price
         $filledData = [];
         $lastKnownPrice = null;
 
-        // Create a map of priced_date to price for quick lookup
+        // create a map of priced_date to price for quick lookup
         $datePriceMap = $data->pluck('aggregate', 'priced_date')->toArray();
 
-        // Iterate through all dates in the range starting at the first known price
+        // iterate through all dates in the range starting at the first known price
         for ($date = $startDate; $date->lessThanOrEqualTo($endDate); $date->addDay()) {
             $formattedDate = $date->toDateTimeString();
 
             if (array_key_exists($formattedDate, $datePriceMap)) {
-                // Use the price from the data if available
+                // use the price from the data if available
                 $lastKnownPrice = $datePriceMap[$formattedDate];
             }
 
             if ($lastKnownPrice !== null) {
-                // Fill the date with the last known price
+                // fill the date with the last known price
                 $filledData[] = (object) [
                     'date' => $date->format('d-M-y'),
                     'priced_date' => $formattedDate,
