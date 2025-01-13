@@ -14,8 +14,8 @@
     </div>
     
     @if ($product->isOutdated())
-        <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
-            <div class="text-gray-500 text-xs">
+        <div class="absolute top-0 left-0 w-full h-full flex items-center text-center justify-center">
+            <div class="bg-gray-200 w-full text-gry-500 text-xs/3 py-2">
                 Podría estar agotado
             </div>
         </div>
