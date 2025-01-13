@@ -12,81 +12,130 @@ use Illuminate\Support\Facades\Http;
 
 class ProductSample extends Command
 {
-    protected $signature = 'product:sample {--stores} {--production}';
+    protected $signature = 'product:sample 
+                            {--stores : Fetch sample products from stores}
+                            {--production : Fetch sample products from production}
+                            {--product_id= : Specify a product ID to fetch (requires --production)}';
 
     protected $description = 'Fetches sample products from stores or production servers';
 
     public function handle()
     {
         if (! config('dev.mode_code') || ! config('dev.sampling_server')) {
-            $this->error('Configure dev mode code and sampling server in .env file.');
+            $this->error('  Configure dev mode code and sampling server in .env file.');
 
             return;
         }
 
-        if ($this->option('production')) {
-            $samplingServer = rtrim(config('dev.sampling_server'), '/');
+        $isProduction = $this->option('production');
+        $productId = $this->option('product_id');
+        $samplingServer = rtrim(config('dev.sampling_server'), '/');
 
-            $samples = Http::withHeaders([
-                'X-Dev-Mode' => config('dev.mode_code'),
-            ])->get($samplingServer.'/api/products/sample');
+        if ($isProduction) {
+            if ($productId) {
+                $this->info("  Sampling production server for product ID: {$productId}");
+                $sample = Http::withHeaders([
+                    'X-Dev-Mode' => config('dev.mode_code'),
+                ])->get($samplingServer."/api/products/sample?product_id={$productId}");
 
-            $store = Store::firstOrCreate([
-                'country' => 'mx',
-                'slug' => 'sample',
-            ], [
-                'name' => 'Sample',
-                'external_url' => 'https://example.com',
-            ]);
+                if ($sample->failed()) {
+                    $this->error("  Failed to fetch product with ID: {$productId}");
 
-            foreach ($samples->json() as $sample) {
-                $this->line('  Sampling: '.$sample['sku'].' '.$sample['title']);
-
-                $product = Product::whereStoreId($store->id)->whereSku($sample['sku'])->first();
-
-                if ($product) {
-                    continue;
+                    return;
                 }
 
-                $product = Product::create([
-                    'sku' => $sample['sku'],
-                    'title' => $sample['title'],
-                    'brand' => $sample['brand'],
-                    'external_url' => $sample['external_url'],
-                    'image_url' => $sample['image_url'],
-                    'store_id' => $store->id,
-                ]);
+                $store = $this->getOrCreateSampleStore();
+                $this->processSample([$sample->json()], $store);
+            } else {
+                $this->info('  Sampling production server');
 
-                $categoryCode = substr(sha1($sample['category']), 0, 8);
+                $samples = Http::withHeaders([
+                    'X-Dev-Mode' => config('dev.mode_code'),
+                ])->get($samplingServer.'/api/products/sample');
 
-                $category = Category::firstOrCreate([
-                    'store_id' => $store->id,
-                    'code' => $categoryCode,
-                ], [
-                    'title' => $sample['category'],
-                    'external_url' => 'https://example.com/category/'.$categoryCode,
-                ]);
+                if ($samples->failed()) {
+                    $this->error('  Failed to fetch sample products');
 
-                $product->categories()->sync($category);
-
-                foreach ($sample['prices'] as $price) {
-                    $product->prices()->create([
-                        'priced_at' => new Carbon($price['priced_at']),
-                        'price' => $price['price'],
-                        'source' => 'prod',
-                    ]);
+                    return;
                 }
+
+                $store = $this->getOrCreateSampleStore();
+                $this->processSample($samples->json(), $store);
             }
         } elseif ($this->option('stores')) {
-            $this->line('  Sampling: Liverpool');
+            $this->info('  Sampling store: Liverpool');
             Artisan::call('url:crawl "https://www.liverpool.com.mx/tienda/pdp/samsung-galaxy-s24-fe-dynamic-amoled-2x-6.7-pulgadas-desbloqueado/1164289479?skuid=1164289482"');
             Artisan::call('url:crawl "https://www.liverpool.com.mx/tienda/celulares/cat5150024"');
 
-            $this->line('  Sampling: Costco');
+            $this->info('  Sampling store: Costco');
             Artisan::call('url:crawl "https://www.costco.com.mx/rest/v2/mexico/products/685767/?fields=FULL&lang=es_MX&curr=MXN"');
             Artisan::call('url:crawl "https://www.costco.com.mx/rest/v2/mexico/products/search?category=cos_1.3.1&currentPage=0&pageSize=25&lang=es_MX&curr=MXN&fields=FULL"');
         } else {
-            $this->error('Please specify --stores or --production option');
+            $this->error('  Please specify --stores or --production option');
+        }
+    }
+
+    /**
+     * Get or create the sample store.
+     */
+    private function getOrCreateSampleStore(): Store
+    {
+        return Store::firstOrCreate(
+            ['country' => 'mx', 'slug' => 'sample'],
+            ['name' => 'Sample', 'external_url' => 'https://example.com']
+        );
+    }
+
+    /**
+     * Process the fetched samples and store them in the database.
+     *
+     * @return void
+     */
+    private function processSample(array $samples, Store $store)
+    {
+        foreach ($samples as $sample) {
+            $this->line('  Sampling: '.$sample['sku'].' '.$sample['title']);
+
+            $product = Product::whereStoreId($store->id)->whereSku($sample['sku'])->first();
+
+            if ($product) {
+                continue;
+            }
+
+            $product = Product::create([
+                'sku' => $sample['sku'],
+                'title' => $sample['title'],
+                'brand' => $sample['brand'] ?? null,
+                'external_url' => $sample['external_url'],
+                'image_url' => $sample['image_url'],
+                'store_id' => $store->id,
+            ]);
+
+            $categoryCode = substr(sha1($sample['category']), 0, 8);
+
+            $category = Category::firstOrCreate([
+                'store_id' => $store->id,
+                'code' => $categoryCode,
+            ], [
+                'title' => $sample['category'],
+                'external_url' => 'https://example.com/category/'.$categoryCode,
+            ]);
+
+            $product->categories()->sync($category);
+
+            foreach ($sample['prices'] as $price) {
+                if (! isset($price['priced_at'], $price['price'])) {
+                    $this->error('  Invalid price structure: '.json_encode($price));
+
+                    continue;
+                }
+
+                $product->prices()->create([
+                    'priced_at' => new Carbon($price['priced_at']),
+                    'price' => $price['price'],
+                    'source' => 'prod',
+                ]);
+            }
         }
     }
 }
