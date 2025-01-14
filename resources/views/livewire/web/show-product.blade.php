@@ -8,7 +8,7 @@
     <div class="lg:grid lg:grid-cols-12 lg:auto-rows-min lg:gap-x-12"> 
         <div class="lg:col-span-8 lg:row-span-1"> 
             <div class="flex space-x-6">
-                <div class="w-40">
+                <div class="w-32 min-w-32 lg:w-40 lg:min-w-40">
                     <x-product-thumb :$product />
                 </div>
 
@@ -39,7 +39,7 @@
                         </x-link>
                     </div>
 
-                    <div class="flex items-center space-x-2">
+                    <div class="flex items-center space-x-4">
                         @if ($product->discount > 0)
                             <div class="text-lg font-medium text-red-700">{{ $product->latest_price_formatted }}</div>
                             <div class="text-sm line-through text-gray-500">{{ $product->regular_price_formatted }}</div>
@@ -50,6 +50,7 @@
                             <div>{{ $product->latest_price_formatted }}</div>
                             <div class="text-sm text-gray-500">(precio regular)</div>
                         @endif
+                        <div class="text-xs text-gray-500">Actualizado {{ $product->priced_at->diffForHumans() }}</div>
                     </div>
 
                     <div class="mt-4 flex flex-col lg:flex-row items-start lg:items-center lg:space-x-2 space-y-2 lg:space-y-0">

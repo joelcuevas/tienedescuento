@@ -54,11 +54,10 @@ class SearchProducts extends Component
     public function render()
     {
         $products = $this->search()
-            ->orderByDesc('discount')
             ->limitedPaginate()
             ->appends(['query' => $this->query]);
 
-        // load at the undelying collection to not modify the paginator
+        // load at the underlying collection to not modify the paginator
         $products->getCollection()->load('store');
 
         return view('livewire.web.show-catalog')->with([
