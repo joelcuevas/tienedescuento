@@ -22,6 +22,7 @@ class TaxonomyBuild extends Command
             $this->build($country, $taxons);
         }
 
+        // crear taxonomies without children
         $orphanIds = Taxonomy::whereDoesntHave('subtaxonomies')->whereNull('parent_id')->pluck('id');
         DB::table('category_taxonomy')->whereIn('taxonomy_id', $orphanIds)->delete();
         Taxonomy::whereIn('id', $orphanIds)->delete();
@@ -48,25 +49,36 @@ class TaxonomyBuild extends Command
             $childrenIds[] = $taxonomy->id;
             $subPrefix = $prefix.$taxonomy->slug.'-';
 
+            // keywords without modifiers, can be ANY category with this slug
             $globalKeywords = array_filter($config['keywords'], function ($k) {
-                return ! in_array(substr($k, 1), ['>', '#']);
+                return ! in_array(substr($k, 0, 1), ['>', '#', '-']);
             });
 
+            // keywords starting with # are direct category ids
             $codeKeywords = array_map(function ($k) {
                 return substr($k, 1);
             }, array_filter($config['keywords'], function ($k) {
                 return str_starts_with($k, '#');
             }));
 
+            // keywords starting with > must be children of parent taxonomy categories
             $nestedKeywords = array_map(function ($k) {
                 return substr($k, 1);
             }, array_filter($config['keywords'], function ($k) {
                 return str_starts_with($k, '>');
             }));
 
+            // keywords starting with - must be removed from the final set
+            $bannedKeywords = array_map(function ($k) {
+                return substr($k, 1);
+            }, array_filter($config['keywords'], function ($k) {
+                return str_starts_with($k, '-');
+            }));
+
             $globalIds = [];
             $codeIds = [];
             $nestedIds = [];
+            $categoryIds = [];
 
             if (count($globalKeywords)) {
                 $globalIds = Category::query()
@@ -75,6 +87,8 @@ class TaxonomyBuild extends Command
                     ->distinct()
                     ->pluck('id')
                     ->all();
+
+                $categoryIds = [...$categoryIds, ...$globalIds];
             }
 
             if (count($codeKeywords)) {
@@ -84,6 +98,8 @@ class TaxonomyBuild extends Command
                     ->distinct()
                     ->pluck('id')
                     ->all();
+
+                $categoryIds = [...$categoryIds, ...$codeIds];
             }
 
             if (count($nestedKeywords)) {
@@ -94,16 +110,26 @@ class TaxonomyBuild extends Command
                     ->distinct()
                     ->pluck('id')
                     ->all();
+
+                $categoryIds = [...$categoryIds, ...$nestedIds];
             }
 
-            $categoryIds = [...$globalIds, ...$codeIds, ...$nestedIds];
-            $taxonomy->categories()->sync($categoryIds);
+            $finalCategoryIds = Category::query()
+                ->whereIsChildOf($categoryIds, 3)
+                ->when(count($bannedKeywords), fn ($q) => $q->whereNotIn('slug', $bannedKeywords))
+                ->select('id')
+                ->distinct()
+                ->pluck('id')
+                ->all();
+
+            $taxonomy->categories()->sync($finalCategoryIds);
 
             if (isset($config['children']) && count($config['children'])) {
                 $this->build($country, $config['children'], $taxonomy->id, $subPrefix, $categoryIds);
             }
         }
 
+        // clean up old children
         Taxonomy::query()
             ->whereParentId($parentId)
             ->whereNotIn('id', $childrenIds)

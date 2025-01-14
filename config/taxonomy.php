@@ -3,17 +3,24 @@
 return [
     'mx' => [
         'Electrónica' => [
-            'keywords' => ['electronica', 'electronico', 'tecnologia', 'computadoras-y-tablets', 'tablets'],
+            'keywords' => ['electronica', 'electronico', 'tecnologia', 'computadoras-y-tablets'],
 
             'children' => [
                 'Celulares' => [
-                    'keywords' => ['celulares', '>reacondicionados', 'smartphones'],
+                    'keywords' => ['celulares', '>reacondicionados', 'smartphones', '-accesorios', '-fundas-protectores'],
                 ],
                 'Tablets' => [
                     'keywords' => ['tablets', 'ipad'],
                 ],
+                'Accesorios' => [
+                    'keywords' => [
+                        '>accesorios', '>fundas', '>fundas-protectores', 'cargadores-para-celular', 'fundas-para-celular', 'micas-para-celular', 'soportes-para-celulares-y-complementos', 'accesorios-para-celulares', 'accesorios-para-tablets', 'accesorios-computacion',
+                    ],
+                ],
                 'Laptops y Desktop' => [
-                    'keywords' => ['laptops', 'desktop', '>gamers', 'pc-gamer', 'laptop-gamer', 'computadoras-de-escritorio', 'computadoras-para-gamers'],
+                    'keywords' => [
+                        'laptops', 'desktop', '>gamers', 'pc-gamer', 'laptop-gamer', 'computadoras-de-escritorio', 'computadoras-para-gamers',
+                    ],
                 ],
                 'Pantallas' => [
                     'keywords' => ['>pantallas', 'pantallas-y-proyectores'],

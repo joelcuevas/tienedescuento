@@ -70,6 +70,9 @@ class ProductSample extends Command
             $this->info('  Sampling store: Costco');
             Artisan::call('url:crawl "https://www.costco.com.mx/rest/v2/mexico/products/685767/?fields=FULL&lang=es_MX&curr=MXN"');
             Artisan::call('url:crawl "https://www.costco.com.mx/rest/v2/mexico/products/search?category=cos_1.3.1&currentPage=0&pageSize=25&lang=es_MX&curr=MXN&fields=FULL"');
+
+            $this->info('  Sampling store: El Palacio');
+            Artisan::call('url:crawl "https://www.elpalaciodehierro.com/electronica/celulares/fundas-protectores/"');
         } else {
             $this->error('  Please specify --stores or --production option');
         }

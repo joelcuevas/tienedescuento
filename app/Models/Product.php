@@ -159,7 +159,8 @@ class Product extends Model
             ->unique()
             ->all();
 
-        $categoryIds = Category::whereIsChildOf($categoryIds, $depth)
+        $categoryIds = Category::query()
+            ->whereIn('id', $categoryIds)
             ->select('id')
             ->pluck('id')
             ->unique()
