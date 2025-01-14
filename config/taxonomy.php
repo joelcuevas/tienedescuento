@@ -39,7 +39,7 @@ return [
                     'keywords' => ['refrigeradores', 'refrigeradores-y-congeladores'],
                 ],
                 'Lavadoras y Secadoras' => [
-                    'keywords' => ['lavadoras', 'secadoras', 'lavasecadora', 'lavasecadoras', 'centro-de-lavado', 'centros-de-lavado', 'lavadoras-y-secadoras'],
+                    'keywords' => ['lavadoras', '>secadoras', 'lavasecadora', 'lavasecadoras', 'centro-de-lavado', 'centros-de-lavado', 'lavadoras-y-secadoras'],
                 ],
                 'Estufas y Hornos' => [
                     'keywords' => ['estufas', 'parrillas', 'estufas-parrillas', 'hornos', '>campanas', 'campanas-cocina'],
