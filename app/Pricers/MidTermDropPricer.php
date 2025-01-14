@@ -26,6 +26,7 @@ use Carbon\Carbon;
  */
 class MidTermDropPricer
 {
+    const VERSION = '1.0.2';
     const DAYS_THRESHOLD = 90; // historical baseline range
     const RECENT_DAYS = 30;    // recent baseline range
     const CLUSTER_THRESHOLD_BASE = 0.1; // base threshold for clustering
@@ -125,7 +126,7 @@ class MidTermDropPricer
         $this->product->discount = $discount;
         $this->product->savings = $savings;
         $this->product->status = $status;
-        $this->product->pricer_class = __CLASS__;
+        $this->product->pricer_class = class_basename(__CLASS__).'@'.self::VERSION;
         $this->product->pricer_days_history = self::DAYS_THRESHOLD;
 
         return $this->product->save();
