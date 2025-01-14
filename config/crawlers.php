@@ -23,7 +23,7 @@ return [
         'www.elpalaciodehierro.com' => [
             'queue' => 'palacio',
             'proxied' => false,
-            'allow' => 50,
+            'allow' => 25,
             'every' => 1,
         ],
 
