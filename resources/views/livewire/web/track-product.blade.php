@@ -6,24 +6,16 @@
             x-on:click.prevent="$dispatch('show-login-modal')"
             class="w-full py-3 sm:w-auto text-center"
         >
-            @if ($product->hasDiscount())
-                ¡Avísame si baja más de precio!
-            @else
-                ¡Avísame cuando tenga descuento!
-            @endif
+            ¡Empezar a monitorear este producto!
         </x-link-button>
     @else
         @if ($tracking)
             <x-button wire:click="untrack" class="w-full py-3 sm:w-auto text-center">
-                Dejar de monitorear
+                Dejar de monitorear este producto
             </x-button>
         @else
             <x-button primary wire:click="track" class="w-full py-3 sm:w-auto text-center">
-                @if ($product->hasDiscount())
-                    ¡Avísame si baja más de precio!
-                @else
-                    ¡Avísame cuando tenga descuento!
-                @endif
+                ¡Empezar a monitorear este producto!
             </x-button>
         @endif
     @endif

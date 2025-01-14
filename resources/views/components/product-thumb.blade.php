@@ -28,8 +28,9 @@
     @endif
 
     @if ($tracker && Auth::user() && Auth::user()->isTracking($product))
-        <div title="Monitoreando" class="absolute -bottom-4 right-2 inline-flex text-sm rounded-full bg-fuchsia-800 text-white h-8 w-8 items-center justify-center leading-6">
-            <i class="fa fa-eye"></i>
-        </div>
+        <button title="Dejar de monitorear" class="hover:bg-red-600 absolute -bottom-4 right-2 inline-flex text-sm rounded-full bg-fuchsia-800 text-white h-8 w-8 items-center justify-center leading-6">
+            <i class="fa fa-eye block group-hover:hidden"></i>
+            <i class="fa fa-times hidden group-hover:block"></i>
+        </button>
     @endif
 </div>

@@ -1,3 +1,4 @@
 <div>
-    {{-- Because she competes with no one, no one can compete with her. --}}
+    <h1 class="text-xl text-gray-900 font-medium mb-10">@lang('Your Tracked Products')</h1>
+    <x-product-grid :$products />
 </div>

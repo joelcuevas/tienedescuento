@@ -26,7 +26,7 @@ abstract class PalacioBaseCrawler extends WebBaseCrawler
             'country' => 'mx',
             'slug' => 'palacio',
         ], [
-            'name' => 'El Palacio de Hierro',
+            'name' => 'El Palacio',
             'external_url' => 'https://www.elpalaciodehierro.com',
         ]);
     }

@@ -14,7 +14,7 @@ class TaxonomyTree extends Component
     public function render(): View|Closure|string
     {
         $taxonomies = Taxonomy::query()
-            ->whereCountry(request()->countryCode)
+            ->whereCountry(session('app.country'))
             ->whereNull('parent_id')
             ->with('subtaxonomies')
             ->get();
