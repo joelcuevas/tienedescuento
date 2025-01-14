@@ -13,7 +13,11 @@ class FixRepriceAllProducts extends Command
 
     public function handle()
     {
-        $products = Product::whereNull('pricer_class')
+        $products = Product::query()
+            ->where(function ($q) {
+                $q->whereNull('pricer_class');
+                $q->orWhere('pricer_class', '!=', 'MidTermDropPricer@1.0.2');
+            })
             ->orderByDesc('discount')
             ->limit(100)
             ->get();
