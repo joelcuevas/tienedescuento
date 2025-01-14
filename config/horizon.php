@@ -202,13 +202,13 @@ return [
         'production' => [
             'default' => array_merge($defaults, [
                 'queue' => ['default', 'telescope', 'scout'],
-                'maxProcesses' => 10,
+                'maxProcesses' => 5,
                 'timeout' => 10,
             ]),
 
             'strict-firewalls' => array_merge($defaults, [
                 'queue' => ['liverpool', 'suburbia'],
-                'maxProcesses' => 10,
+                'maxProcesses' => 15,
                 'timeout' => 30,
             ]),
 
