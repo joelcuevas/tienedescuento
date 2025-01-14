@@ -9,7 +9,7 @@ return [
         'www.liverpool.com.mx' => [
             'queue' => 'liverpool',
             'proxied' => true,
-            'allow' => 25,
+            'allow' => 50,
             'every' => 1,
         ],
 
@@ -23,7 +23,7 @@ return [
         'www.elpalaciodehierro.com' => [
             'queue' => 'palacio',
             'proxied' => false,
-            'allow' => 25,
+            'allow' => 50,
             'every' => 1,
         ],
 
