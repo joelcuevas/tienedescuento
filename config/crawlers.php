@@ -5,7 +5,7 @@ return [
     'proxy_url' => env('CRAWLER_PROXY_URL'),
 
     'domains' => [
-
+/*
         'www.liverpool.com.mx' => [
             'queue' => 'liverpool',
             'proxied' => true,
@@ -19,7 +19,7 @@ return [
             'allow' => 15,
             'every' => 1,
         ],
-
+*/
         'www.elpalaciodehierro.com' => [
             'queue' => 'palacio',
             'proxied' => false,
