@@ -53,6 +53,16 @@ class User extends Authenticatable
             : $this->getPhotoUrl();
     }
 
+    public function track(Product $product): void
+    {
+        $this->products()->syncWithoutDetaching($product);
+    }
+
+    public function untrack(Product $product): void
+    {
+        $this->products()->detach($product);
+    }
+
     public function isTracking(Product $product): bool
     {
         return $this->products->where('id', $product->id)->count();

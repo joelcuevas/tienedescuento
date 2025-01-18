@@ -12,7 +12,7 @@
         <div class="grid grid-cols-4 gap-x-4 lg:gap-x-8 gap-y-4 lg:gap-y-12 sm:grid-cols-6 lg:grid-cols-10">
             @foreach ($stores as $store)
                 <a href="{{ $store->link() }}" alt="{{ $store->name }}" class="w-20 sm:w-24 aspect-square flex flex-col justify-center items-center space-y-2">
-                    <img class="rounded-full p-0.5 border border-gray-200 hover:border-gray-400/50" src="{{ $store->image_url }}" alt="Ver descuentos de {{ $store->name }}">
+                    <img class="rounded-full p-0.5 border border-gray-200 hover:border-gray-400/50" src="{{ $store->image_url }}" alt="{{ __('See more discounts in :category', ['category' => $store->name]) }}">
                     <div class="text-xs text-gray-600">{{ $store->name }}</div>
                 </a>
             @endforeach

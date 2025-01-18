@@ -18,5 +18,6 @@
     @elseif ($title)
         <h1 class="text-xl text-gray-900 font-medium mb-10">@lang('Results for'): "{{ $title }}"</h1>
     @endif
+    
     <x-product-grid :$products />
 </div>

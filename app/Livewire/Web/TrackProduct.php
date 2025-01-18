@@ -11,38 +11,38 @@ class TrackProduct extends Component
 {
     public Product $product;
 
+    public string $style;
+
     public bool $tracking = false;
 
     private ?User $user = null;
 
     public function boot()
     {
+        abort_unless(403, Auth::user());
+        
         $this->user = Auth::user();
     }
 
-    public function mount(Product $product)
+    public function mount(Product $product, string $style = 'button')
     {
         $this->product = $product;
+        $this->style = $style;
 
-        if ($this->user && $this->user->isTracking($product)) {
+        if ($this->user->isTracking($product)) {
             $this->tracking = true;
         }
     }
 
-    public function track()
+    public function toggle()
     {
-        abort_unless(403, Auth::user());
+        if ($this->tracking) {
+            $this->user->untrack($this->product);
+        } else {
+            $this->user->track($this->product);
+        }
 
-        $this->user->products()->syncWithoutDetaching($this->product);
-        $this->tracking = true;
-    }
-
-    public function untrack()
-    {
-        abort_unless(403, Auth::user());
-
-        $this->user->products()->detach($this->product);
-        $this->tracking = false;
+        $this->tracking = !$this->tracking;
     }
 
     public function render()
