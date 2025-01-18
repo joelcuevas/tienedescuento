@@ -9,14 +9,14 @@
             class="
                 mix-blend-multiply w-full h-full rounded-lg 
                 {{ $product->store->thumbAspect() == 'square' ? 'object-scale-down' : 'object-cover' }}
-                {{ $product->isOutdated() ? 'grayscale opacity-60' : '' }}
+                {{ $product->isOutdated() ? 'grayscale opacity-80' : '' }}
             ">
     </div>
     
     @if ($product->isOutdated())
         <div class="absolute top-0 left-0 w-full h-full flex items-center text-center justify-center">
-            <div class="bg-gray-200 w-full text-gry-500 text-xs/3 py-2">
-                Podría estar agotado
+            <div class="bg-gray-200 w-full mx-3 rounded-md text-gray-700 text-xs/3 py-2">
+                {{ __('May not be available') }}
             </div>
         </div>
     @endif
