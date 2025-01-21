@@ -17,7 +17,6 @@
     <script src="https://kit.fontawesome.com/3c033f8319.js" crossorigin="anonymous"></script>
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
     @livewireStyles
 </head>
 <body class="font-sans antialiased">
@@ -27,16 +26,14 @@
     <div class="min-h-screen">
         @livewire('navigation-menu')
         
-        <!-- Page Content -->
         <main>
             <div class="mx-auto max-w-7xl overflow-hidden px-4 md:px-6 lg:px-8 py-8 lg:py-12 bg-white">
-                <!-- Page Heading -->
                 @if (isset($header))
-                <header class="bg-white">
-                    <div class="mb-6 md:mb-10">
-                        {{ $header }}
-                    </div>
-                </header>
+                    <header class="bg-white">
+                        <div class="mb-6 md:mb-10">
+                            {{ $header }}
+                        </div>
+                    </header>
                 @endif
                 
                 {{ $slot }}
@@ -46,27 +43,15 @@
         <footer class="mt-4 border-t border-gray-200 text-sm">
             <div class="mx-auto max-w-7xl overflow-hidden px-4 md:px-6 lg:px-8 py-8 lg:py-12 bg-white">
                 <x-taxonomy-tree />
-                <div class="py-8 lg:py-12 my-8 lg:my-12 lg:flex lg:items-center lg:justify-between lg:space-x-12 border-b border-t border-gray-200">
-                    <div>
-                        <h3 class="text-sm font-bold text-gray-900 mb-2">@lang('Subscribe to our newsletter')</h3>
-                        <p class="text-gray-600">¿Quieres ahorrar en tus compras? Recibe las mejores ofertas en celulares, tablets y pantallas, descuentos exclusivos en ropa de marca para toda la familia y rebajas por ventas nocturnas en estufas, refrigeradores y más. Te ayudamos a conseguir los mejores precios en tiempo real.</p>
-                    </div>
-                    <div>
-                        <label for="email-address" class="sr-only">Email address</label>
-                        <div class="mt-4 sm:mt-0">
-                            <x-button primary class="w-full whitespace-nowrap">@lang('Subscribe to newsletter')</x-button>
-                        </div>
-                    </div>
+                <div class="border-t border-gray-200 mt-10 pt-10">
+                    <p>&copy; {{ date('Y') }} {{ config('app.name') }} - @lang('All rights reserved').</p>
                 </div>
-                <p>&copy; {{ date('Y') }} {{ config('app.name') }} - @lang('All rights reserved').</p>
             </div>
         </footer>              
     </div>
     
     @stack('modals')
-    
     @livewireScripts
-    
     @stack('scripts')
 </body>
 </html>

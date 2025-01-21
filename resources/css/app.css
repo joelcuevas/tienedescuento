@@ -6,6 +6,10 @@
     display: none;
 }
 
+a {
+    @apply focus-visible:outline-fuchsia-800;
+}
+
 strong, b {
     @apply font-medium;
 }

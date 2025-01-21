@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Schedule;
-
-Schedule::command('fix:reprice')->everyMinute();
  
 Schedule::command('chascity:discover --limit=15')->everyMinute();
 

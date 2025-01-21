@@ -144,25 +144,25 @@ class Product extends Model
         return $query->whereIsActive(true)->where('priced_at', '>=', now()->subDays(self::DAYS_OUTDATED));
     }
 
-    public static function scopeWhereCategory(Builder $query, mixed $slug): Builder
+    public static function scopeWhereCategorySlug(Builder $query, mixed $slug): Builder
     {
         $ids = Category::whereSlug($slug)->pluck('id')->all();
 
         return $query->whereCategoryIds($ids);
     }
 
-    public static function scopeWhereTaxonomy(Builder $query, Taxonomy $taxonomy, int $depth = 3): Builder
+    public static function scopeWhereTaxonomySlug(Builder $query, string $slug): Builder
     {
-        $categoryIds = DB::table('category_taxonomy')
-            ->whereTaxonomyId($taxonomy->id)
-            ->pluck('category_id')
+        $taxonomyIds = Taxonomy::query()
+            ->whereSlug($slug)
+            ->select('id')
+            ->pluck('id')
             ->unique()
             ->all();
 
-        $categoryIds = Category::query()
-            ->whereIn('id', $categoryIds)
-            ->select('id')
-            ->pluck('id')
+        $categoryIds = DB::table('category_taxonomy')
+            ->whereIn('taxonomy_id', $taxonomyIds)
+            ->pluck('category_id')
             ->unique()
             ->all();
 

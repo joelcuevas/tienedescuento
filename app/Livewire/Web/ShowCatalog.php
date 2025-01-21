@@ -33,7 +33,7 @@ class ShowCatalog extends Component
         $storeSlug = request()->storeSlug;
         $categorySlug = request()->categorySlug;
         $brandSlug = request()->brandSlug;
-        $taxonomySlug = null;
+        $taxonomySlug = request()->taxonomySlug;
 
         // if there is a store slug, show the store catalog
         $store = Store::whereCountry($countryCode)->whereSlug($storeSlug)->first();
@@ -43,22 +43,20 @@ class ShowCatalog extends Component
         } else {
             // if no store is found, asume it's a taxonomy
             $taxonomySlug = $storeSlug;
-            $categorySlug = null;
-            $brandSlug = null;
         }
 
         if ($taxonomySlug) {
             $taxonomy = Taxonomy::whereCountry($countryCode)->whereSlug($taxonomySlug)->first();
             abort_unless($taxonomy, 404);
 
-            $query->whereTaxonomy($taxonomy);
+            $query->whereTaxonomySlug($taxonomySlug);
 
             if ($taxonomy) {
                 $this->title[] = $taxonomy->title;
             }
         } else {
             if ($categorySlug) {
-                $query->whereCategory($categorySlug);
+                $query->whereCategorySlug($categorySlug);
                 $category = Category::whereSlug($categorySlug)->first();
 
                 if ($category) {

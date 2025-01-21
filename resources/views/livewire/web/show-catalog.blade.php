@@ -15,6 +15,8 @@
                 @endif
             </div>
         </div>
+
+        <x-taxonomy-tree :$store />
     @elseif ($title)
         <h1 class="text-xl text-gray-900 font-medium mb-10">@lang('Results for'): "{{ $title }}"</h1>
     @endif

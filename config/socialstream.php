@@ -20,7 +20,7 @@ return [
         Features::globalLogin(),
         // Features::authExistingUnlinkedUsers(),
         Features::rememberSession(),
-        Features::providerAvatars(),
+        // Features::providerAvatars(),
         Features::refreshOAuthTokens(),
     ],
 
