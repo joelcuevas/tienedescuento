@@ -80,10 +80,10 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
                         'external_url' => $externalUrl,
                         'image_url' => $imageUrl,
                     ]);
-
-                    $categories = $this->getCategories($meta);
-                    $product->categories()->syncWithoutDetaching($categories);
                 }
+
+                $categories = $this->getCategories($meta);
+                $product->categories()->syncWithoutDetaching($categories);
 
                 Product::withoutSyncingToSearch(function () use ($product, $price, $source) {
                     $product->prices()->create([

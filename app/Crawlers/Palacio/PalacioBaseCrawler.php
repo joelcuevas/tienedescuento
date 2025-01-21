@@ -67,9 +67,9 @@ abstract class PalacioBaseCrawler extends WebBaseCrawler
                 'external_url' => $href,
                 'image_url' => $image,
             ]);
-
-            $product->categories()->syncWithoutDetaching($categories);
         }
+
+        $product->categories()->syncWithoutDetaching($categories);
 
         Product::withoutSyncingToSearch(function () use ($product, $price, $source) {
             $product->prices()->create([

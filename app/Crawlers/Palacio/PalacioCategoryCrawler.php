@@ -8,7 +8,7 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class PalacioCategoryCrawler extends PalacioBaseCrawler
 {
-    protected static ?string $pattern = '#^https://www\.elpalaciodehierro\.com(/[\w\-]+)*/(\?start=\d+&sz=\d+)?$#';
+    protected static ?string $pattern = '#^https://www\.elpalaciodehierro\.com(/[\w\-]+)*/(\?start=\d+&sz=\d+)?(\?prefn1=\w+&prefv1=[\w\-]+)?(\&start=\d+&sz=\d+)?$#';
 
     protected function parse(mixed $dom): int
     {
@@ -24,6 +24,21 @@ class PalacioCategoryCrawler extends PalacioBaseCrawler
         $data->each(function (Crawler $item) use ($categories) {
             $this->saveProduct($item, $categories, 'category');
         });
+
+        // check if there's a categories carousel
+        $carousel = $dom->filter('.g-carousel-track a');
+
+        if ($carousel->count() > 0) {
+            $hrefs = [];
+
+            $carousel->each(function (Crawler $item) use (&$hrefs) {
+                $hrefs[] = $item->attr('href');
+            });
+
+            foreach (array_unique($hrefs) as $href) {
+                Url::resolve($href, 20);
+            }
+        }
 
         // check if there's a next category page
         $nextPage = $dom->filter('.b-next-btn > a');

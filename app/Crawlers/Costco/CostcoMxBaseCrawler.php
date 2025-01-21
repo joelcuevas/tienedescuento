@@ -47,9 +47,9 @@ abstract class CostcoMxBaseCrawler extends JsonBaseCrawler
                 'external_url' => $data['external_url'],
                 'image_url' => $data['image_url'],
             ]);
-
-            $product->categories()->syncWithoutDetaching($data['categories']);
         }
+
+        $product->categories()->syncWithoutDetaching($data['categories']);
 
         Product::withoutSyncingToSearch(function () use ($product, $data, $source) {
             $price = (float) str_replace(['$', ','], '', $data['price']);

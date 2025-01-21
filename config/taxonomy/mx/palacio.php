@@ -6,10 +6,10 @@ return [
         'keywords' => ['#cat-05bdde75'],
         'children' => [
             'Celulares' => [
-                'keywords' => ['#cat-50008f5f'],
+                'keywords' => ['#cat-50008f5f', 'celulares-motorola', 'android', 'desbloqueados', 'iphone', '#cat-8746c52f', 'telcel'],
             ],
             'Tablets' => [
-                'keywords' => ['#cat-30ce3e0e'],
+                'keywords' => ['#cat-30ce3e0e', 'ipads', '#cat-e3b32754'],
             ],
             'Pantallas' => [
                 'keywords' => ['pantallas'],
@@ -24,7 +24,7 @@ return [
                 'keywords' => ['connected-smart-home'],
             ],
             'Smartwatches' => [
-                'keywords' => ['*smartwatches'],
+                'keywords' => ['*smartwatches', '#cat-e464efb3'],
             ],
             'Impresoras' => [
                 'keywords' => ['impresoras-multifuncion'],
