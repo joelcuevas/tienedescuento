@@ -16,11 +16,6 @@ class Store extends Model
         'views' => 0,
     ];
 
-    public function link(): string
-    {
-        return route('catalogs.store', [$this->slug]);
-    }
-
     protected function imageUrl(): Attribute
     {
         return Attribute::make(
@@ -50,5 +45,10 @@ class Store extends Model
         $slug = implode('-', $tokens);
 
         return $query->whereCountry($country)->whereSlug($slug);
+    }
+
+    public function link(): string
+    {
+        return route('catalogs.index', [$this->slug]);
     }
 }
