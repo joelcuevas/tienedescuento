@@ -51,4 +51,70 @@ return [
         ],
     ],
 
+    'Videojuegos' => [
+        'keywords' => ['videojuegos'],
+
+        'children' => [
+            'Nintendo' => [
+                'keywords' => ['nintendo'],
+            ],
+            'PlayStation' => [
+                'keywords' => ['playstation'],
+            ],
+            'Xbox' => [
+                'keywords' => ['xbox'],
+            ],
+            'Gaming' => [
+                'keywords' => ['gaming'],
+            ],
+        ],
+    ],
+
+    'Mujer' => [
+        'keywords' => ['#catst4003072'],
+
+        'children' => [
+            'Ropa' => [
+                'keywords' => ['ropa'],
+            ],
+            'Zapatos' => [
+                'keywords' => ['zapatos'],
+            ],
+            'Bolsas' => [
+                'keywords' => ['bolsas'],
+            ],
+            'Deportiva' => [
+                'keywords' => ['activewear-y-lifestyle'],
+            ],
+            'Relojes y Joyería' => [
+                'keywords' => ['relojes-y-joyeria'],
+            ],
+            'Perfumes' => [
+                'keywords' => ['perfumes'],
+            ],
+        ],
+    ],
+
+    'Hombre' => [
+        'keywords' => ['#cat5020003'],
+
+        'children' => [
+            'Ropa' => [
+                'keywords' => ['ropa'],
+            ],
+            'Zapatos' => [
+                'keywords' => ['zapatos'],
+            ],
+            'Deportiva' => [
+                'keywords' => ['ropa-deportiva'],
+            ],
+            'Relojes y Joyería' => [
+                'keywords' => ['relojes-y-joyeria'],
+            ],
+            'Perfumes' => [
+                'keywords' => ['perfumes-y-cuidado-personal'],
+            ],
+        ],
+    ],
+
 ];

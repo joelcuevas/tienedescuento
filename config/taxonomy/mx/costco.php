@@ -51,4 +51,67 @@ return [
         ],
     ],
 
+    'Videojuegos' => [
+        'keywords' => ['videojuegos'],
+
+        'children' => [
+            'Nintendo' => [
+                'keywords' => ['nintendo-switch'],
+            ],
+            'PlayStation' => [
+                'keywords' => ['playstation'],
+            ],
+            'Xbox' => [
+                'keywords' => ['xbox'],
+            ],
+            'Gaming' => [
+                'keywords' => ['#cos_2.1.3'],
+            ],
+        ],
+    ],
+
+    'Mujer' => [
+        'keywords' => ['#cos_10.1'],
+
+        'children' => [
+            'Ropa' => [
+                'keywords' => ['camisas', 'blusas', 'pantalones-y-shorts', 'vestidos-y-faldas', 'sueteres-y-chamarras'],
+            ],
+            'Zapatos' => [
+                'keywords' => ['calzado'],
+            ],
+            'Deportiva' => [
+                'keywords' => ['ropa-deportiva'],
+            ],
+            'Relojes y Joyería' => [
+                'keywords' => ['*joyeria-y-relojes'],
+            ],
+            'Perfumes' => [
+                'keywords' => ['*fragancias-para-dama'],
+            ],
+        ],
+    ],
+
+    'Hombre' => [
+        'keywords' => [ '#cos_10.2'],
+
+        'children' => [
+            'Ropa' => [
+                'keywords' => ['camisas', 'playeras-y-polo', 'pantalones-y-shorts', 'sueteres-y-chamarras'],
+            ],
+            'Zapatos' => [
+                'keywords' => ['calzado'],
+            ],
+            'Deportiva' => [
+                'keywords' => ['ropa-deportiva'],
+            ],
+            'Relojes y Joyería' => [
+                'keywords' => ['*relojes', '*joyeria-para-caballero'],
+            ],
+            'Perfumes' => [
+                'keywords' => ['*fragancias-para-caballero'],
+            ],
+        ],
+    ],
+
 ];

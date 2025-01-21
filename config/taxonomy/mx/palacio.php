@@ -51,4 +51,70 @@ return [
         ],
     ],
 
+    'Videojuegos' => [
+        'keywords' => ['videojuegos'],
+
+        'children' => [
+            'Nintendo' => [
+                'keywords' => ['nintendo'],
+            ],
+            'PlayStation' => [
+                'keywords' => ['playstation'],
+            ],
+            'Xbox' => [
+                'keywords' => ['xbox'],
+            ],
+            'Gaming' => [
+                'keywords' => ['*computadoras-para-gamers'],
+            ],
+        ],
+    ],
+
+    'Mujer' => [
+        'keywords' => ['#cat-c8724db3'],
+
+        'children' => [
+            'Ropa' => [
+                'keywords' => ['ropa'],
+            ],
+            'Zapatos' => [
+                'keywords' => ['calzado'],
+            ],
+            'Bolsas' => [
+                'keywords' => ['bolsos-y-carteras'],
+            ],
+            'Deportiva' => [
+                'keywords' => ['deportes'],
+            ],
+            'Relojes y Joyería' => [
+                'keywords' => ['*joyeria-para-mujer', '*relojes-para-mujer'],
+            ],
+            'Perfumes' => [
+                'keywords' => ['#cat-5e976e85'],
+            ],
+        ],
+    ],
+
+    'Hombre' => [
+        'keywords' => ['#cat-8ba022ac'],
+
+        'children' => [
+            'Ropa' => [
+                'keywords' => ['ropa'],
+            ],
+            'Zapatos' => [
+                'keywords' => ['zapatos'],
+            ],
+            'Deportiva' => [
+                'keywords' => ['ropa-deportiva'],
+            ],
+            'Relojes y Joyería' => [
+                'keywords' => ['*joyeria-para-hombre', '*relojes-para-hombre'],
+            ],
+            'Perfumes' => [
+                'keywords' => ['#cat-b0be7a9c'],
+            ],
+        ],
+    ],
+
 ];
