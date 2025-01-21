@@ -24,10 +24,10 @@ return [
                 'keywords' => ['smart-home'],
             ],
             'Smartwatches' => [
-                'keywords' => ['smart-watch'],
+                'keywords' => ['*smart-watch'],
             ],
             'Impresoras' => [
-                'keywords' => ['multifuncionales'],
+                'keywords' => ['*multifuncionales-y-equipo-para-oficina'],
             ],
         ],
     ],
