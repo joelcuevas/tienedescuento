@@ -16,22 +16,24 @@ class TaxonomyTree extends Component
 
     public function render(): View|Closure|string
     {
-        $taxonomyTree = DB::select('
+        $storeCondition = $this->store->id ? 'AND store_id = '.$this->store->id : '';
+
+        $taxonomyTree = DB::select("
             WITH RECURSIVE taxonomy_cte AS (
                 SELECT slug, title, CAST(NULL AS CHAR(255)) AS parent_slug, `order`
                 FROM taxonomies
-                WHERE parent_id IS NULL
+                WHERE parent_id IS NULL {$storeCondition}
                 UNION ALL
                 SELECT t.slug, t.title, CAST(cte.slug AS CHAR(255)) AS parent_slug, t.`order`
                 FROM taxonomies t
                 INNER JOIN taxonomy_cte cte ON t.parent_id = (
-                    SELECT id FROM taxonomies WHERE slug = cte.slug LIMIT 1
+                    SELECT id FROM taxonomies WHERE slug = cte.slug {$storeCondition} LIMIT 1
                 )
             )
             SELECT DISTINCT slug, title, parent_slug, `order`
             FROM taxonomy_cte
             ORDER BY `order`
-        ');
+        ");
 
         $taxonomies = $this->buildTree($taxonomyTree);
 
