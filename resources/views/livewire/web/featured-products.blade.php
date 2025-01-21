@@ -7,7 +7,7 @@
 
             <x-link 
                 class="block text-sm" 
-                href="{{ route('catalogs.store', $taxonomy) }}"
+                href="{{ route('catalogs.index', $taxonomy) }}"
                 alt="{{ __('See more discounts in :category', ['category' => $taxonomy]) }}"
             >
                 <span>{{ __('See more') }}</span>

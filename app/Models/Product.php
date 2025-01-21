@@ -73,31 +73,6 @@ class Product extends Model
         return ! $this->is_active || $this->priced_at < now()->subDays(self::DAYS_OUTDATED);
     }
 
-    public function link(): string
-    {
-        return route('products.show', [$this->store->slug, $this->sku, $this->slug]);
-    }
-
-    public function storeLink(): string
-    {
-        return route('catalogs.store', [$this->store->slug]);
-    }
-
-    public function brandLink(): string
-    {
-        return route('catalogs.store_brand', [$this->store->slug, $this->brand_slug]);
-    }
-
-    public function categoryLink(): string
-    {
-        return route('catalogs.store_category', [$this->store->slug, $this->categories->last()->slug]);
-    }
-
-    public function categoryBrandLink(): string
-    {
-        return route('catalogs.store_category_brand', [$this->store->slug, $this->categories->last()->slug, $this->brand_slug]);
-    }
-
     public function prices(): HasMany
     {
         return $this->hasMany(Price::class);
@@ -183,5 +158,30 @@ class Product extends Model
                 '=',
                 'cp.product_id'
             );
+    }
+
+    public function link(): string
+    {
+        return route('products.show', [$this->store->slug, $this->sku, $this->slug]);
+    }
+
+    public function storeLink(): string
+    {
+        return route('catalogs.index', [$this->store->slug]);
+    }
+
+    public function brandLink(): string
+    {
+        return route('catalogs.brand', [$this->store->slug, $this->brand_slug]);
+    }
+
+    public function categoryLink(): string
+    {
+        return route('catalogs.category', [$this->store->slug, $this->categories->last()->slug]);
+    }
+
+    public function categoryBrandLink(): string
+    {
+        return route('catalogs.category_brand', [$this->store->slug, $this->categories->last()->slug, $this->brand_slug]);
     }
 }

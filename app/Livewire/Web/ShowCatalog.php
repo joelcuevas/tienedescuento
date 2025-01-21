@@ -30,19 +30,19 @@ class ShowCatalog extends Component
             ->orderByDesc('priced_at')
             ->limit(360);
 
-        $storeSlug = request()->storeSlug;
+        $catalogSlug = request()->catalogSlug;
         $categorySlug = request()->categorySlug;
         $brandSlug = request()->brandSlug;
         $taxonomySlug = request()->taxonomySlug;
 
         // if there is a store slug, show the store catalog
-        $store = Store::whereCountry($countryCode)->whereSlug($storeSlug)->first();
+        $store = Store::whereCountry($countryCode)->whereSlug($catalogSlug)->first();
 
         if ($store) {
             $query->whereStoreId($store->id);
         } else {
             // if no store is found, asume it's a taxonomy
-            $taxonomySlug = $storeSlug;
+            $taxonomySlug = $catalogSlug;
         }
 
         if ($taxonomySlug) {

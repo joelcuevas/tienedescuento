@@ -4,7 +4,7 @@
             <div class="break-inside-avoid">
                 <h3 class="mb-2">
                     <x-link 
-                        href="{{ route('catalogs.taxonomy',  $taxonomy['slug']) }}"
+                        href="{{ route('catalogs.index', array_filter([$store?->slug, $taxonomy['slug']])) }}"
                         class="font-medium text-gray-900"
                     >
                         {{ $taxonomy['title'] }}
@@ -14,7 +14,7 @@
                     @foreach ($taxonomy['children'] as $subtaxonomy)
                         <li>
                             <x-link 
-                                href="{{ route('catalogs.taxonomy', $subtaxonomy['slug']) }}"
+                                href="{{ route('catalogs.index', array_filter([$store?->slug, $subtaxonomy['slug']])) }}"
                                 class="text-gray-600"
                             >
                                 {{ $subtaxonomy['title'] }}
