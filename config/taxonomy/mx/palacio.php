@@ -6,7 +6,7 @@ return [
         'keywords' => ['#cat-05bdde75'],
         'children' => [
             'Celulares' => [
-                'keywords' => ['smartphones'],
+                'keywords' => ['#cat-50008f5f'],
             ],
             'Tablets' => [
                 'keywords' => ['#cat-30ce3e0e'],
