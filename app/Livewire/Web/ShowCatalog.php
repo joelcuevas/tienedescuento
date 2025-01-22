@@ -26,6 +26,7 @@ class ShowCatalog extends Component
             })
             ->with(['store'])
             ->where('is_active', true)
+            ->distinct('sku')
             ->orderByDesc('discount')
             ->orderByDesc('priced_at')
             ->limit(360);
