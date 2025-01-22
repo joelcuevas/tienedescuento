@@ -30,7 +30,7 @@ class Taxonomy extends Model
 
     public function link(): string
     {
-        return route('catalogs.store', [$this->slug]);
+        return route('catalogs.index', [$this->slug]);
     }
 
     public function parent(): BelongsTo
