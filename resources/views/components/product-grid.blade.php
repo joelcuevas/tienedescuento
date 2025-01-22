@@ -9,7 +9,7 @@
         @endforeach
     </div>
     
-    @if ($products)
+    @if (method_exists($products, 'links'))
         <div class="mt-12">{{ $products->links() }}</div>
     @endif
 </div>
