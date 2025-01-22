@@ -24,9 +24,11 @@ class ShowCatalog extends Component
             ->whereHas('store', function ($query) use ($countryCode) {
                 $query->where('stores.country', $countryCode);
             })
-            ->with(['store'])
+            ->whereIn('id', function ($subquery) {
+                $subquery->selectRaw('max(discount)')->from('products')->groupBy('sku');
+            })
             ->where('is_active', true)
-            ->distinct('sku')
+            ->with(['store'])
             ->orderByDesc('discount')
             ->orderByDesc('priced_at')
             ->limit(360);
