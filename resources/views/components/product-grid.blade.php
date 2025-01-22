@@ -9,7 +9,7 @@
         @endforeach
     </div>
     
-    @if ($products instanceof \Illuminate\Pagination\AbstractPaginator)
+    @if ($products)
         <div class="mt-12">{{ $products->links() }}</div>
     @endif
 </div>

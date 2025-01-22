@@ -54,7 +54,7 @@ class SearchProducts extends Component
     public function render()
     {
         $products = $this->search()
-            ->limitedPaginate()
+            ->simplePaginate(Product::PAGE_SIZE)
             ->appends(['query' => $this->query]);
 
         // load at the underlying collection to not modify the paginator
