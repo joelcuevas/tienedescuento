@@ -18,7 +18,7 @@ class TrackProduct extends Component
     private ?User $user = null;
 
     public function boot()
-    {        
+    {
         $this->user = Auth::user();
     }
 
@@ -35,14 +35,14 @@ class TrackProduct extends Component
     public function toggle()
     {
         abort_unless(403, Auth::user());
-        
+
         if ($this->tracking) {
             $this->user->untrack($this->product);
         } else {
             $this->user->track($this->product);
         }
 
-        $this->tracking = !$this->tracking;
+        $this->tracking = ! $this->tracking;
     }
 
     public function render()

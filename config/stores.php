@@ -20,6 +20,10 @@ return [
             'thumb-aspect' => 'square',
         ],
 
+        'sears' => [
+            'thumb-aspect' => 'square',
+        ],
+
     ],
 
 ];

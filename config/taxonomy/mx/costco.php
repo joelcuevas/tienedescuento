@@ -93,7 +93,7 @@ return [
     ],
 
     'Hombre' => [
-        'keywords' => [ '#cos_10.2'],
+        'keywords' => ['#cos_10.2'],
 
         'children' => [
             'Ropa' => [

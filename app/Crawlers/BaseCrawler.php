@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Store;
 use App\Models\Url;
 use Illuminate\Http\Client\HttpClientException;
+use Illuminate\Http\Client\Response as ClientResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
 use Sentry;
@@ -17,6 +18,8 @@ abstract class BaseCrawler
     protected static ?string $pattern = null;
 
     protected static ?int $skuPatternIndex = null;
+
+    protected string $method = 'get';
 
     protected int $cooldown = 1;
 
@@ -91,21 +94,21 @@ abstract class BaseCrawler
         $this->setup();
 
         try {
-            $href = $this->url->href;
+            $href = $this->transformCrawlingUrl($this->url->href);
             $proxied = $this->url->getCrawlerConfig('proxied', false);
 
             if ($proxied) {
                 $href = config('crawlers.proxy_url', '').$this->url->href;
             }
 
-            $response = Http::withHeaders($this->headers)->get($href);
+            $response = $this->makeRequest($href);
             $status = $response->status();
 
             if ($status == Response::HTTP_OK) {
                 $body = $this->formatBody($response->body());
 
                 if ($body == null) {
-                    $status = Response::HTTP_GONE;
+                    $status = Response::HTTP_EXPECTATION_FAILED;
                 } else {
                     $status = $this->parse($body);
                 }
@@ -123,5 +126,38 @@ abstract class BaseCrawler
             $startingTime = $this->startingTime ?? microtime(true);
             $this->url->hit($status, $this->cooldown, $startingTime);
         }
+    }
+
+    protected function makeRequest(string $href): ClientResponse
+    {
+        $http = Http::withHeaders($this->headers);
+
+        if ($this->method == 'post') {
+            $response = $http
+                ->withBody(
+                    $this->getPostBody(),
+                    $this->getPostContentType(),
+                )
+                ->post($href);
+        } else {
+            $response = $http->get($href);
+        }
+
+        return $response;
+    }
+
+    protected function transformCrawlingUrl(string $href): string
+    {
+        return $href;
+    }
+
+    protected function getPostBody(): string
+    {
+        return '';
+    }
+
+    protected function getPostContentType(): string
+    {
+        return 'application/json';
     }
 }

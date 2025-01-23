@@ -18,20 +18,23 @@ class CostcoMxProductCrawler extends CostcoMxBaseCrawler
             return Response::HTTP_NO_CONTENT;
         }
 
-        // just save the product now
-        if ($json?->stock?->stockLevel > 0) {
-            if (isset($json->price->value)) {
-                $data['sku'] = $json->code;
-                $data['title'] = $json->name;
-                $data['external_url'] = 'https://www.costco.com.mx'.$json->url;
-                $data['image_url'] = $this->getImageUrl($json);
-                $data['price'] = $json->price->value;
+        // check if there is stock
+        if ($json?->stock?->stockLevel <= 0) {
+            return Response::HTTP_GONE;
+        }
 
-                $category = $this->getCategory($json);
-                $data['categories'] = [$category];
+        // save the product
+        if (isset($json->price->value)) {
+            $data['sku'] = $json->code;
+            $data['title'] = $json->name;
+            $data['external_url'] = 'https://www.costco.com.mx'.$json->url;
+            $data['image_url'] = $this->getImageUrl($json);
+            $data['price'] = $json->price->value;
 
-                $this->saveProduct($data, 'product');
-            }
+            $category = $this->getCategory($json);
+            $data['categories'] = [$category];
+
+            $this->saveProduct($data, 'product');
         }
 
         // we are done!

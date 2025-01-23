@@ -2,13 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Category;
-use App\Models\Taxonomy;
 use App\Support\TaxonomyBuilder;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Str;
 
 class TaxonomyBuild extends Command
 {
@@ -25,6 +22,6 @@ class TaxonomyBuild extends Command
             Schema::enableForeignKeyConstraints();
         }
 
-        new TaxonomyBuilder();
+        new TaxonomyBuilder;
     }
 }

@@ -21,7 +21,7 @@ class CostcoMxCategoryCrawler extends CostcoMxBaseCrawler
         $category = $this->getCategory($json);
 
         foreach ($json->products as $product) {
-            if ($product?->stock?->stockLevelStatus == 'inStock') {
+            if ($product?->stock?->stockLevel > 0) {
                 if (isset($product->price->value)) {
                     $data['sku'] = $product->code;
                     $data['title'] = $product->name;

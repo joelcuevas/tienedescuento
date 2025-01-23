@@ -42,7 +42,8 @@ class TaxonomyTree extends Component
         ]);
     }
 
-    private function buildTree($items, $parentSlug = null) {
+    private function buildTree($items, $parentSlug = null)
+    {
         $tree = [];
 
         foreach ($items as $item) {
