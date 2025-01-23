@@ -19,7 +19,7 @@ class CostcoMxProductCrawler extends CostcoMxBaseCrawler
         }
 
         // just save the product now
-        if ($json?->stock?->stockLevelStatus == 'inStock') {
+        if ($json?->stock?->stockLevel > 0) {
             if (isset($json->price->value)) {
                 $data['sku'] = $json->code;
                 $data['title'] = $json->name;
