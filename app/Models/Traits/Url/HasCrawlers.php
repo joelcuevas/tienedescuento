@@ -103,11 +103,13 @@ trait HasCrawlers
 
         $streak = ($status == $this->status) ? $this->streak + 1 : 1;
 
-        if ($status != 200) {
+        if ($status == Response::HTTP_OK) {
+            $scheduledAt = $cooldown;
+        } else if ($status == Response::HTTP_IM_USED) {
+            $scheduledAt = 365 * 10;
+        } else {
             $penalty = 2 ** (($streak % 7) - 1);
             $scheduledAt = $penalty;
-        } else {
-            $scheduledAt = $cooldown;
         }
 
         $this->streak = $streak;

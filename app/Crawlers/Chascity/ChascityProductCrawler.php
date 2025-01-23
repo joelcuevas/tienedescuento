@@ -13,8 +13,6 @@ class ChascityProductCrawler extends WebBaseCrawler
 {
     protected static ?string $pattern = '#^https://preciominimo\.chascity\.com/verificaprecio/([^?]+)\?sku=([^&]+)$#';
 
-    protected int $cooldown = 180;
-
     public function resolveProduct(): ?Product
     {
         preg_match(static::$pattern, $this->url->href, $matches);
@@ -42,7 +40,7 @@ class ChascityProductCrawler extends WebBaseCrawler
             $crawled = $product->prices()->where('source', 'chascity')->count() > 0;
 
             if ($crawled) {
-                $this->hit(Response::HTTP_ALREADY_REPORTED);
+                $this->hit(Response::HTTP_IM_USED);
 
                 return true;
             }
@@ -57,8 +55,6 @@ class ChascityProductCrawler extends WebBaseCrawler
 
         // the product wasn't found on the page, probably an error
         if ($data->count() == 0) {
-            $this->cooldown = 1;
-
             return Response::HTTP_NO_CONTENT;
         }
 
@@ -86,6 +82,6 @@ class ChascityProductCrawler extends WebBaseCrawler
         });
 
         // good; do not re-crawl anytime soon
-        return Response::HTTP_ALREADY_REPORTED;
+        return Response::HTTP_IM_USED;
     }
 }
