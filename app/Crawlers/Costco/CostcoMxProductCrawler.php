@@ -19,7 +19,7 @@ class CostcoMxProductCrawler extends CostcoMxBaseCrawler
         }
 
         // check if there is stock
-        if ($json?->stock?->stockLevel <= 0) {
+        if ($json?->stock?->stockLevelStatus == 'outOfStock') {
             return Response::HTTP_GONE;
         }
 
