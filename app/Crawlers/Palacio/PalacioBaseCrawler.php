@@ -22,7 +22,7 @@ abstract class PalacioBaseCrawler extends WebBaseCrawler
     ];
 
     protected array $ignore = [
-        'https://www.elpalaciodehierro.com/marcas',
+        'https://www.elpalaciodehierro.com/marcas/',
     ];
 
     protected function setup(): bool

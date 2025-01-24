@@ -10,6 +10,8 @@ class PalacioCategoryCrawler extends PalacioBaseCrawler
 {
     protected static ?string $pattern = '#^https://www\.elpalaciodehierro\.com(/[\w\-]+)*/(\?start=\d+&sz=\d+)?(\?prefn1=\w+&prefv1=[\w\-]+)?(\&start=\d+&sz=\d+)?$#';
 
+    protected int $cooldown = 3;
+
     protected function parse(mixed $dom): int
     {
         $data = $dom->filter('[itemscope][itemtype="http://schema.org/Product"]');

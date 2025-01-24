@@ -16,14 +16,14 @@ return [
         'www.suburbia.com.mx' => [
             'queue' => 'suburbia',
             'proxied' => true,
-            'allow' => 15,
+            'allow' => 25,
             'every' => 1,
         ],
 
         'www.elpalaciodehierro.com' => [
             'queue' => 'palacio',
             'proxied' => false,
-            'allow' => 15,
+            'allow' => 50,
             'every' => 1,
         ],
 
