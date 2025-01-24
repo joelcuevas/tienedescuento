@@ -23,7 +23,7 @@ return [
         'www.elpalaciodehierro.com' => [
             'queue' => 'palacio',
             'proxied' => false,
-            'allow' => 50,
+            'allow' => 25,
             'every' => 1,
         ],
 
@@ -37,7 +37,7 @@ return [
         'www.sears.com.mx' => [
             'queue' => 'sears',
             'proxied' => false,
-            'allow' => 25,
+            'allow' => 50,
             'every' => 1,
         ],
 
