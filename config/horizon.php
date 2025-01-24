@@ -208,7 +208,7 @@ return [
 
             'crawlers-1' => array_merge($defaults, [
                 'queue' => ['liverpool', 'suburbia'],
-                'maxProcesses' => 15,
+                'maxProcesses' => 10,
                 'timeout' => 30,
             ]),
 
