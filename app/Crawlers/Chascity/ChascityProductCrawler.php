@@ -81,6 +81,8 @@ class ChascityProductCrawler extends WebBaseCrawler
             }
         });
 
+        $this->crawledProducts++;
+
         // good; do not re-crawl anytime soon
         return Response::HTTP_IM_USED;
     }

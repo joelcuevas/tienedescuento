@@ -51,6 +51,8 @@ abstract class SearsBaseCrawler extends JsonBaseCrawler
                 'external_url' => $data['external_url'],
                 'image_url' => $data['image_url'],
             ]);
+
+            $this->discoveredProducts++;
         }
 
         $product->categories()->syncWithoutDetaching($data['categories']);
@@ -63,5 +65,7 @@ abstract class SearsBaseCrawler extends JsonBaseCrawler
                 'source' => 'sears-'.$source,
             ]);
         });
+
+        $this->crawledProducts++;
     }
 }

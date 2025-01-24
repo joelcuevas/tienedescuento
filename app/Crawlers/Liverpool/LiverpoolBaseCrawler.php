@@ -82,6 +82,8 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
                         'external_url' => $externalUrl,
                         'image_url' => $imageUrl,
                     ]);
+
+                    $this->discoveredProducts++;
                 }
 
                 $categories = $this->getCategories($meta);
@@ -93,6 +95,8 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
                         'source' => $this->slug.'-'.$source,
                     ]);
                 });
+
+                $this->crawledProducts++;
 
                 return $product;
             }

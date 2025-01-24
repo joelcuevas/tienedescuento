@@ -49,6 +49,8 @@ abstract class CostcoMxBaseCrawler extends JsonBaseCrawler
                 'external_url' => $data['external_url'],
                 'image_url' => $data['image_url'],
             ]);
+
+            $this->discoveredProducts++;
         }
 
         $product->categories()->syncWithoutDetaching($data['categories']);
@@ -61,6 +63,8 @@ abstract class CostcoMxBaseCrawler extends JsonBaseCrawler
                 'source' => 'costco-'.$source,
             ]);
         });
+
+        $this->crawledProducts++;
     }
 
     protected function getImageUrl(object $product): ?string

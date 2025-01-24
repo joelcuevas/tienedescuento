@@ -93,7 +93,7 @@ trait HasCrawlers
         (new $this->crawler_class($this))->crawl();
     }
 
-    public function hit(int $status, int $cooldown, ?float $crawlingTime = null)
+    public function hit(int $status, int $cooldown, ?float $crawlingTime = null, int $crawledProducts = 0, int $discoveredProducts = 0)
     {
         $crawlingTime = $crawlingTime ?? microtime(true);
 
@@ -115,6 +115,8 @@ trait HasCrawlers
 
         $this->streak = $streak;
         $this->status = $status;
+        $this->crawled_products = $crawledProducts;
+        $this->discovered_products = $discoveredProducts;
         $this->crawled_at = now();
         $this->crawling_time = round(microtime(true) - $crawlingTime, 2);
         $this->scheduled_at = now()->addDays($scheduledAt);

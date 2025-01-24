@@ -25,6 +25,10 @@ abstract class BaseCrawler
 
     protected float $startingTime;
 
+    protected int $crawledProducts = 0;
+
+    protected int $discoveredProducts = 0;
+
     protected array $headers = [
         'User-Agent' => 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
         'Accept' => '*/*',
@@ -131,7 +135,7 @@ abstract class BaseCrawler
     {
         if ($this->url) {
             $startingTime = $this->startingTime ?? microtime(true);
-            $this->url->hit($status, $this->cooldown, $startingTime);
+            $this->url->hit($status, $this->cooldown, $startingTime, $this->crawledProducts, $this->discoveredProducts);
         }
     }
 

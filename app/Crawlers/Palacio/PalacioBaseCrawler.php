@@ -82,6 +82,8 @@ abstract class PalacioBaseCrawler extends WebBaseCrawler
                 'external_url' => $href,
                 'image_url' => $image,
             ]);
+
+            $this->discoveredProducts++;
         }
 
         $product->categories()->syncWithoutDetaching($categories);
@@ -92,6 +94,8 @@ abstract class PalacioBaseCrawler extends WebBaseCrawler
                 'source' => 'palacio-'.$source,
             ]);
         });
+
+        $this->crawledProducts++;
     }
 
     protected function getCategories(Crawler $dom): array
