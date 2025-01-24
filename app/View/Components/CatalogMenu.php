@@ -10,25 +10,14 @@ use Illuminate\View\Component;
 
 class CatalogMenu extends Component
 {
-    public $taxonomies;
-
     public $stores;
 
     public function __construct()
     {
-        $this->taxonomies = Taxonomy::query()
-            ->whereCountry(request()->countryCode)
-            ->whereNull('parent_id')
-            ->select('title', 'slug', 'order')
-            ->distinct('slug')
-            ->orderBy('order')
-            ->take(3)
-            ->get();
-
         $this->stores = Store::query()
             ->whereCountry(request()->countryCode)
             ->orderBy('priority')
-            ->take(3)
+            ->take(5)
             ->get();
     }
 

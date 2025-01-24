@@ -2,10 +2,6 @@
     <a href="/" class="px-1 py-3 whitespace-nowrap">Lo Más Hot</a>
     <a href="#" class="px-1 py-3 whitespace-nowrap">Categorías</a>
     <a href="#" class="px-1 py-3 whitespace-nowrap">Tiendas</a>
-    <div class="border-r border-gray-200 my-3 -mx-4"></div>
-    @foreach ($taxonomies as $taxonomy)
-        <a href="{{ $taxonomy->link() }}" class="px-1 py-3 whitespace-nowrap">{{ $taxonomy->title }}</a>
-    @endforeach
     <div class="border-r border-gray-200 my-3"></div>
     @foreach ($stores as $store)
         <a href="{{ $store->link() }}" class="px-1 py-3 whitespace-nowrap">{{ $store->name }}</a>
