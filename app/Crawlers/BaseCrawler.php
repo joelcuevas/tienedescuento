@@ -46,7 +46,10 @@ abstract class BaseCrawler
         });
     }
 
-    protected function setup(): void {}
+    protected function setup(): bool 
+    {
+        return true;
+    }
 
     public static function matchesPattern($url): bool
     {
@@ -91,7 +94,11 @@ abstract class BaseCrawler
             return;
         }
 
-        $this->setup();
+        $continue = $this->setup();
+
+        if (! $continue) {
+            return;
+        }
 
         try {
             $href = $this->transformCrawlingUrl($this->url->href);

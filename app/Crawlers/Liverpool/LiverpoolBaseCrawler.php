@@ -24,7 +24,7 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
         'Accept' => '*/*',
     ];
 
-    protected function setup(): void
+    protected function setup(): bool
     {
         if (static::$storeCode == 'liverpool-mx') {
             $this->domain = 'https://www.liverpool.com.mx';
@@ -43,6 +43,8 @@ abstract class LiverpoolBaseCrawler extends WebBaseCrawler
             'name' => $this->name,
             'external_url' => $this->domain,
         ]);
+
+        return true;
     }
 
     protected function saveProduct(mixed $record, string $source): ?Product

@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Store;
 use App\Models\Url;
+use Illuminate\Http\Response;
 use Symfony\Component\DomCrawler\Crawler;
 
 abstract class PalacioBaseCrawler extends WebBaseCrawler
@@ -20,8 +21,20 @@ abstract class PalacioBaseCrawler extends WebBaseCrawler
         'Accept' => '*/*',
     ];
 
-    protected function setup(): void
+    protected array $ignore = [
+        'https://www.elpalaciodehierro.com/marcas',
+    ];
+
+    protected function setup(): bool
     {
+        foreach ($this->ignore as $ignore) {
+            if ($this->url->href->startsWith($ignore)) {
+                $this->hit(Response::HTTP_IM_USED);
+
+                return false;
+            }
+        }
+        
         $this->store = Store::firstOrCreate([
             'country' => 'mx',
             'slug' => 'palacio',
@@ -29,6 +42,8 @@ abstract class PalacioBaseCrawler extends WebBaseCrawler
             'name' => 'El Palacio',
             'external_url' => 'https://www.elpalaciodehierro.com',
         ]);
+
+        return true;
     }
 
     protected function saveProduct(object $item, array $categories, string $source): void

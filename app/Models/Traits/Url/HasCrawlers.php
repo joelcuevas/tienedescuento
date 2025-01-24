@@ -107,6 +107,7 @@ trait HasCrawlers
             $scheduledAt = $cooldown;
         } else if ($status == Response::HTTP_IM_USED) {
             $scheduledAt = 365 * 10;
+            $this->is_active = false;
         } else {
             $penalty = 2 ** (($streak % 7) - 1);
             $scheduledAt = $penalty;

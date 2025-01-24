@@ -18,7 +18,7 @@ abstract class SearsBaseCrawler extends JsonBaseCrawler
         'Accept' => '*/*',
     ];
 
-    protected function setup(): void
+    protected function setup(): bool
     {
         $this->store = Store::firstOrCreate([
             'country' => 'mx',
@@ -27,6 +27,8 @@ abstract class SearsBaseCrawler extends JsonBaseCrawler
             'name' => 'Sears',
             'external_url' => 'https://www.sears.com.mx',
         ]);
+
+        return true;
     }
 
     protected function saveProduct(array $data, string $source): void

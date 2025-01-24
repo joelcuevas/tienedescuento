@@ -73,6 +73,7 @@ class ProductSample extends Command
 
             $this->info('  Sampling store: El Palacio');
             Artisan::call('url:crawl "https://www.elpalaciodehierro.com/electronica/celulares/fundas-protectores/"');
+            Artisan::call('url:crawl "https://www.elpalaciodehierro.com/nintendo-nintendo-switch-mario-kart-8-deluxe-bundle-44004183.html?cid=113003"');
         } else {
             $this->error('  Please specify --stores or --production option');
         }

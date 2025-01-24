@@ -14,7 +14,7 @@ abstract class CostcoMxBaseCrawler extends JsonBaseCrawler
 
     protected Store $store;
 
-    protected function setup(): void
+    protected function setup(): bool
     {
         $this->store = Store::firstOrCreate([
             'country' => 'mx',
@@ -23,6 +23,8 @@ abstract class CostcoMxBaseCrawler extends JsonBaseCrawler
             'name' => 'Costco',
             'external_url' => 'https://www.costco.com.mx',
         ]);
+
+        return true;
     }
 
     protected function saveProduct(array $data, string $source): void

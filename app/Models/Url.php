@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\Url\HasCrawlers;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\AsStringable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -17,9 +18,12 @@ class Url extends Model
         'priority' => 99,
         'hits' => 0,
         'streak' => 0,
+        'is_active' => true,
     ];
 
     protected $casts = [
+        'is_active' => 'boolean',
+        'href' => AsStringable::class,
         'crawled_at' => 'datetime',
         'scheduled_at' => 'datetime',
         'reserved_at' => 'datetime',
@@ -28,6 +32,7 @@ class Url extends Model
     public static function scopeScheduled(Builder $builder, int $limit): Builder
     {
         return $builder
+            ->where('is_active', true)
             ->where('scheduled_at', '<', now())
             ->where(fn ($q) => $q->whereNull('reserved_at')->orWhere('reserved_at', '<', now()->subHours(1)))
             ->limit($limit)
@@ -47,6 +52,7 @@ class Url extends Model
     public static function scopeRelegated(Builder $builder, int $limit): Builder
     {
         return $builder
+            ->where('is_active', true)
             ->where('scheduled_at', '<', now()->subHours(24))
             ->limit($limit)
             ->orderBy('scheduled_at');
