@@ -3,6 +3,7 @@
 namespace App\Models\Traits\Url;
 
 use App\Jobs\CrawlUrl;
+use App\Models\Store;
 use App\Models\Url;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
@@ -33,10 +34,30 @@ trait HasCrawlers
                 }
 
                 // if there's not, create a new one
+                $domain = parse_url($href, PHP_URL_HOST);
+
+                // find the store this domain belongs to
+                $matchedCountry = null;
+                $matchedSlug = null;
+
+                foreach (config('stores') as $countryCode => $stores) {
+                    foreach ($stores as $storeSlug => $store) {
+                        if ($store['domain'] === $domain) {
+                            $matchedCountry = $countryCode;
+                            $matchedSlug = $storeSlug;
+
+                            break 2;
+                        }
+                    }
+                }
+
+                $store = Store::whereCountry($matchedCountry)->whereSlug($matchedSlug)->first();
+
                 $url = Url::create([
+                    'store_id' => $store?->id ?? null,
                     'priority' => $priority,
                     'href' => $href,
-                    'domain' => parse_url($href, PHP_URL_HOST),
+                    'domain' => $domain,
                     'scheduled_at' => now()->subMinutes(1),
                     'hash' => $hash,
                     'crawler_class' => $crawler,

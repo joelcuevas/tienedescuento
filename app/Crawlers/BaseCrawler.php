@@ -54,7 +54,7 @@ abstract class BaseCrawler
     {
         return true;
     }
-
+    
     public static function matchesPattern($url): bool
     {
         return preg_match(static::$pattern, $url);
