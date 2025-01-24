@@ -206,21 +206,21 @@ return [
                 'timeout' => 10,
             ]),
 
-            'strict-firewalls' => array_merge($defaults, [
+            'crawlers-1' => array_merge($defaults, [
                 'queue' => ['liverpool', 'suburbia'],
                 'maxProcesses' => 15,
                 'timeout' => 30,
             ]),
 
-            'small-inventory' => array_merge($defaults, [
-                'queue' => ['palacio', 'costco-mx'],
+            'crawlers-2' => array_merge($defaults, [
+                'queue' => ['sears', 'palacio', 'costco-mx'],
                 'maxProcesses' => 10,
                 'timeout' => 30,
             ]),
 
-            'high-latency' => array_merge($defaults, [
+            'crawlers-3' => array_merge($defaults, [
                 'queue' => ['chascity'],
-                'maxProcesses' => 10,
+                'maxProcesses' => 5,
                 'timeout' => 60,
             ]),
         ],

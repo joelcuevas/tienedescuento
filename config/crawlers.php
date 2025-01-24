@@ -34,6 +34,13 @@ return [
             'every' => 1,
         ],
 
+        'www.sears.com.mx' => [
+            'queue' => 'sears',
+            'proxied' => false,
+            'allow' => 25,
+            'every' => 1,
+        ],
+
         'preciominimo.chascity.com' => [
             'queue' => 'chascity',
             'proxied' => false,
