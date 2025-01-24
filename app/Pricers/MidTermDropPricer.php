@@ -120,6 +120,7 @@ class MidTermDropPricer
         }
 
         // populate the product with calculated fields
+        $this->product->is_active = $latest['priced_at']->isAfter(now()->subDays(Product::DAYS_OUTDATED));
         $this->product->latest_price = $latestPrice;
         $this->product->priced_at = $latest['priced_at'];
         $this->product->minimum_price = $minimumPrice;
