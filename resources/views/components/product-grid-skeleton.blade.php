@@ -11,5 +11,5 @@
                 <x-product-card-skeleton />
             @endfor
         </div>
-    </div>
+    </div>  
 </div>
