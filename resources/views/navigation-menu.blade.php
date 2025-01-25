@@ -118,10 +118,10 @@
                     @else
                         <div class="hidden sm:flex sm:items-center sm:ms-6">
                             <a href="/login"
-                                class="text-sm text-gray-600 hover:text-gray-900 flex items-center"  
+                                class="text-sm text-gray-600 hover:text-gray-900 flex items-center whitespace-nowrap"  
                                 x-on:click.prevent="$dispatch('show-login-modal')"
                             >
-                                <span>Ingresar</span>
+                                <span>{{ __('Start Tracking!') }}</span>
                                 <i class="fa-solid fa-arrow-right pl-2"></i>
                             </a>
                         </div>
@@ -157,13 +157,17 @@
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': menuOpen, 'hidden': ! menuOpen}" class="hidden sm:hidden">
-        <!--
         <div class="px-2 py-4 space-y-1 border-b border-gray-200">
-            <x-responsive-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">
-                {{ __('Trends') }}
+            <x-responsive-nav-link href="{{ route('home') }}">
+                {{ __('Trending') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('categories.index') }}">
+                {{ __('Categories') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('stores.index') }}">
+                {{ __('Stores') }}
             </x-responsive-nav-link>
         </div>
-        -->
 
         <!-- Responsive Settings Options -->
         @if (Auth::user())
@@ -239,6 +243,12 @@
                         @endif
                     @endif
                 </div>
+            </div>
+        @else
+            <div class="px-2 py-4 space-y-1 border-b border-gray-200">
+                <x-responsive-nav-link href="{{ route('login') }}">
+                    {{ __('Login') }}
+                </x-responsive-nav-link>
             </div>
         @endif
     </div>

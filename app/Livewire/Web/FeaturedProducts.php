@@ -20,7 +20,7 @@ class FeaturedProducts extends Component
 
     public function placeholder(array $params = [])
     {
-        return view('components.featured-products-skeleton', $params);
+        return view('components.product-grid-skeleton', $params);
     }
 
     public function render()
@@ -33,9 +33,9 @@ class FeaturedProducts extends Component
         if ($taxonomy) {
             $products = Product::query()
                 ->whereTaxonomySlug($this->taxonomy)
-                ->where('discount', '>', 15)
+                ->onlyDiscounted()
+                ->onlyRecentlyPriced()
                 ->with('store')
-                ->onlyRecent()
                 ->orderByDesc('priced_at')
                 ->take(6)
                 ->get();

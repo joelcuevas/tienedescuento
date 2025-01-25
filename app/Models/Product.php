@@ -114,9 +114,21 @@ class Product extends Model
         return $query->with('store');
     }
 
-    public static function scopeOnlyRecent(Builder $query): Builder
+    public static function scopeWhereCountry(Builder $query, string $countryCode)
+    {
+        return $query->whereHas('store', function ($query) use ($countryCode) {
+            $query->where('stores.country', $countryCode);
+        });
+    }
+
+    public static function scopeOnlyRecentlyPriced(Builder $query): Builder
     {
         return $query->whereIsActive(true)->where('priced_at', '>=', now()->subDays(self::DAYS_OUTDATED));
+    }
+
+    public static function scopeOnlyDiscounted(Builder $query, int $discount = 20): Builder
+    {
+        return $query->whereIsActive(true)->where('discount', '>=', $discount);
     }
 
     public static function scopeWhereCategorySlug(Builder $query, mixed $slug): Builder

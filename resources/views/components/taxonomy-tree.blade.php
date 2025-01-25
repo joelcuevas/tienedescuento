@@ -1,5 +1,5 @@
 <div>
-    <div class="columns-2 md:columns-3 lg:columns-5 gap-4 space-y-10 text-sm">
+    <div class="columns-2 md:columns-3 lg:columns-5 gap-4 space-y-10 text-sm w-full">
         @foreach ($taxonomies as $taxonomy)
             <div class="break-inside-avoid">
                 <h3 class="mb-2">

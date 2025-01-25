@@ -21,11 +21,9 @@ class ShowCatalog extends Component
 
         // only search into current country stores
         $query = Product::query()
-            ->whereHas('store', function ($query) use ($countryCode) {
-                $query->where('stores.country', $countryCode);
-            })
-            ->onlyRecent()
-            ->where('discount', '>', 20)
+            ->whereCountry($countryCode)
+            ->onlyRecentlyPriced()
+            ->onlyDiscounted()
             ->with(['store'])
             ->orderByDesc('priced_at')
             ->limit(360);

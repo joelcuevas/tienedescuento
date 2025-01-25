@@ -36,6 +36,7 @@ Route::middleware(
         Route::get('/', ShowHome::class)->name('home');
 
         Route::get('/stores', ShowStores::class)->name('stores.index');
+        Route::get('/categories', ShowStores::class)->name('categories.index');
         Route::get('/search', SearchProducts::class)->name('products.search');
 
         Route::get('/{storeSlug}/p/{productSku}/{productSlug}', ShowProduct::class)->name('products.show');
