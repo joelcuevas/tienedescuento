@@ -125,8 +125,10 @@ class Product extends Model
     {
         return $query->orderByRaw('
             CASE
-                WHEN discount > 0 THEN 0
-                ELSE 1
+                WHEN discount > 40 THEN 0
+                WHEN discount BETWEEN 20 AND 39 THEN 1
+                WHEN discount BETWEEN 1 AND 19 THEN 2
+                ELSE 3
             END
         ');
     }
