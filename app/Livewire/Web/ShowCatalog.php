@@ -75,7 +75,7 @@ class ShowCatalog extends Component
         return view('livewire.web.show-catalog')->with([
             'store' => $store,
             'title' => implode(' / ', array_unique($this->title)),
-            'products' => $query->cursorPaginate(Product::PAGE_SIZE),
+            'products' => $query->simplePaginate(Product::PAGE_SIZE),
         ]);
     }
 }
