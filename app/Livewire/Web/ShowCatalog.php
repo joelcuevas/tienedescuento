@@ -24,9 +24,10 @@ class ShowCatalog extends Component
             ->whereHas('store', function ($query) use ($countryCode) {
                 $query->where('stores.country', $countryCode);
             })
-            ->where('is_active', true)
+            ->onlyRecent()
+            ->where('discount', '>', 20)
             ->with(['store'])
-            ->orderByDesc('savings')
+            ->orderByDesc('priced_at')
             ->limit(360);
 
         $catalogSlug = request()->catalogSlug;

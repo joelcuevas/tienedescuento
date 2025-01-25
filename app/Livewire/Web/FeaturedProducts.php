@@ -33,9 +33,10 @@ class FeaturedProducts extends Component
         if ($taxonomy) {
             $products = Product::query()
                 ->whereTaxonomySlug($this->taxonomy)
+                ->where('discount', '>', 15)
                 ->with('store')
                 ->onlyRecent()
-                ->orderByDesc('discount')
+                ->orderByDesc('priced_at')
                 ->take(6)
                 ->get();
         }
