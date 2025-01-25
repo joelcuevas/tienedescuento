@@ -27,6 +27,10 @@ abstract class PalacioBaseCrawler extends WebBaseCrawler
 
     protected function setup(): bool
     {
+        if ($this->url->priority < 30) {
+            return false;
+        }
+        
         foreach ($this->ignore as $ignore) {
             if ($this->url->href->startsWith($ignore)) {
                 $this->hit(Response::HTTP_IM_USED);
