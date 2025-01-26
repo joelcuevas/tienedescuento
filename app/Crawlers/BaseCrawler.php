@@ -145,7 +145,7 @@ abstract class BaseCrawler
     {
         if ($this->url) {
             $startingTime = $this->startingTime ?? microtime(true);
-            $this->url->hitUrl($status, $this->cooldown, $startingTime, $this->crawledProducts, $this->discoveredProducts);
+            $this->url->hit($status, $this->cooldown, $startingTime, $this->crawledProducts, $this->discoveredProducts);
         }
     }
 
