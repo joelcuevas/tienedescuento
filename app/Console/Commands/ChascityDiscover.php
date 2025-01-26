@@ -16,6 +16,10 @@ class ChascityDiscover extends Command
 
     public function handle()
     {
+        // crawling now!
+        $this->schedule('sears');
+
+        // just for newly discovered products
         $this->schedule('liverpool');
         $this->schedule('costco');
         $this->schedule('palacio');
@@ -31,6 +35,9 @@ class ChascityDiscover extends Command
         }
 
         $nextId = (int) cache('chascity.next-id-'.$storeSlug, 0);
+
+        // keep the cache alive
+        cache(['chascity.next-id-'.$storeSlug => $nextId], now()->addHours(24));
 
         if ($nextId == 0) {
             $nextId = Product::whereStoreId($store->id)->first()->id;
@@ -63,10 +70,6 @@ class ChascityDiscover extends Command
             $alreadyResolved = $url && $url->crawled_at ? 'skip' : 'follow';
 
             $this->line("[Product {$product->id}] [$alreadyResolved] {$href}");
-
-            if ($storeSlug == 'liverpool') {
-                cache(['chascity.next-id1' => $product->id]);
-            }
 
             cache(['chascity.next-id-'.$storeSlug => $product->id], now()->addHours(24));
         }

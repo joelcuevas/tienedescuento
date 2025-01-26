@@ -128,14 +128,14 @@ abstract class BaseCrawler
             $status = Response::HTTP_SERVICE_UNAVAILABLE;
         }
 
-        $this->hit($status);
+        $this->hitUrl($status);
     }
 
-    protected function hit($status)
+    protected function hitUrl($status)
     {
         if ($this->url) {
             $startingTime = $this->startingTime ?? microtime(true);
-            $this->url->hit($status, $this->cooldown, $startingTime, $this->crawledProducts, $this->discoveredProducts);
+            $this->url->hitUrl($status, $this->cooldown, $startingTime, $this->crawledProducts, $this->discoveredProducts);
         }
     }
 

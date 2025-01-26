@@ -40,7 +40,7 @@ class ChascityProductCrawler extends WebBaseCrawler
             $crawled = $product->prices()->where('source', 'chascity')->count() > 0;
 
             if ($crawled) {
-                $this->hit(Response::HTTP_IM_USED);
+                $this->hitUrl(Response::HTTP_IM_USED);
 
                 return true;
             }

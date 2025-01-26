@@ -29,7 +29,7 @@ abstract class PalacioBaseCrawler extends WebBaseCrawler
     {
         foreach ($this->ignore as $ignore) {
             if ($this->url->href->startsWith($ignore)) {
-                $this->hit(Response::HTTP_IM_USED);
+                $this->hitUrl(Response::HTTP_IM_USED);
 
                 return false;
             }
