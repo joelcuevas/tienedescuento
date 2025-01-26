@@ -220,7 +220,7 @@ return [
 
             'crawlers-3' => array_merge($defaults, [
                 'queue' => ['chascity'],
-                'maxProcesses' => 5,
+                'maxProcesses' => 10,
                 'timeout' => 60,
             ]),
         ],
