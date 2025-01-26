@@ -26,6 +26,22 @@ class SearsSitemapCrawler extends WebBaseCrawler
             if ($isSitemap) {
                 ResolveUrl::dispatch($href, $priority);
             } else {
+                preg_match('#/categoria/(\d+)/#', $href, $matches);
+                $id = $matches[1] ?? null;
+
+                if ($id) {
+                    $url = Url::query()
+                        ->whereDomain('www.sears.com.mx')
+                        ->where('href', 'like', '%?id='.$id)
+                        ->first();
+
+                    // canonical url already discovered
+                    if ($url) {
+                        return;
+                    }
+                }
+
+                // find canonical url for crawling
                 dispatch(function () use ($href, $priority) {
                     $response = $this->makeRequest($href);
                     $status = $response->status();
