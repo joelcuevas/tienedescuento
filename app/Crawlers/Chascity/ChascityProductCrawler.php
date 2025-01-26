@@ -49,6 +49,12 @@ class ChascityProductCrawler extends WebBaseCrawler
         return false;
     }
 
+    protected function teardown(): void
+    {
+        // deactivate all chascity urls after first (and only) crawling
+        $this->url->update(['is_active' => false]);
+    }
+
     protected function parse(mixed $dom): int
     {
         $data = $dom->filter('.table-striped > tbody');

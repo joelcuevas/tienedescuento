@@ -54,6 +54,10 @@ abstract class BaseCrawler
     {
         return true;
     }
+
+    protected function teardown(): void 
+    {
+    }
     
     public static function matchesPattern($url): bool
     {
@@ -101,6 +105,8 @@ abstract class BaseCrawler
         $continue = $this->setup();
 
         if (! $continue) {
+            $this->teardown();
+
             return;
         }
 
@@ -129,6 +135,10 @@ abstract class BaseCrawler
         }
 
         $this->hitUrl($status);
+
+        $this->teardown();
+
+        return;
     }
 
     protected function hitUrl($status)
