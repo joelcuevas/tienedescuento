@@ -55,7 +55,9 @@ abstract class SearsBaseCrawler extends JsonBaseCrawler
             $this->discoveredProducts++;
         }
 
-        $product->categories()->syncWithoutDetaching($data['categories']);
+        if (count($data['categories'])) {
+            $product->categories()->syncWithoutDetaching($data['categories']);
+        }
 
         Product::withoutSyncingToSearch(function () use ($product, $data, $source) {
             $price = (float) str_replace(['$', ','], '', $data['price']);

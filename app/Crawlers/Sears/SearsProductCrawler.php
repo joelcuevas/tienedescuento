@@ -42,7 +42,12 @@ class SearsProductCrawler extends SearsBaseCrawler
         $data['external_url'] = 'https://www.sears.com.mx/producto/'.$json->data->id.'/'.$slug;
         $data['image_url'] = $json->data->pictures[0]->source;
         $data['price'] = $json->data->pricing->sales_price ?? $json->data->pricing->list_price;
-        $data['categories'] = $this->getCategories((array) $json->data->categories[0]);
+
+        if (isset($json->data->categories[0])) {
+            $data['categories'] = $this->getCategories((array) $json->data->categories[0]);
+        } else {
+            $data['categories'] = [];
+        }
 
         $this->saveProduct($data, 'product');
 
