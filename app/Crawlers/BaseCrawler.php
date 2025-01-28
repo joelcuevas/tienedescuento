@@ -8,6 +8,7 @@ use App\Models\Url;
 use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Http\Client\Response as ClientResponse;
 use Illuminate\Http\Response;
+use Illuminate\Queue\TimeoutExceededException;
 use Illuminate\Support\Facades\Http;
 use Sentry;
 
@@ -132,6 +133,8 @@ abstract class BaseCrawler
             }
         } catch (HttpClientException $e) {
             $status = Response::HTTP_SERVICE_UNAVAILABLE;
+        } catch (TimeoutExceededException $e) {
+            $status = Response::HTTP_GATEWAY_TIMEOUT;
         }
 
         $this->hitUrl($status);
