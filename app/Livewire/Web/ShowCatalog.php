@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Store;
 use App\Models\Taxonomy;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -21,6 +22,7 @@ class ShowCatalog extends Component
 
         // only search into current country stores
         $query = Product::query()
+            ->from(DB::raw('products FORCE INDEX (products_discount_index)'))
             ->whereCountry($countryCode)
             ->onlyRecentlyPriced()
             ->with(['store'])
