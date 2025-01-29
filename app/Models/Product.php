@@ -121,18 +121,6 @@ class Product extends Model
         });
     }
 
-    public static function scopeDiscountedFirst(Builder $query): Builder
-    {
-        return $query->orderByRaw('
-            CASE
-                WHEN discount > 40 THEN 0
-                WHEN discount BETWEEN 20 AND 39 THEN 1
-                WHEN discount BETWEEN 1 AND 19 THEN 2
-                ELSE 3
-            END
-        ');
-    }
-
     public static function scopeOnlyRecentlyPriced(Builder $query): Builder
     {
         return $query->whereIsActive(true)->where('priced_at', '>=', now()->subDays(self::DAYS_OUTDATED));

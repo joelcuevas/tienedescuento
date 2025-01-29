@@ -35,7 +35,7 @@ class FeaturedProducts extends Component
                 ->whereTaxonomySlug($this->taxonomy)
                 ->onlyRecentlyPriced()
                 ->with('store')
-                ->discountedFirst()
+                ->orderByDesc('discount')
                 ->orderByDesc('priced_at')
                 ->take(6)
                 ->get();

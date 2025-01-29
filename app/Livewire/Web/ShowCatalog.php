@@ -24,7 +24,7 @@ class ShowCatalog extends Component
             ->whereCountry($countryCode)
             ->onlyRecentlyPriced()
             ->with(['store'])
-            ->discountedFirst()
+            ->orderByDesc('discount')
             ->orderByDesc('priced_at')
             ->limit(360);
 
