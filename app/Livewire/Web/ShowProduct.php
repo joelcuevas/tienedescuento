@@ -88,7 +88,7 @@ class ShowProduct extends Component
             ->orderBy('priced_date')
             ->get();
 
-        if (empty($data)) {
+        if (! count($data)) {
             return collect([]);
         }
 
