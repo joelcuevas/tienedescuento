@@ -88,6 +88,10 @@ class ShowProduct extends Component
             ->orderBy('priced_date')
             ->get();
 
+        if (empty($data)) {
+            return collect([]);
+        }
+
         // adjust startDate to the first known price date
         $firstKnownDate = Carbon::parse($data->first()->priced_date)->startOfDay();
         $startDate = $firstKnownDate;
