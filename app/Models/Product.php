@@ -157,19 +157,14 @@ class Product extends Model
     }
 
     public static function scopeWhereCategoryIds(Builder $query, array $ids): Builder
-    {
+    { 
         return $query
-            ->joinSub(
-                DB::table('category_product')
-                    ->select('product_id')
-                    ->distinct()
-                    ->forceIndex('category_product_category_id_product_id_index')
-                    ->whereIn('category_id', $ids),
-                'cp',
-                'products.id',
-                '=',
-                'cp.product_id'
-            );
+            ->leftJoin('category_product', function ($join) use ($ids) {
+                $join->on('products.id', '=', 'category_product.product_id')
+                    ->whereIn('category_product.category_id', $ids)
+                    ->useIndex('category_product_category_id_product_id_index');
+            })
+            ->whereNotNull('category_product.product_id');
     }
 
     public function link(): string
